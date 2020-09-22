@@ -12,7 +12,7 @@ public class PageUtils<T> {
     //
     private int pageNo;
     //
-    private Integer pageSize = 15;
+    private Integer pageSize =15;
     //
     private long totalPage;
     //

@@ -238,4 +238,11 @@
       datas = #{datas,jdbcType=VARCHAR}
     where goods_id = #{goodsId,jdbcType=VARCHAR}
   </update>
+
+  <select id="selectThumbImgByPrimaryKey" resultType="java.lang.String">
+    select
+        img_list
+    from goods_info
+    where goods_id = #{goodsId,jdbcType=VARCHAR}
+    </select>
 </mapper>
