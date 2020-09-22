@@ -23,6 +23,9 @@ public class HomeGoodsVo implements Serializable {
     @ApiModelProperty("商品名")
     private String goodsName;
 
+    @ApiModelProperty("商品id")
+    private String goodsId;
+
     @ApiModelProperty("商品价格")
     private Double initPrice;
 

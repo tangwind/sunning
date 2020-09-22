@@ -25,6 +25,13 @@ public class ReturnResultUtils {
         return returnResult;
     }
 
+    public static ReturnResult returnFail(int code, String msg){
+        ReturnResult returnResult = new ReturnResult();
+        returnResult.setCode(code);
+        returnResult.setMsg(msg);
+        return returnResult;
+    }
+
 
 
 

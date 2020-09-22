@@ -8,6 +8,7 @@ import com.suning.cn.vo.home.HomeGoodsVo;
 import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,13 +39,37 @@ public class HomeServiceImpl implements HomeService {
      * 获取精选商品
      */
     @Override
-    public PageUtils<HomeGoodsVo> getChosenGoods(Integer pageNo, Integer pageSize) {
+    public PageUtils<HomeGoodsVo> getChosenGoods(Integer pageNo, Integer pageSize, String type) {
+
         PageUtils pageUtils = new PageUtils();
         pageUtils.setPageNo(pageNo);
         pageUtils.setCurrentPage(pageNo);
 
         GoodsExample goodsExample = new GoodsExample();
-        goodsExample.createCriteria().andTypeIdEqualTo(CHOSEN);
+        goodsExample.createCriteria().andTypeIdEqualTo(type);
+
+        return getHomeGoodsVoPageUtils(pageSize, pageUtils, goodsExample);
+    }
+
+    /**
+     * 搜索商品
+     *
+     * @param content 搜索内容
+     * @return 相同名称的商品
+     */
+    @Override
+    public PageUtils<HomeGoodsVo> searchGoods(String content, Integer pageNo, Integer pageSize) {
+        PageUtils pageUtils = new PageUtils();
+        pageUtils.setPageNo(pageNo);
+        pageUtils.setCurrentPage(pageNo);
+
+        GoodsExample goodsExample = new GoodsExample();
+        goodsExample.createCriteria().andGoodsNameLike("%" + content + "%");
+
+        return getHomeGoodsVoPageUtils(pageSize, pageUtils, goodsExample);
+    }
+
+    private PageUtils<HomeGoodsVo> getHomeGoodsVoPageUtils(Integer pageSize, PageUtils pageUtils, GoodsExample goodsExample) {
         long goodsTotal = goodsMapper.countByExample(goodsExample);
         pageUtils.setTotalCount(goodsTotal);
 
@@ -52,13 +77,12 @@ public class HomeServiceImpl implements HomeService {
         goodsExample.setOffset(pageSize);
         goodsExample.setOrderByClause(CAUSE + " DESC");
         List<Goods> goodsList = goodsMapper.selectByExample(goodsExample);
-
         List<HomeGoodsVo> homeGoodsVoList = new ArrayList<>();
-
         goodsList.forEach(goods -> {
             HomeGoodsVo homeGoodsVo = new HomeGoodsVo();
             homeGoodsVo.setGoodsName(goods.getGoodsName());
             homeGoodsVo.setInitPrice(goods.getInitPrice());
+            homeGoodsVo.setGoodsId(goods.getGoodsId());
 
             //主图
             String thumbImg = thumbImg(goods.getGoodsId());
@@ -79,12 +103,13 @@ public class HomeServiceImpl implements HomeService {
         return pageUtils;
     }
 
+
     /**
      * 获取主图
      * @param goodsId 商品id
      * @return 主图
      */
-    public String thumbImg(String goodsId) {
+    private String thumbImg(String goodsId) {
         String thumbImg = imgExchangeMapper.selectThumbImgBygoodsIdAndMain(goodsId, MAIN);
         return thumbImg;
     }
@@ -95,7 +120,7 @@ public class HomeServiceImpl implements HomeService {
      * @param goodsId 商品id
      * @return 评论总数
      */
-    public int reviewsCount(String goodsId) {
+    private int reviewsCount(String goodsId) {
         long count =  reviewsMapper.countByGoodsId(goodsId);
         return Integer.parseInt(String.valueOf(count));
     }
@@ -105,7 +130,7 @@ public class HomeServiceImpl implements HomeService {
      * @param goodsId 商品id
      * @return 店铺名
      */
-   public String shopName(String goodsId) {
+    private String shopName(String goodsId) {
        RelationalShop relationalShop = relationalShopMapper.selectByPrimaryKey(goodsId);
        String shopName = shopsMapper.selectNameByPrimaryKey(relationalShop.getShopId());
        return shopName;

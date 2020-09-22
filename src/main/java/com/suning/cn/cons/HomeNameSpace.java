@@ -7,22 +7,6 @@ package com.suning.cn.cons;
 public class HomeNameSpace {
 
     /**
-     * 精选
-     */
-    public static final String CHOSEN = "10001";
-
-
-    /**
-     * 食品
-     */
-    public static final String FOOD = "10002";
-
-    /**
-     * 母婴
-     */
-    public static final String MOTHER_AND_BABY = "10003";
-
-    /**
      * 查询时排序的依据
      */
     public static final String CAUSE = "goods_name";
