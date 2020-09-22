@@ -73,7 +73,7 @@ public class OrdersServiceImpl implements OrdersService {
         }catch (Exception e){
             ReturnResultUtils.returnFail(708);//获取店铺名失败
         }
-        //ToDo 根据用户id获取地址等信息
+        // 根据用户id获取地址等信息
         ShippingAddress address = addressMapper.selectByPrimaryKey(orderParam.getUserId());
         BeanUtils.copyProperties(address, addressVo);
         //修改数量时修改总额
