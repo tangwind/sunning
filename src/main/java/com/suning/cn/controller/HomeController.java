@@ -15,6 +15,8 @@ import java.util.Date;
 /**
  * @author tangchaochao
  * @create 2020-2020-09-22 09:33
+ * 444:精选商品异常
+ * 456:搜索商品错误
  */
 @Api(tags = "主页接口")
 @Log4j
