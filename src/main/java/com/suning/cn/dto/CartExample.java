@@ -1,5 +1,6 @@
 package com.suning.cn.dto;
 
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
