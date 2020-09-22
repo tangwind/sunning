@@ -43,7 +43,7 @@ public class HomeController {
     @GetMapping(value = "/goods")
     public ReturnResult<HomeGoodsVo> chosen(@RequestParam @ApiParam(value = "当前页码", required = true) Integer pageNo,
                                             @RequestParam @ApiParam(value = "每页条数", required = true) Integer pageSize,
-                                            @RequestParam @ApiParam(value = "类型,如:精选、食品...填对应的数字") String type) {
+                                            @RequestParam @ApiParam(value = "类型,如:精选、食品...填对应的数字", required = true) String type) {
         try {
             PageUtils<HomeGoodsVo> homeGoodsVos = homeService.getChosenGoods(pageNo, pageSize, type);
             return ReturnResultUtils.returnSuccess(homeGoodsVos);
