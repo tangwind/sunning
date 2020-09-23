@@ -6,15 +6,21 @@ import lombok.Data;
 
 import java.io.Serializable;
 
+@ApiModel
 @Data
-@ApiModel("收货地址")
 public class AddressVo implements Serializable {
-    @ApiModelProperty(value = "收货人")
+    @ApiModelProperty("用户id")
+    private String userId;
+    @ApiModelProperty("收件人姓名")
     private String reciver;
-    @ApiModelProperty(value = "手机号码")
+    @ApiModelProperty("收件人手机号")
     private String phone;
-    @ApiModelProperty(value = "地区")
+    @ApiModelProperty("收货地区")
     private String region;
-    @ApiModelProperty(value = "详细地址")
+    @ApiModelProperty("收货的详细地址")
     private String address;
+    @ApiModelProperty("地址的邮编（可不填）")
+    private String mailCode;
+    @ApiModelProperty("选择默认地址（0-非默认、1-默认）")
+    private Integer isDefault;
 }
