@@ -44,15 +44,6 @@ public class GoodsInfoServiceImpl extends BaseServiceImpl implements GoodsInfoSe
         GoodsInfoVo goodsInfoVo = new GoodsInfoVo();
         BeanUtils.copyProperties(goods, goodsInfoVo);
 
-        //获取评论
-        Reviews reviews = reviewsMapper.selectByGoodsId(goodsId);
-        if (!ObjectUtils.isEmpty(reviews)) {
-            BeanUtils.copyProperties(reviews, goodsInfoVo);
-
-            //获取用户名
-            Users users = usersMapper.selectByPrimaryKey(reviews.getUserId());
-            goodsInfoVo.setNickName(users.getNickName());
-        }
         //获取主图
         List<String> thumbImg = getImg(goodsId, MAIN);
         goodsInfoVo.setThumbImg(thumbImg.get(0));
@@ -62,13 +53,24 @@ public class GoodsInfoServiceImpl extends BaseServiceImpl implements GoodsInfoSe
         String sideImgStr = String.join(";", sideImg);
         goodsInfoVo.setSideImg(sideImgStr);
 
-        //获取评价总数
-        int reviewsCount = reviewsCount(goodsId);
-        goodsInfoVo.setAssessCount(reviewsCount);
-
         //获取店铺名
         String shopName = shopName(goodsId);
         goodsInfoVo.setShopsName(shopName);
+
+        //获取评论
+        Reviews reviews = reviewsMapper.selectByGoodsId(goodsId);
+        if (ObjectUtils.isEmpty(reviews)) {
+           return  goodsInfoVo;
+        }
+        BeanUtils.copyProperties(reviews, goodsInfoVo);
+
+        //获取用户名
+        Users users = usersMapper.selectByPrimaryKey(reviews.getUserId());
+        goodsInfoVo.setNickName(users.getNickName());
+
+        //获取评价总数
+        int reviewsCount = reviewsCount(goodsId);
+        goodsInfoVo.setAssessCount(reviewsCount);
 
         return goodsInfoVo;
     }
