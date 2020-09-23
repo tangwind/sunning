@@ -9,6 +9,7 @@ import lombok.extern.log4j.Log4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 
 import java.util.List;
 
@@ -31,6 +32,7 @@ public class GoodsInfoServiceImpl extends BaseServiceImpl implements GoodsInfoSe
 
     /**
      * 展示商品详细信息
+     *
      * @param goodsId 商品id
      * @return getGoodsAllInfo
      */
@@ -44,12 +46,13 @@ public class GoodsInfoServiceImpl extends BaseServiceImpl implements GoodsInfoSe
 
         //获取评论
         Reviews reviews = reviewsMapper.selectByGoodsId(goodsId);
-        BeanUtils.copyProperties(reviews, goodsInfoVo);
+        if (!ObjectUtils.isEmpty(reviews)) {
+            BeanUtils.copyProperties(reviews, goodsInfoVo);
 
-        //获取用户名
-        Users users = usersMapper.selectByPrimaryKey(reviews.getUserId());
-        goodsInfoVo.setNickName(users.getNickName());
-
+            //获取用户名
+            Users users = usersMapper.selectByPrimaryKey(reviews.getUserId());
+            goodsInfoVo.setNickName(users.getNickName());
+        }
         //获取主图
         List<String> thumbImg = getImg(goodsId, MAIN);
         goodsInfoVo.setThumbImg(thumbImg.get(0));
