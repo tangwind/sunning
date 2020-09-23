@@ -20,4 +20,25 @@ public class HomeNameSpace {
      * 查询非主图条件
      */
     public static final String NOT_MAIN = "0";
+
+    /**
+     * 集合获取主图
+     */
+    public static final int GET_MAIN = 0;
+
+    /**
+     * 集合获取一条评论
+     */
+    public static final int GET_REVIEW = 0;
+
+    /**
+     * 数据库获取一条评论
+     */
+    public static final int LIMIT = 1;
+
+    /**
+     * 查询评论的排序
+     */
+    public static final String REVIEW_BY = "score";
+
 }
