@@ -3,6 +3,8 @@ package com.suning.cn.mapper;
 import com.suning.cn.dto.ShippingAddress;
 import com.suning.cn.dto.ShippingAddressExample;
 import java.util.List;
+
+import com.suning.cn.dto.Users;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -95,4 +97,6 @@ public interface ShippingAddressMapper {
      * @mbg.generated
      */
     int updateByPrimaryKey(ShippingAddress record);
+
+    List<ShippingAddress> selectAddress();
 }

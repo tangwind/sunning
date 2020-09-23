@@ -18,8 +18,8 @@ public class UsersController {
 
     //查询用户信息
     @GetMapping(value = "/getUser")
-    public List<UsersVo> getUser(String userId) {
-        List<UsersVo> userInfo = usersService.getUserInfo(userId);
+    public UsersVo getUser(String userId) {
+        UsersVo userInfo = usersService.getUserInfo(userId);
         return userInfo;
     }
 
@@ -32,5 +32,11 @@ public class UsersController {
         } else {
             return "success insert";
         }
+    }
+    //修改用户信息
+    @PostMapping(value = "/updateUser")
+    public String updateUser(@RequestBody UsersVo usersVo) {
+        String result = usersService.updateUserInfo(usersVo);
+        return result;
     }
 }

@@ -300,4 +300,8 @@
       is_default = #{isDefault,jdbcType=INTEGER}
     where user_id = #{userId,jdbcType=VARCHAR}
   </update>
+  <select id="selectAddress" parameterType="com.suning.cn.dto.ShippingAddress" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List" />
+    from shipping_address
+  </select>
 </mapper>
