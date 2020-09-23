@@ -4,11 +4,10 @@ import com.suning.cn.dto.*;
 import com.suning.cn.mapper.*;
 import com.suning.cn.service.HomeService;
 import com.suning.cn.utils.PageUtils;
-import com.suning.cn.vo.home.HomeGoodsVo;
+import com.suning.cn.vo.HomeGoodsVo;
 import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,19 +20,10 @@ import static com.suning.cn.cons.HomeNameSpace.*;
  */
 @Log4j
 @Service
-public class HomeServiceImpl implements HomeService {
+public class HomeServiceImpl extends BaseServiceImpl implements HomeService {
 
     @Autowired
     private GoodsMapper goodsMapper;
-    @Autowired
-    private ImgExchangeMapper imgExchangeMapper;
-    @Autowired
-    private ReviewsMapper reviewsMapper;
-    @Autowired
-    private RelationalShopMapper relationalShopMapper;
-    @Autowired
-    private ShopsMapper shopsMapper;
-
 
     /**
      * 获取精选商品
@@ -69,10 +59,11 @@ public class HomeServiceImpl implements HomeService {
         return getHomeGoodsVoPageUtils(pageSize, pageUtils, goodsExample);
     }
 
+
     private PageUtils<HomeGoodsVo> getHomeGoodsVoPageUtils(Integer pageSize, PageUtils pageUtils, GoodsExample goodsExample) {
         long goodsTotal = goodsMapper.countByExample(goodsExample);
         pageUtils.setTotalCount(goodsTotal);
-
+        pageUtils.setPageSize(pageSize);
         goodsExample.setLimit(pageUtils.getPageNo());
         goodsExample.setOffset(pageSize);
         goodsExample.setOrderByClause(CAUSE + " DESC");
@@ -85,8 +76,8 @@ public class HomeServiceImpl implements HomeService {
             homeGoodsVo.setGoodsId(goods.getGoodsId());
 
             //主图
-            String thumbImg = thumbImg(goods.getGoodsId());
-            homeGoodsVo.setThumbImg(thumbImg);
+            List<String> thumbImg = getImg(goods.getGoodsId(), MAIN);
+            homeGoodsVo.setThumbImg(thumbImg.get(0));
 
             //评论总数
             int count = reviewsCount(goods.getGoodsId());
@@ -102,41 +93,6 @@ public class HomeServiceImpl implements HomeService {
         pageUtils.setCurrentList(homeGoodsVoList);
         return pageUtils;
     }
-
-
-    /**
-     * 获取主图
-     * @param goodsId 商品id
-     * @return 主图
-     */
-    private String thumbImg(String goodsId) {
-        String thumbImg = imgExchangeMapper.selectThumbImgBygoodsIdAndMain(goodsId, MAIN);
-        return thumbImg;
-    }
-
-
-    /**
-     * 获取评论总数
-     * @param goodsId 商品id
-     * @return 评论总数
-     */
-    private int reviewsCount(String goodsId) {
-        long count =  reviewsMapper.countByGoodsId(goodsId);
-        return Integer.parseInt(String.valueOf(count));
-    }
-
-    /**
-     * 获取店铺名
-     * @param goodsId 商品id
-     * @return 店铺名
-     */
-    private String shopName(String goodsId) {
-       RelationalShop relationalShop = relationalShopMapper.selectByPrimaryKey(goodsId);
-       String shopName = shopsMapper.selectNameByPrimaryKey(relationalShop.getShopId());
-       return shopName;
-   }
-
-
 
 
 }
