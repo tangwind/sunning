@@ -62,7 +62,7 @@ public interface ReviewsMapper {
      */
     int updateByExample(@Param("record") Reviews record, @Param("example") ReviewsExample example);
 
-    List<Reviews> selectByGoodsId(@Param("goodsId") String goodsId, @Param("limit") Integer limit);
-
     long countByGoodsId(String goodsId);
+
+    List<Reviews> selectByGoodsId(@Param("goodsId") String goodsId, @Param("limit")int limit);
 }
