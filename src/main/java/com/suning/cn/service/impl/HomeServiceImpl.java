@@ -77,7 +77,7 @@ public class HomeServiceImpl extends BaseServiceImpl implements HomeService {
 
             //主图
             List<String> thumbImg = getImg(goods.getGoodsId(), MAIN);
-            homeGoodsVo.setThumbImg(thumbImg.get(0));
+            homeGoodsVo.setThumbImg(thumbImg.get(GET_MAIN));
 
             //评论总数
             int count = reviewsCount(goods.getGoodsId());
