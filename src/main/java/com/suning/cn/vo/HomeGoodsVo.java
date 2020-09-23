@@ -1,4 +1,4 @@
-package com.suning.cn.vo.home;
+package com.suning.cn.vo;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;

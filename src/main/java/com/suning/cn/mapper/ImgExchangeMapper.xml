@@ -206,12 +206,12 @@
     </if>
   </update>
 
-  <select id="selectThumbImgBygoodsIdAndMain" resultType="java.lang.String">
+  <select id="selectImgBygoodsIdAndMain" resultType="java.lang.String">
     select
-            pic_url
+    pic_url
     from
-            img_exchange
+    img_exchange
     where
-            good_id = #{goodsId} and is_main = #{isMain}
-    </select>
+    good_id = #{goodsId} and is_main = #{isMain}
+  </select>
 </mapper>

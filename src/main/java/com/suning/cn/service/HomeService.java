@@ -1,7 +1,7 @@
 package com.suning.cn.service;
 
 import com.suning.cn.utils.PageUtils;
-import com.suning.cn.vo.home.HomeGoodsVo;
+import com.suning.cn.vo.HomeGoodsVo;
 
 /**
  * @author tangchaochao

@@ -4,7 +4,7 @@ import com.suning.cn.service.HomeService;
 import com.suning.cn.utils.PageUtils;
 import com.suning.cn.utils.ReturnResult;
 import com.suning.cn.utils.ReturnResultUtils;
-import com.suning.cn.vo.home.HomeGoodsVo;
+import com.suning.cn.vo.HomeGoodsVo;
 import io.swagger.annotations.*;
 import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
