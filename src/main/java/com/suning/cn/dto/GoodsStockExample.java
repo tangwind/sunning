@@ -275,62 +275,52 @@ public class GoodsStockExample {
             return (Criteria) this;
         }
 
-        public Criteria andGoodsNumEqualTo(String value) {
+        public Criteria andGoodsNumEqualTo(Integer value) {
             addCriterion("goods_num =", value, "goodsNum");
             return (Criteria) this;
         }
 
-        public Criteria andGoodsNumNotEqualTo(String value) {
+        public Criteria andGoodsNumNotEqualTo(Integer value) {
             addCriterion("goods_num <>", value, "goodsNum");
             return (Criteria) this;
         }
 
-        public Criteria andGoodsNumGreaterThan(String value) {
+        public Criteria andGoodsNumGreaterThan(Integer value) {
             addCriterion("goods_num >", value, "goodsNum");
             return (Criteria) this;
         }
 
-        public Criteria andGoodsNumGreaterThanOrEqualTo(String value) {
+        public Criteria andGoodsNumGreaterThanOrEqualTo(Integer value) {
             addCriterion("goods_num >=", value, "goodsNum");
             return (Criteria) this;
         }
 
-        public Criteria andGoodsNumLessThan(String value) {
+        public Criteria andGoodsNumLessThan(Integer value) {
             addCriterion("goods_num <", value, "goodsNum");
             return (Criteria) this;
         }
 
-        public Criteria andGoodsNumLessThanOrEqualTo(String value) {
+        public Criteria andGoodsNumLessThanOrEqualTo(Integer value) {
             addCriterion("goods_num <=", value, "goodsNum");
             return (Criteria) this;
         }
 
-        public Criteria andGoodsNumLike(String value) {
-            addCriterion("goods_num like", value, "goodsNum");
-            return (Criteria) this;
-        }
-
-        public Criteria andGoodsNumNotLike(String value) {
-            addCriterion("goods_num not like", value, "goodsNum");
-            return (Criteria) this;
-        }
-
-        public Criteria andGoodsNumIn(List<String> values) {
+        public Criteria andGoodsNumIn(List<Integer> values) {
             addCriterion("goods_num in", values, "goodsNum");
             return (Criteria) this;
         }
 
-        public Criteria andGoodsNumNotIn(List<String> values) {
+        public Criteria andGoodsNumNotIn(List<Integer> values) {
             addCriterion("goods_num not in", values, "goodsNum");
             return (Criteria) this;
         }
 
-        public Criteria andGoodsNumBetween(String value1, String value2) {
+        public Criteria andGoodsNumBetween(Integer value1, Integer value2) {
             addCriterion("goods_num between", value1, value2, "goodsNum");
             return (Criteria) this;
         }
 
-        public Criteria andGoodsNumNotBetween(String value1, String value2) {
+        public Criteria andGoodsNumNotBetween(Integer value1, Integer value2) {
             addCriterion("goods_num not between", value1, value2, "goodsNum");
             return (Criteria) this;
         }
