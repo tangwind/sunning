@@ -1,18 +1,17 @@
 package com.suning.cn.controller;
 
 import com.suning.cn.service.GoodsInfoService;
+import com.suning.cn.utils.PageUtils;
 import com.suning.cn.utils.ReturnResult;
 import com.suning.cn.utils.ReturnResultUtils;
 import com.suning.cn.vo.GoodsInfoVo;
+import com.suning.cn.vo.ReviewsVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
 
@@ -29,7 +28,7 @@ public class GoodsInfoController {
     private GoodsInfoService goodsInfoService;
 
     @ApiOperation("商品详细信息接口")
-    @GetMapping(value = "/getInfo")
+    @PostMapping(value = "/getInfo")
     public ReturnResult<GoodsInfoVo> getInfo(@RequestParam @ApiParam(value = "商品id", required = true) String goodsId) {
 
         try {
@@ -41,6 +40,24 @@ public class GoodsInfoController {
 
         return ReturnResultUtils.returnFail(567, "商品加载错误！");
     }
+
+    @ApiOperation("显示评论接口")
+    @PostMapping(value = "/getReview")
+    public ReturnResult<ReviewsVo> getReview(@RequestParam @ApiParam(value = "当前页码", required = true) Integer pageNo,
+                                             @RequestParam @ApiParam(value = "每页条数", required = true) Integer pageSize,
+                                             @RequestParam @ApiParam(value = "商品id", required = true)String goodsId) {
+
+        try {
+            PageUtils<ReviewsVo> reviewsList = goodsInfoService.getReviewsList(goodsId, pageNo, pageSize);
+            return ReturnResultUtils.returnSuccess(reviewsList);
+        } catch (Exception e) {
+            log.error("显示评论: " + e);
+        }
+
+        return ReturnResultUtils.returnFail(789, "failedToDisplayComments!");
+    }
+
+
 }
 
 

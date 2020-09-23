@@ -26,7 +26,7 @@ public class HomeController {
     private HomeService homeService;
 
     @ApiOperation(value = "商品搜索接口")
-    @GetMapping(value = "/search")
+    @PostMapping(value = "/search")
     public ReturnResult<HomeGoodsVo> searchGoods(@RequestParam @ApiParam(value = "搜索内容", required = true) String content,
                                                  @RequestParam @ApiParam(value = "当前页码", required = true) Integer pageNo,
                                                  @RequestParam @ApiParam(value = "每页条数", required = true) Integer pageSize) {
@@ -40,7 +40,7 @@ public class HomeController {
     }
 
     @ApiOperation(value = "商品分类接口", notes = "精选:10001/食品:10002/母婴:10003/个护清洁:10004/小家电:10005/服饰:10006/苏宁健康:10007/鞋靴:10008/钟表眼镜:10009/饰品:10010")
-    @GetMapping(value = "/goods")
+    @PostMapping(value = "/goods")
     public ReturnResult<HomeGoodsVo> chosen(@RequestParam @ApiParam(value = "当前页码", required = true) Integer pageNo,
                                             @RequestParam @ApiParam(value = "每页条数", required = true) Integer pageSize,
                                             @RequestParam @ApiParam(value = "类型,如:精选、食品...填对应的数字", required = true) String type) {

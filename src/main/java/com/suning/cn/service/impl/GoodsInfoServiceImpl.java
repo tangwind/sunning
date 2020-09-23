@@ -3,18 +3,20 @@ package com.suning.cn.service.impl;
 import com.suning.cn.dto.*;
 import com.suning.cn.mapper.*;
 import com.suning.cn.service.GoodsInfoService;
+import com.suning.cn.utils.PageUtils;
 import com.suning.cn.vo.GoodsInfoVo;
 
+import com.suning.cn.vo.ReviewsVo;
 import lombok.extern.log4j.Log4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import static com.suning.cn.cons.HomeNameSpace.MAIN;
-import static com.suning.cn.cons.HomeNameSpace.NOT_MAIN;
+import static com.suning.cn.cons.HomeNameSpace.*;
 
 /**
  * @author tangchaochao
@@ -46,7 +48,7 @@ public class GoodsInfoServiceImpl extends BaseServiceImpl implements GoodsInfoSe
 
         //获取主图
         List<String> thumbImg = getImg(goodsId, MAIN);
-        goodsInfoVo.setThumbImg(thumbImg.get(0));
+        goodsInfoVo.setThumbImg(thumbImg.get(GET_MAIN));
 
         //获取副图
         List<String> sideImg = getImg(goodsId, NOT_MAIN);
@@ -58,10 +60,11 @@ public class GoodsInfoServiceImpl extends BaseServiceImpl implements GoodsInfoSe
         goodsInfoVo.setShopsName(shopName);
 
         //获取评论
-        Reviews reviews = reviewsMapper.selectByGoodsId(goodsId);
-        if (ObjectUtils.isEmpty(reviews)) {
+        List<Reviews> reviewsList = reviewsMapper.selectByGoodsId(goodsId, LIMIT);
+        if (ObjectUtils.isEmpty(reviewsList)) {
            return  goodsInfoVo;
         }
+        Reviews reviews = reviewsList.get(GET_REVIEW);
         BeanUtils.copyProperties(reviews, goodsInfoVo);
 
         //获取用户名
@@ -73,6 +76,35 @@ public class GoodsInfoServiceImpl extends BaseServiceImpl implements GoodsInfoSe
         goodsInfoVo.setAssessCount(reviewsCount);
 
         return goodsInfoVo;
+    }
+
+    /**
+     * 获取评价列表
+     * @param goodsId 商品
+     * @return 评价列表
+     */
+    @Override
+    public PageUtils<ReviewsVo> getReviewsList(String goodsId, Integer pageNo, Integer pageSize) {
+        PageUtils pageUtils = new PageUtils();
+        pageUtils.setPageNo(pageNo);
+        pageUtils.setCurrentPage(pageNo);
+        pageUtils.setPageSize(pageSize);
+        long reviewsCount = reviewsMapper.countByGoodsId(goodsId);
+        pageUtils.setTotalCount(Integer.parseInt(String.valueOf(reviewsCount)));
+        ReviewsExample reviewsExample = new ReviewsExample();
+        reviewsExample.createCriteria().andGoodsIdEqualTo(goodsId);
+        reviewsExample.setLimit(pageNo);
+        reviewsExample.setOffset(pageSize);
+        reviewsExample.setOrderByClause(REVIEW_BY + " DESC");
+        List<Reviews> reviewsList = reviewsMapper.selectByExample(reviewsExample);
+        List<ReviewsVo> reviewsVos = new ArrayList<>();
+        reviewsList.forEach(reviews -> {
+            ReviewsVo reviewsVo = new ReviewsVo();
+            BeanUtils.copyProperties(reviews, reviewsVo);
+            reviewsVos.add(reviewsVo);
+        });
+        pageUtils.setCurrentList(reviewsVos);
+        return pageUtils;
     }
 
 
