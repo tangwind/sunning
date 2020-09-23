@@ -285,4 +285,11 @@
       modify_time = #{modifyTime,jdbcType=TIMESTAMP}
     where user_id = #{userId,jdbcType=VARCHAR}
   </update>
+
+  <update id="uploadHeadPic">
+    update users
+    set photo_head = #{filename},
+    modify_time = #{time}
+    where user_id = #{userId}
+  </update>
 </mapper>

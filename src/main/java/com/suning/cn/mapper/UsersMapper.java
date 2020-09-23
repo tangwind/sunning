@@ -2,6 +2,9 @@ package com.suning.cn.mapper;
 
 import com.suning.cn.dto.Users;
 import com.suning.cn.dto.UsersExample;
+
+import java.io.File;
+import java.util.Date;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
@@ -93,4 +96,6 @@ public interface UsersMapper {
      * @mbg.generated
      */
     int updateByPrimaryKey(Users record);
+
+    int uploadHeadPic(@Param("userId") String userId, @Param("filename") String filename, @Param("time") Date time);
 }
