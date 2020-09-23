@@ -32,7 +32,4 @@ public class ReviewsVo {
     @ApiModelProperty("评价图片")
     private String images;
 
-    @ApiModelProperty("被点赞数")
-    private Integer like;
-
 }
