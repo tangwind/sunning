@@ -1,3 +1,4 @@
+/*
 package com.suning.cn.service;
 
 import com.suning.cn.dto.Cart;
@@ -5,9 +6,11 @@ import com.suning.cn.vo.CartVo;
 
 import java.util.List;
 
+*/
 /**
  * Created by  lzy  on 2020/9/23 15:02
- */
+ *//*
+
 public interface CartService {
 
     List<Cart> selectGoodsInfo(String userId);
@@ -19,3 +22,4 @@ public interface CartService {
     boolean isDel(CartVo cartVo);
 
 }
+*/
