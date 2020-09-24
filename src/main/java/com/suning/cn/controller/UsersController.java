@@ -100,7 +100,18 @@ public class UsersController {
         }
         String fileName = UUID.randomUUID().toString() + suffix;
         //创建文件对象，表示要保存的头像（文件夹，文件名）
-        File realfile = new File(dirFile, fileName);
+        //File realfile = new File(dirFile, fileName);
+        File realfile = new File(dirFile+"/"+fileName);
+        if (!realfile.exists()){
+            try {
+                realfile.createNewFile();
+                if (!realfile.exists()) {
+                    log.info("创建失败");
+                }
+            }catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
         //保存文件
         file.transferTo(realfile);
         return fileName;
