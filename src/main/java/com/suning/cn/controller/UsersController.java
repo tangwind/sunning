@@ -61,7 +61,7 @@ public class UsersController {
     public ReturnResult uploadHeadPic(@RequestParam(value = "file") @ApiParam(value = "头像", required = true) MultipartFile file,
                                       @RequestParam @ApiParam(value = "用户id", required = true) String userId) throws IOException {
         //1.确定保存的文件夹
-        String realPath = "/user/local/project/upload";
+        String realPath = "/usr/local/project/upload";
         log.info("realPath=" + realPath);
         String filename = getFileName(realPath, file);
         //存入数据库
@@ -81,7 +81,7 @@ public class UsersController {
         reviewsParam.setOrderId(orderId);
         reviewsParam.setContent(content);
         reviewsParam.setScore(score);
-        String realPath = "/user/local/project/" + "img";//会在resource下面创建此文件夹
+        String realPath = "/usr/local/project/" + "img";//会在resource下面创建此文件夹
         log.info("realPath=" + realPath);
 
         String fileName = getFileName(realPath, file);
