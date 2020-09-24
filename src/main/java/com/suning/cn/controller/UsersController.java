@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
 import java.util.UUID;
@@ -33,8 +34,15 @@ public class UsersController {
 
     //查询用户信息
     @PostMapping(value = "/getUser")
-    public UsersVo getUser(@RequestParam @ApiParam(value = "用户id", required = true) String userId) {
+    public UsersVo getUser(@RequestParam @ApiParam(value = "用户id", required = true) String userId,
+                           HttpServletRequest request) {
         UsersVo userInfo = usersService.getUserInfo(userId);
+        String fileName = userInfo.getPhotoHead();
+        String requestURL = request.getRequestURL().toString();
+        String requestURI = request.getRequestURI();
+        String url = requestURL.substring(0, requestURL.length() - requestURI.length() + 1);
+        url += "/usr/local/project/upload" + fileName;
+        userInfo.setPhotoHead(url);
         return userInfo;
     }
 
