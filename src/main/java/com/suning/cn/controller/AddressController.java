@@ -3,6 +3,7 @@ package com.suning.cn.controller;
 import com.suning.cn.params.AddressParam;
 import com.suning.cn.service.AddressService;
 import com.suning.cn.vo.AddressVo;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -13,6 +14,7 @@ import java.util.List;
  * 收货地址管理
  */
 @RestController
+@Api(tags = "收货地址接口")
 @RequestMapping(value = "/address")
 public class AddressController {
     @Autowired
