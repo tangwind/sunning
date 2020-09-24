@@ -8,7 +8,7 @@ import java.util.Date;
 
 
 @Data
-@ApiModel
+@ApiModel(value = "购物车表")
 public class CartVo {
     @ApiModelProperty("用户id")
     private String userId;

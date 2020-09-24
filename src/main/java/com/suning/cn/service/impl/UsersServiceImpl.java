@@ -12,12 +12,14 @@ import com.suning.cn.service.UsersService;
 import com.suning.cn.utils.ReturnResult;
 import com.suning.cn.utils.ReturnResultUtils;
 import com.suning.cn.vo.UsersVo;
+import lombok.extern.log4j.Log4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.Date;
-
+@Log4j
 @Service
 public class UsersServiceImpl implements UsersService {
     @Autowired(required = false)
@@ -96,4 +98,20 @@ public class UsersServiceImpl implements UsersService {
         return ReturnResultUtils.returnFail(699, "你还没有付款哦，大佬，多捞哦");
     }
 
+
+    @Override
+    public boolean selectUserInfoById(String userId) {
+        int count = usersMapper.selectCountById(userId);
+        if (count <= 0) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public int addUserInfo(Users users) {
+        int row = usersMapper.insertUserInfo(users.getUserId());
+        log.info("添加行数" + row);
+        return row;
+    }
 }
