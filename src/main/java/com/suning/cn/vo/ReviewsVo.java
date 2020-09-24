@@ -4,6 +4,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -12,7 +13,7 @@ import java.util.Date;
  */
 @Data
 @ApiModel("评价表")
-public class ReviewsVo {
+public class ReviewsVo implements Serializable {
 
     @ApiModelProperty("用户头像")
     private String photoHead;
@@ -31,8 +32,5 @@ public class ReviewsVo {
 
     @ApiModelProperty("评价图片")
     private String images;
-
-    @ApiModelProperty("被点赞数")
-    private Integer like;
 
 }

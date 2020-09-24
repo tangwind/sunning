@@ -31,7 +31,10 @@ public class GoodsInfoVo implements Serializable {
     private Double initPrice;
 
     @ApiModelProperty("月销售数量")
-    private int moonSell;
+    private Integer moonSell;
+
+    @ApiModelProperty("用户一次购买商品的最大数量，最大值为99件")
+    private Integer stock;
 
     @ApiModelProperty("店铺名")
     private String shopsName;
@@ -40,7 +43,7 @@ public class GoodsInfoVo implements Serializable {
     private String goodsName;
 
     @ApiModelProperty("评论总数")
-    private int assessCount;
+    private Integer assessCount;
 
     @ApiModelProperty("用户昵称")
     private String nickName;
@@ -54,13 +57,13 @@ public class GoodsInfoVo implements Serializable {
     @ApiModelProperty("评价图片")
     private String images;
 
-    public int getMoonSell() {
+    public Integer getMoonSell() {
         Random random = new Random();
         moonSell = random.nextInt(99999);
         return moonSell;
     }
 
-    public void setMoonSell(int moonSell) {
+    public void setMoonSell(Integer moonSell) {
         this.moonSell = moonSell;
     }
 
