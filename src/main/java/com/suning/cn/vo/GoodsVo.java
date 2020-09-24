@@ -15,6 +15,8 @@ public class GoodsVo implements Serializable {
     private Double offPrice;
     @ApiModelProperty(value = "店铺名")
     private String shops_name;
+    @ApiModelProperty(value = "商品数量")
+    private int count;
 
 
 }

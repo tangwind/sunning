@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.util.List;
 
 @Data
 @ApiModel("订单数据")
@@ -12,9 +13,7 @@ public class OrderVo implements Serializable {
     @ApiModelProperty(value = "订单编号")
     private String orderId;
     @ApiModelProperty(value = "商品数据")
-    private GoodsVo goodsVo;
-    @ApiModelProperty(value = "商品数量")
-    private Integer count;
+    private List<GoodsVo> goodsVo;
     @ApiModelProperty(value = "商品总价")
     private Double totalCost;
     @ApiModelProperty(value = "优惠金额")
