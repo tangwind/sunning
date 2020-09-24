@@ -31,6 +31,8 @@ public class GoodsInfoServiceImpl extends BaseServiceImpl implements GoodsInfoSe
     private ReviewsMapper reviewsMapper;
     @Autowired
     private UsersMapper usersMapper;
+    @Autowired
+    private GoodsStockMapper goodsStockMapper;
 
     /**
      * 展示商品详细信息
@@ -66,6 +68,13 @@ public class GoodsInfoServiceImpl extends BaseServiceImpl implements GoodsInfoSe
         }
         Reviews reviews = reviewsList.get(GET_REVIEW);
         BeanUtils.copyProperties(reviews, goodsInfoVo);
+
+        //获取库存
+        int goodsStock = goodsStockMapper.selectNumByPrimaryKey(goodsId);
+        if (goodsStock > GOODS_STOCK) {
+            goodsStock = GOODS_STOCK;
+        }
+        goodsInfoVo.setStock(goodsStock);
 
         //获取用户名
         Users users = usersMapper.selectByPrimaryKey(reviews.getUserId());

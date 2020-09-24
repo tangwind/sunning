@@ -29,6 +29,7 @@ public class ReturnResultUtils {
         returnResult.setMsg("FAIL");
         return returnResult;
     }
+
     public static ReturnResult returnFail(int code){
         ReturnResult returnResult = new ReturnResult();
         returnResult.setCode(code);

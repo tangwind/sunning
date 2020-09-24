@@ -21,6 +21,9 @@ public class GoodsInfoVo implements Serializable {
     @ApiModelProperty("副图,以;为分隔符")
     private String sideImg;
 
+    @ApiModelProperty("用户一次购买商品的最大数量，最大值为99件")
+    private Integer stock;
+
     @ApiModelProperty("商品id")
     private String goodsId;
 

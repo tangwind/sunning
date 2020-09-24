@@ -1,7 +1,6 @@
 /*
 package com.suning.cn.service;
 
-import com.suning.cn.dto.Cart;
 import com.suning.cn.params.CartParam;
 import com.suning.cn.vo.CartVo;
 
@@ -14,13 +13,13 @@ import java.util.List;
 
 public interface CartService {
 
-    //List<Cart> selectGoodsInfo(String userId);
-    //
-    //boolean addToCart(CartVo cartVo);
-    //
-    //List<Cart> updateGoodsNum(CartVo... cartVo);
-    //
-    //boolean isDel(CartVo cartVo);
+    List<CartVo> selectGoodsInfo(String userId);
+
+    String addToCart(CartParam cartParam);
+
+    String updateGoodsNum(CartParam cartParam);
+
+    boolean isDel(String userId, String goodsId);
 
 }
 */

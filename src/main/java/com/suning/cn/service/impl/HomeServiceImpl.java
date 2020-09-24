@@ -33,7 +33,7 @@ public class HomeServiceImpl extends BaseServiceImpl implements HomeService {
     public PageUtils<HomeGoodsVo> getChosenGoods(Integer pageNo, Integer pageSize, String type) {
 
         if (StringUtils.isEmpty(type)) {
-            type = "DEFAULT_TYPE";
+            type = DEFAULT_TYPE;
         }
 
         PageUtils pageUtils = new PageUtils();

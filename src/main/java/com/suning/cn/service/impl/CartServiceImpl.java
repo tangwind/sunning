@@ -1,9 +1,7 @@
-/*
 package com.suning.cn.service.impl;
 
-import com.suning.cn.dto.Cart;
-import com.suning.cn.dto.CartExample;
-import com.suning.cn.mapper.CartMapper;
+import com.suning.cn.dto.*;
+import com.suning.cn.mapper.*;
 import com.suning.cn.params.CartParam;
 import com.suning.cn.service.CartService;
 import com.suning.cn.vo.CartVo;
@@ -11,14 +9,14 @@ import lombok.extern.log4j.Log4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+import java.util.ArrayList;
 import java.util.List;
 
-*/
+import static com.suning.cn.cons.HomeNameSpace.*;
+
 /**
  * Created by  lzy  on 2020/9/23 15:02
- *//*
-
+ */
 @Log4j
 @Service
 
@@ -26,71 +24,118 @@ public class CartServiceImpl implements CartService {
 
     @Autowired
     private CartMapper cartMapper;
-
-    //@Override
-    //public List<Cart> selectGoodsInfo(String userId) {
-    //
-    //    CartExample cartExample = new CartExample();
-    //    cartExample.createCriteria().andUserIdEqualTo(userId);
-    //    List<Cart> cartList = cartMapper.selectCartInfoByExample(cartExample);
-    //
-    //
-    //    return cartList;
-    //}
-    //
-    //@Override
-    //public boolean addToCart(CartVo cartVo) {
-    //    Cart cart = new Cart();
-    //    BeanUtils.copyProperties(cartVo, cart);
-    //    int row = cartMapper.insertSelective(cart);
-    //    log.info(row);
-    //    if (row > 0) {
-    //        return true;
-    //    }
-    //    return false;
-    //}
-
-    // 修改数量
-    // 不可大于库存量
-    // 数量不可小于1
-    //@Override
-    //public List updateGoodsNum(CartVo... cartVo) {
+    @Autowired
+    private GoodsStockMapper goodsStockMapper;
+    @Autowired
+    private ShopsMapper shopsMapper;
+    @Autowired
+    private GoodsMapper goodsMapper;
+    @Autowired
+    private ImgExchangeMapper imgExchangeMapper;
+    @Autowired
+    private RelationalShopMapper relationalShopMapper;
 
 
-        //CartExample cartExample = new CartExample();
-        //// 根据用户id获取商品数据 可能是一个集合！！
-        //cartExample.createCriteria().andUserIdEqualTo(cart.getUserId());
-        //List<Cart> cartList = cartMapper.selectCartInfoByExample(cartExample);
-        //// 根据商品id 修改商品数量
-        //cartMapper.updateNumByGoodId(cart.);
-        //// 数量范围判断
-        //
-        //
-        //cartExample.createCriteria();
-        //
-        //cartMapper.updateByExampleSelective();
-        //// 返回是否成功
+    /**
+     * 查询购物车的订单
+     * @param userId 用户id
+     * @return 商品数量
+     */
+    @Override
+    public List<CartVo> selectGoodsInfo(String userId) {
+        CartExample cartExample = new CartExample();
+        cartExample.createCriteria().andUserIdEqualTo(userId);
+        List<Cart> cartList = cartMapper.selectByExample(cartExample);
+        List<CartVo> cartVoList = new ArrayList<>();
+        if (cartList.isEmpty()) {
+            return cartVoList;
+        }
+        cartList.forEach(cart -> {
+            CartVo cartVo = new CartVo();
+            BeanUtils.copyProperties(cart, cartVo);
+            RelationalShop relationalShop = relationalShopMapper.selectByPrimaryKey(cart.getGoodsId());
+            Shops shops = shopsMapper.selectByPrimaryKey(relationalShop.getShopId());
+            cartVo.setShopsName(shops.getShopsName());
+            cartVo.setShopsId(shops.getShopsId());
+
+            Goods goods = goodsMapper.selectByPrimaryKey(cart.getGoodsId());
+            cartVo.setGoodsName(goods.getGoodsName());
+
+            List<String> mainList = imgExchangeMapper.selectImgBygoodsIdAndMain(cart.getGoodsId(), MAIN);
+            cartVo.setGoodsPic(mainList.get(GET_MAIN));
+
+            int goodsStock = goodsStockMapper.selectNumByGoodsId(cart.getGoodsId());
+            if (goodsStock > MAX_NUM){
+                goodsStock = MAX_NUM;
+            }
+            cartVo.setGoodsStock(goodsStock);
+            cartVoList.add(cartVo);
+        });
+
+        return cartVoList;
+    }
+
+    /**
+     * 购物车添加商品
+     * @param cartParam
+     * @return
+     */
+    @Override
+    public String addToCart(CartParam cartParam) {
+        if (cartParam.getGoodsNum() > MAX_NUM) {
+            return CART_NUM;
+        }
+
+        int goodsStock = goodsStockMapper.selectNumByGoodsId(cartParam.getGoodsId());
+        if(cartParam.getGoodsNum() > goodsStock) {
+            return CART_NUM;
+        }
 
 
+        Cart cart = new Cart();
+        BeanUtils.copyProperties(cartParam, cart);
+        int row = cartMapper.insertSelective(cart);
+        if (row > 0) {
+            return CART_SUCCESS;
+        }
 
-    //    return ;
-    //}
+        return CART_FAIL;
+    }
 
-    //@Override
-    //public boolean isDel(CartVo cartVo) {
-    //    Cart cart = new Cart();
-    //    CartExample cartExample = new CartExample();
-    //    BeanUtils.copyProperties(cartVo, cart);
-    //    cart.setIsDel(0);
-    //    cartExample.createCriteria().andUserIdEqualTo(cartVo.getUserId());
-    //    // todo 逻辑删除！
-    //    int row = cartMapper.updateByExampleSelective(cart, cartExample);
-    //    if (row > 0) {
-    //        return true;
-    //    }
-    //
-    //    return false;
-    //}
+
+    /**
+     * 修改购物车中的商品数量
+     * @param cartParam
+     * @return
+     */
+    @Override
+    public String updateGoodsNum(CartParam cartParam) {
+        if (cartParam.getGoodsNum() > MAX_NUM) {
+            return CART_NUM;
+        }
+
+        int goodsStock = goodsStockMapper.selectNumByGoodsId(cartParam.getGoodsId());
+        if(cartParam.getGoodsNum() > goodsStock) {
+            return CART_NUM;
+        }
+        int row = cartMapper.updateStock(cartParam.getGoodsId(), cartParam.getUserId(), cartParam.getGoodsNum());
+        if (row > 0) {
+            return CART_SUCCESS;
+        }
+        return CART_FAIL;
+    }
+
+    /**
+     * 删除购物车
+     * @param userId 用户id
+     * @param goodsId 商品id
+     * @return 删除成功true
+     */
+    @Override
+    public boolean isDel(String userId, String goodsId) {
+        int row = cartMapper.updateByUserIdAndGoodsId(userId, goodsId, CART_DEL);
+        return row > 0;
+    }
 
 
 }
@@ -115,4 +160,3 @@ public class CartServiceImpl implements CartService {
 
 
 
-*/

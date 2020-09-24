@@ -24,8 +24,11 @@ public class CartVo implements Serializable {
     @ApiModelProperty("商品名称")
     private String goodsName;
 
+    @ApiModelProperty("0:原价/1:打折价")
+    private Integer priceType;
+
     @ApiModelProperty("商品价格")
-    private Double price;
+    private Double cartPrice;
 
     @ApiModelProperty("商品数量")
     private Integer goodsNum;
