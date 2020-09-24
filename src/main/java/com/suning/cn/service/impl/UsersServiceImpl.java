@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import java.util.Date;
+
 @Log4j
 @Service
 public class UsersServiceImpl implements UsersService {
@@ -102,14 +103,11 @@ public class UsersServiceImpl implements UsersService {
     @Override
     public boolean selectUserInfoById(String userId) {
         int count = usersMapper.selectCountById(userId);
-        if (count <= 0) {
-            return false;
-        }
-        return true;
+        return count>0;
     }
 
     @Override
-    public int addUserInfo(Users users) {
+    public int addUserInfo(UsersParam users) {
         int row = usersMapper.insertUserInfo(users.getUserId());
         log.info("添加行数" + row);
         return row;

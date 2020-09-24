@@ -24,7 +24,7 @@ public class VxConfig {
     private String userInfoUri;
 
     //1、引导用户进入授权页面同意授权，获取code
-    public String getCode(){
+    /*public String getCode(){
         StringBuffer stringBuffer = new StringBuffer(getCodeUri());
         stringBuffer.append("appid=").append(getAppId());
         stringBuffer.append("&").append("redirect_uri=").append(getRedirectUri());
@@ -32,7 +32,7 @@ public class VxConfig {
         stringBuffer.append("&").append("scope=").append("snsapi_userinfo");
         stringBuffer.append("&").append("state=STATE#wechat_redirect");
         return stringBuffer.toString();
-    }
+    }*/
     //2、通过code换取网页授权access_token（与基础支持中的access_token不同）
     public String getAccessToken(String code){
         StringBuffer stringBuffer = new StringBuffer(getAccessToken());

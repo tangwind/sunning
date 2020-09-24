@@ -5,10 +5,7 @@ import com.suning.cn.params.UsersParam;
 import com.suning.cn.service.UsersService;
 import com.suning.cn.utils.ReturnResult;
 import com.suning.cn.vo.UsersVo;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
-import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.*;
 import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -31,6 +28,7 @@ public class UsersController {
     private UsersService usersService;
 
     //查询用户信息
+    @ApiOperation(value = "查看用户信息接口")
     @PostMapping(value = "/getUser")
     public UsersVo getUser(@RequestParam @ApiParam(value = "用户id", required = true) String userId) {
         UsersVo userInfo = usersService.getUserInfo(userId);
@@ -38,6 +36,7 @@ public class UsersController {
     }
 
     //插入用户信息
+    @ApiOperation(value = "添加用户信息接口")
     @PostMapping(value = "/insertUser")
     public String insertUser(@RequestBody UsersParam usersParam) {
         int result = usersService.insertUserInfo(usersParam);
@@ -49,6 +48,7 @@ public class UsersController {
     }
 
     //修改用户信息
+    @ApiOperation(value = "修护用户地址接口")
     @PostMapping(value = "/updateUser")
     public String updateUser(@RequestBody @ApiParam(value = "用户信息", required = true) UsersParam usersParam) {
         String result = usersService.updateUserInfo(usersParam);
@@ -57,6 +57,7 @@ public class UsersController {
 
     //上传头像
     @PostMapping("/uploadPic")
+    @ApiOperation(value = "修改个人头像接口")
     public ReturnResult uploadHeadPic(@RequestParam(value = "file") @ApiParam(value = "头像", required = true) MultipartFile file,
                                       @RequestParam @ApiParam(value = "用户id", required = true) String userId) throws IOException {
         //1.确定保存的文件夹
@@ -68,6 +69,7 @@ public class UsersController {
         return result;
     }
 
+    @ApiOperation(value = "查询收货地址")
     @PostMapping("/publishReview")
     public ReturnResult publishReview(@RequestParam @ApiParam(value = "商品编号", required = true) String orderId,
                                       @RequestParam @ApiParam(value = "评论内容", required = true) String content,

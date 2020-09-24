@@ -4,6 +4,7 @@ import com.suning.cn.params.AddressParam;
 import com.suning.cn.service.AddressService;
 import com.suning.cn.vo.AddressVo;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -21,6 +22,7 @@ public class AddressController {
     private AddressService addressService;
 
     //查询收货地址
+    @ApiOperation(value = "查看自己的收货地址")
     @ResponseBody
     @PostMapping(value = "/selectAddress")
     public List<AddressVo> selectAddress() {
@@ -29,6 +31,7 @@ public class AddressController {
     }
 
     //插入收货地址
+    @ApiOperation(value = "添加收货地址")
     @PostMapping(value = "/insertAddress")
     public String insertAddress(@RequestBody @ApiParam(value = "收货地址信息", required = true) AddressParam addressParam) {
         String result = addressService.insertAddress(addressParam);
@@ -36,6 +39,7 @@ public class AddressController {
     }
 
     //修改收货地址
+    @ApiOperation(value = "修改收货地址")
     @PostMapping(value = "/updateAddress")
     public String updateAddress(@RequestBody @ApiParam(value = "收货地址信息", required = true) AddressParam addressParam) {
         String result = addressService.updateAddress(addressParam);
@@ -43,6 +47,7 @@ public class AddressController {
     }
 
     //删除收货地址
+    @ApiOperation(value = "删除地址")
     @PostMapping(value = "/deleteAddress")
     public String deleteAddress(@RequestParam("userId") @ApiParam(value = "用户id", required = true) String userId) {
         String result = addressService.deleteAddress(userId);

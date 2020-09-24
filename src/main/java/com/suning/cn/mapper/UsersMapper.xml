@@ -115,12 +115,13 @@
     from users
     where user_id = #{userId,jdbcType=VARCHAR}
   </select>
+  <!-- 据uid查询用户是否存在 -->
   <select id="selectCountById" parameterType="java.lang.String" resultType="java.lang.Integer">
-
     select count(1)
     from users
     where user_id = #{userId,jdbcType=VARCHAR}
   </select>
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
     <!--
       WARNING - @mbg.generated
