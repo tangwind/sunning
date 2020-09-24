@@ -4,6 +4,7 @@ import com.suning.cn.params.ReviewsParam;
 import com.suning.cn.params.UsersParam;
 import com.suning.cn.service.UsersService;
 import com.suning.cn.utils.ReturnResult;
+import com.suning.cn.utils.ReturnResultUtils;
 import com.suning.cn.vo.UsersVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiModel;
@@ -60,10 +61,13 @@ public class UsersController {
     public ReturnResult uploadHeadPic(@RequestParam(value = "file") @ApiParam(value = "头像", required = true) MultipartFile file,
                                       @RequestParam @ApiParam(value = "用户id", required = true) String userId) throws IOException {
         //1.确定保存的文件夹
-        String realPath = "/user/local/project/" + "upload";//会在resource下面创建此文件夹
+        String realPath = "/user/local/project/upload";
         log.info("realPath=" + realPath);
         String filename = getFileName(realPath, file);
         //存入数据库
+        if (filename == null) {
+            return ReturnResultUtils.returnFail(777);
+        }
         ReturnResult result = usersService.uploadHeadPic(userId, filename);
         return result;
     }
@@ -107,6 +111,7 @@ public class UsersController {
                 realfile.createNewFile();
                 if (!realfile.exists()) {
                     log.info("创建失败");
+                    return null;
                 }
             }catch (Exception e) {
                 e.printStackTrace();
