@@ -37,6 +37,11 @@ public class HomeNameSpace {
     public static final int LIMIT = 1;
 
     /**
+     * 默认类型
+     */
+    public static final String DEFAULT_TYPE = "10001";
+
+    /**
      * 查询评论的排序
      */
     public static final String REVIEW_BY = "score";

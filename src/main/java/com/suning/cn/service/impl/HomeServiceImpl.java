@@ -8,6 +8,7 @@ import com.suning.cn.vo.HomeGoodsVo;
 import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +31,10 @@ public class HomeServiceImpl extends BaseServiceImpl implements HomeService {
      */
     @Override
     public PageUtils<HomeGoodsVo> getChosenGoods(Integer pageNo, Integer pageSize, String type) {
+
+        if (StringUtils.isEmpty(type)) {
+            type = "DEFAULT_TYPE";
+        }
 
         PageUtils pageUtils = new PageUtils();
         pageUtils.setPageNo(pageNo);
