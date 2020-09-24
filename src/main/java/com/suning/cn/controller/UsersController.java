@@ -5,6 +5,7 @@ import com.suning.cn.params.UsersParam;
 import com.suning.cn.service.UsersService;
 import com.suning.cn.utils.ReturnResult;
 import com.suning.cn.vo.UsersVo;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import io.swagger.annotations.ApiParam;
@@ -22,7 +23,7 @@ import java.util.UUID;
  * 用户信息管理
  */
 @Log4j
-@ApiModel(value = "用户信息接口")
+@Api(tags = "用户信息接口")
 @RestController
 @RequestMapping(value = "/user")
 public class UsersController {
