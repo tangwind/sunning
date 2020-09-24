@@ -21,7 +21,10 @@ public class CartParam implements Serializable {
     @ApiModelProperty("商品数量")
     private Integer goodsNum;
 
-    @ApiModelProperty("0:原价/1:折扣")
+    @ApiModelProperty("商品单价")
+    private double cartPrice;
+
+    @ApiModelProperty("0:原价/1:打折价")
     private Integer priceType;
 
 }

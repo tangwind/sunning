@@ -46,4 +46,35 @@ public class HomeNameSpace {
      */
     public static final String REVIEW_BY = "score";
 
+    /**
+     * 删除购物车
+     */
+    public static final Integer CART_DEL = 0;
+
+    /**
+     * 购物车商品数量大于库存
+     */
+    public static final String CART_NUM = "1";
+
+    /**
+     * 购物车商品数量修改成功
+     */
+    public static final String CART_SUCCESS = "修改成功！";
+
+    /**
+     * 购物车商品数量修改错误
+     */
+    public static final String CART_FAIL = "修改失败！";
+
+    /**
+     * 购物车商品数量最大数量
+     */
+    public static final Integer MAX_NUM = 99;
+
+    /**
+     * 单次购买商品的最大件数
+     */
+    public static final Integer GOODS_STOCK = 99;
+
+
 }

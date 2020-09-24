@@ -4,7 +4,6 @@ import com.suning.cn.params.ReviewsParam;
 import com.suning.cn.params.UsersParam;
 import com.suning.cn.service.UsersService;
 import com.suning.cn.utils.ReturnResult;
-import com.suning.cn.utils.ReturnResultUtils;
 import com.suning.cn.vo.UsersVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiModel;
@@ -15,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
 import java.util.UUID;
@@ -34,15 +32,8 @@ public class UsersController {
 
     //查询用户信息
     @PostMapping(value = "/getUser")
-    public UsersVo getUser(@RequestParam @ApiParam(value = "用户id", required = true) String userId,
-                           HttpServletRequest request) {
+    public UsersVo getUser(@RequestParam @ApiParam(value = "用户id", required = true) String userId) {
         UsersVo userInfo = usersService.getUserInfo(userId);
-        String fileName = userInfo.getPhotoHead();
-        String requestURL = request.getRequestURL().toString();
-        String requestURI = request.getRequestURI();
-        String url = requestURL.substring(0, requestURL.length() - requestURI.length() + 1);
-        url += "/usr/local/project/upload" + fileName;
-        userInfo.setPhotoHead(url);
         return userInfo;
     }
 
@@ -69,13 +60,10 @@ public class UsersController {
     public ReturnResult uploadHeadPic(@RequestParam(value = "file") @ApiParam(value = "头像", required = true) MultipartFile file,
                                       @RequestParam @ApiParam(value = "用户id", required = true) String userId) throws IOException {
         //1.确定保存的文件夹
-        String realPath = "/usr/local/project/upload";
+        String realPath = Thread.currentThread().getContextClassLoader().getResource("").getPath() + "upload";//会在resource下面创建此文件夹
         log.info("realPath=" + realPath);
         String filename = getFileName(realPath, file);
         //存入数据库
-        if (filename == null) {
-            return ReturnResultUtils.returnFail(777);
-        }
         ReturnResult result = usersService.uploadHeadPic(userId, filename);
         return result;
     }
@@ -89,7 +77,7 @@ public class UsersController {
         reviewsParam.setOrderId(orderId);
         reviewsParam.setContent(content);
         reviewsParam.setScore(score);
-        String realPath = "/usr/local/project/" + "img";//会在resource下面创建此文件夹
+        String realPath = Thread.currentThread().getContextClassLoader().getResource("").getPath() + "img";//会在resource下面创建此文件夹
         log.info("realPath=" + realPath);
 
         String fileName = getFileName(realPath, file);
@@ -112,19 +100,7 @@ public class UsersController {
         }
         String fileName = UUID.randomUUID().toString() + suffix;
         //创建文件对象，表示要保存的头像（文件夹，文件名）
-        //File realfile = new File(dirFile, fileName);
-        File realfile = new File(dirFile+"/"+fileName);
-        if (!realfile.exists()){
-            try {
-                realfile.createNewFile();
-                if (!realfile.exists()) {
-                    log.info("创建失败");
-                    return null;
-                }
-            }catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
+        File realfile = new File(dirFile, fileName);
         //保存文件
         file.transferTo(realfile);
         return fileName;

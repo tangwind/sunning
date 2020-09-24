@@ -93,4 +93,8 @@ public interface GoodsStockMapper {
      * @mbg.generated
      */
     int updateByPrimaryKey(GoodsStock record);
+
+    int selectNumByGoodsId(@Param("goodsId") String goodsId);
+
+    int selectNumByPrimaryKey(@Param("goodsId") String goodsId);
 }
