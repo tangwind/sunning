@@ -2,6 +2,8 @@ package com.suning.cn.mapper;
 
 import com.suning.cn.dto.Users;
 import com.suning.cn.dto.UsersExample;
+
+import java.util.Date;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
