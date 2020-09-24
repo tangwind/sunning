@@ -45,7 +45,7 @@ public class GoodsInfoController {
     @PostMapping(value = "/getReview")
     public ReturnResult<ReviewsVo> getReview(@RequestParam @ApiParam(value = "当前页码", required = true) Integer pageNo,
                                              @RequestParam @ApiParam(value = "每页条数", required = true) Integer pageSize,
-                                             @RequestParam @ApiParam(value = "商品id", required = true)String goodsId) {
+                                             @RequestParam @ApiParam(value = "商品id", required = true) String goodsId) {
 
         try {
             PageUtils<ReviewsVo> reviewsList = goodsInfoService.getReviewsList(goodsId, pageNo, pageSize);

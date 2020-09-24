@@ -4,13 +4,12 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
-import java.io.Serializable;
 import java.util.Date;
 
 
 @Data
 @ApiModel
-public class CartVo implements Serializable {
+public class CartVo {
     @ApiModelProperty("用户id")
     private String userId;
     @ApiModelProperty("商品id")

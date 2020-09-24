@@ -41,9 +41,4 @@ public class HomeNameSpace {
      */
     public static final String REVIEW_BY = "score";
 
-    /**
-     * 单次购买商品的最大件数
-     */
-    public static final Integer GOODS_STOCK = 99;
-
 }

@@ -3,6 +3,7 @@ package com.suning.cn.service.impl;
 import com.suning.cn.dto.ShippingAddress;
 import com.suning.cn.dto.Users;
 import com.suning.cn.mapper.ShippingAddressMapper;
+import com.suning.cn.params.AddressParam;
 import com.suning.cn.service.AddressService;
 import com.suning.cn.vo.AddressVo;
 import com.suning.cn.vo.UsersVo;
@@ -20,9 +21,9 @@ public class AddressServiceImpl implements AddressService {
     private ShippingAddressMapper addressMapper;
 
     @Override
-    public String insertAddress(AddressVo addressVo) {
+    public String insertAddress(AddressParam addressParam) {
         ShippingAddress address = new ShippingAddress();
-        BeanUtils.copyProperties(addressVo,address);
+        BeanUtils.copyProperties(addressParam,address);
         int result = addressMapper.insertSelective(address);
         if (result <= 0) {
             return "fail";
@@ -31,9 +32,9 @@ public class AddressServiceImpl implements AddressService {
     }
 
     @Override
-    public String updateAddress(AddressVo addressVo) {
+    public String updateAddress(AddressParam addressParam) {
         ShippingAddress address = new ShippingAddress();
-        BeanUtils.copyProperties(addressVo,address);
+        BeanUtils.copyProperties(addressParam,address);
         int result = addressMapper.updateByPrimaryKeySelective(address);
         if (result <= 0) {
             return "fail";

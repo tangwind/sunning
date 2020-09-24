@@ -1,13 +1,14 @@
 package com.suning.cn.service;
 
+import com.suning.cn.params.AddressParam;
 import com.suning.cn.vo.AddressVo;
 
 import java.util.List;
 
 public interface AddressService {
-    String insertAddress(AddressVo addressVo);
+    String insertAddress(AddressParam addressParam);
 
-    String updateAddress(AddressVo addressVo);
+    String updateAddress(AddressParam addressParam);
 
     String deleteAddress(String userId);
 

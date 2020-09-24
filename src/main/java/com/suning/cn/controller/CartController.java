@@ -24,16 +24,17 @@ public class CartController {
 
     @ApiOperation(value = "添加商品")
     @PostMapping(value = "addToCart")
-    public ReturnResult addToCart(CartVo cartVo){
+    public ReturnResult addToCart(CartVo cartVo) {
         boolean flag = cartService.addToCart(cartVo);
         if (flag) {
             return ReturnResultUtils.returnSuccess();
         }
         return ReturnResultUtils.returnFail();
     }
-    @ApiOperation(value = "删除",notes = "此为逻辑删除，即商品可恢复")
+
+    @ApiOperation(value = "删除", notes = "此为逻辑删除，即商品可恢复")
     @PostMapping(value = "isDelCart")
-    public ReturnResult isDelCart(CartVo cartVo){
+    public ReturnResult isDelCart(CartVo cartVo) {
         boolean flag = cartService.isDel(cartVo);
         if (flag) {
             return ReturnResultUtils.returnSuccess();

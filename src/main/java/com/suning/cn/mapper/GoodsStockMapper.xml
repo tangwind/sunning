@@ -253,8 +253,4 @@
       modify_time = #{modifyTime,jdbcType=TIMESTAMP}
     where goods_id = #{goodsId,jdbcType=VARCHAR}
   </update>
-
-  <select id="selectNumByPrimaryKey" resultType="int">
-    select goods_num from goods_stock where goods_id = #{goodsId}
-    </select>
 </mapper>
