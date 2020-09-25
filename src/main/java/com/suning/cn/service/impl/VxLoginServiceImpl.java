@@ -41,8 +41,8 @@ public class VxLoginServiceImpl implements VxLoginService {
         //1、通过code换取网页授权access_token和openid
         String callBackStr = HttpClientUtils.doGet(vxConfig.getOpenid(code));
         JSONObject jsonObject = JSONObject.parseObject(callBackStr);
-        log.info(jsonObject);
 
+        log.info(jsonObject);
         String openId = jsonObject.getString("openid");
         redisUtils.set(USER_LOGIN + openId, USER_LOGIN, USER_LOGIN_TIME);
         redisUtils.set(openId, "token");

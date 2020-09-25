@@ -7,7 +7,5 @@ import java.io.IOException;
  * @create 2020-2020-09-25 09:15
  */
 public interface VxLoginService {
-
     String vxLogin(String code) throws IOException;
-
 }
