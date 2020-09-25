@@ -40,8 +40,9 @@ public class UsersController {
         String fileName = userInfo.getPhotoHead();
         String requestURL = request.getRequestURL().toString();
         String requestURI = request.getRequestURI();
-        String url = requestURL.substring(0, requestURL.length() - requestURI.length() + 1);
-        url += "/usr/local/project/upload" + fileName;
+        //String url = requestURL.substring(0, requestURL.length() - requestURI.length() + 1);
+        //url += "/usr/local/project/upload" + fileName;
+        String url = "https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=2399211443,3903620952&fm=26&gp=0.jpg";
         userInfo.setPhotoHead(url);
         return userInfo;
     }
@@ -50,22 +51,24 @@ public class UsersController {
     @LoginRequired
     @ApiOperation(value = "添加用户信息接口")
     @PostMapping(value = "/insertUser")
-    public String insertUser(@RequestBody UsersParam usersParam) {
+    public ReturnResult insertUser(@RequestBody UsersParam usersParam) {
         log.info(usersParam);
         int result = usersService.insertUserInfo(usersParam);
         if (result <= 0) {
-            return "false to insert userInfo";
+            return ReturnResultUtils.returnFail(701,"failed to insert userInfo");
         } else {
-            return "success insert";
+            return ReturnResultUtils.returnSuccess("success insert");
         }
     }
 
     //修改用户信息
     @LoginRequired
-    @ApiOperation(value = "修护用户地址接口")
+    @ApiOperation(value = "修护用户信息接口")
     @PostMapping(value = "/updateUser")
-    public String updateUser(@RequestBody @ApiParam(value = "用户信息", required = true) UsersParam usersParam) {
-        String result = usersService.updateUserInfo(usersParam);
+    public ReturnResult updateUser(@RequestBody @ApiParam(value = "用户信息", required = true) UsersParam usersParam) {
+        String url ="https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=2399211443,3903620952&fm=26&gp=0.jpg";
+        usersParam.setPhotoHead(url);
+        ReturnResult result = usersService.updateUserInfo(usersParam);
         return result;
     }
 

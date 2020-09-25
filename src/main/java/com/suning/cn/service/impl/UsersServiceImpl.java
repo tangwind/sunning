@@ -18,7 +18,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
-
 @Log4j
 @Service
 public class UsersServiceImpl implements UsersService {
@@ -56,7 +55,7 @@ public class UsersServiceImpl implements UsersService {
         users.setModifyTime(new Date());
         int result = usersMapper.updateByPrimaryKeySelective(users);
         if (result <= 0) {
-            return ReturnResultUtils.returnFail(701,"update fail");
+            return ReturnResultUtils.returnFail(702,"update fail");
         }
         return ReturnResultUtils.returnSuccess("update success");
     }
@@ -102,7 +101,10 @@ public class UsersServiceImpl implements UsersService {
     @Override
     public boolean selectUserInfoById(String userId) {
         int count = usersMapper.selectCountById(userId);
-        return count>0;
+        if (count <= 0) {
+            return false;
+        }
+        return true;
     }
 
     @Override
