@@ -85,7 +85,6 @@
         </dependency>
 
         <!--        swagger-bootstrap-ui依赖开始 -->
-        <!-- https://mvnrepository.com/artifact/com.github.xiaoymin/swagger-bootstrap-ui -->
         <dependency>
             <groupId>com.github.xiaoymin</groupId>
             <artifactId>swagger-bootstrap-ui</artifactId>

@@ -6,8 +6,12 @@ import com.suning.cn.mapper.RelationalShopMapper;
 import com.suning.cn.mapper.ReviewsMapper;
 import com.suning.cn.mapper.ShopsMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.ObjectUtils;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
+
+import static com.suning.cn.cons.HomeNameSpace.NO_DATA;
 
 /**
  * @author tangchaochao
@@ -32,6 +36,9 @@ public class BaseServiceImpl {
      */
     public List<String> getImg(String goodsId, String isMain) {
         List<String> thumbImg = imgExchangeMapper.selectImgBygoodsIdAndMain(goodsId, isMain);
+        if (ObjectUtils.isEmpty(thumbImg)) {
+            thumbImg.add(NO_DATA);
+        }
         return thumbImg;
     }
 
@@ -53,6 +60,10 @@ public class BaseServiceImpl {
      */
     protected String shopName(String goodsId) {
         RelationalShop relationalShop = relationalShopMapper.selectByPrimaryKey(goodsId);
+
+        if (ObjectUtils.isEmpty(relationalShop)) {
+            return NO_DATA;
+        }
         String shopName = shopsMapper.selectNameByPrimaryKey(relationalShop.getShopId());
         return shopName;
     }

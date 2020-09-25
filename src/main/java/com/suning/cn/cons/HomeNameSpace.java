@@ -1,10 +1,15 @@
 package com.suning.cn.cons;
 
+import org.springframework.stereotype.Component;
+
 /**
  * @author tangchaochao
  * @create 2020-2020-09-22 12:13
  */
+
+@Component
 public class HomeNameSpace {
+
 
     /**
      * 查询时排序的依据
@@ -75,6 +80,11 @@ public class HomeNameSpace {
      * 单次购买商品的最大件数
      */
     public static final Integer GOODS_STOCK = 99;
+
+    /**
+     * 没有数据
+     */
+    public static final String NO_DATA = "没有数据！";
 
 
 }
