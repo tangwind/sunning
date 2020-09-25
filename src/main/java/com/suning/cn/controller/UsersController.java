@@ -51,6 +51,7 @@ public class UsersController {
     @ApiOperation(value = "添加用户信息接口")
     @PostMapping(value = "/insertUser")
     public String insertUser(@RequestBody UsersParam usersParam) {
+        log.info(usersParam);
         int result = usersService.insertUserInfo(usersParam);
         if (result <= 0) {
             return "false to insert userInfo";
