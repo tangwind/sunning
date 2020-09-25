@@ -44,7 +44,7 @@ public class VxLoginServiceImpl implements VxLoginService {
         log.info(jsonObject);
 
         String openId = jsonObject.getString("openid");
-        redisUtils.set(openId, USER_LOGIN, USER_LOGIN_TIME);
+        redisUtils.set(USER_LOGIN + openId, USER_LOGIN, USER_LOGIN_TIME);
         redisUtils.set(openId, "token");
 
         int count = usersMapper.countUser(openId);

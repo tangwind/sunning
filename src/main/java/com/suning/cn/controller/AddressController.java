@@ -1,5 +1,6 @@
 package com.suning.cn.controller;
 
+import com.suning.cn.config.api.LoginRequired;
 import com.suning.cn.params.AddressParam;
 import com.suning.cn.service.AddressService;
 import com.suning.cn.vo.AddressVo;
@@ -22,6 +23,7 @@ public class AddressController {
     private AddressService addressService;
 
     //查询收货地址
+    @LoginRequired
     @ApiOperation(value = "查看自己的收货地址")
     @ResponseBody
     @PostMapping(value = "/selectAddress")
@@ -31,6 +33,7 @@ public class AddressController {
     }
 
     //插入收货地址
+    @LoginRequired
     @ApiOperation(value = "添加收货地址")
     @PostMapping(value = "/insertAddress")
     public String insertAddress(@RequestBody @ApiParam(value = "收货地址信息", required = true) AddressParam addressParam) {
@@ -39,6 +42,7 @@ public class AddressController {
     }
 
     //修改收货地址
+    @LoginRequired
     @ApiOperation(value = "修改收货地址")
     @PostMapping(value = "/updateAddress")
     public String updateAddress(@RequestBody @ApiParam(value = "收货地址信息", required = true) AddressParam addressParam) {
@@ -47,6 +51,7 @@ public class AddressController {
     }
 
     //删除收货地址
+    @LoginRequired
     @ApiOperation(value = "删除地址")
     @PostMapping(value = "/deleteAddress")
     public String deleteAddress(@RequestParam("userId") @ApiParam(value = "用户id", required = true) String userId) {

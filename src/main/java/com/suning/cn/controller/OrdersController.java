@@ -1,5 +1,6 @@
 package com.suning.cn.controller;
 
+import com.suning.cn.config.api.LoginRequired;
 import com.suning.cn.params.GoodsParam;
 import com.suning.cn.params.OrderParam;
 import com.suning.cn.service.OrdersService;
@@ -29,6 +30,7 @@ public class OrdersController {
      * @param goodsParams 订单信息参数，包含goodsId，price，count
      * @return
      */
+    @LoginRequired
     @ApiOperation(value = "生成未支付订单",notes = "goodParams参数为对象数组")
     @PostMapping(value = "/confirm")
     public ReturnResult generatorOrder(@RequestParam String userId, @RequestBody GoodsParam... goodsParams) {

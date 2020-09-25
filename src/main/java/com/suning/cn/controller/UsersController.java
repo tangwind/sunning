@@ -1,5 +1,6 @@
 package com.suning.cn.controller;
 
+import com.suning.cn.config.api.LoginRequired;
 import com.suning.cn.params.ReviewsParam;
 import com.suning.cn.params.UsersParam;
 import com.suning.cn.service.UsersService;
@@ -30,6 +31,7 @@ public class UsersController {
     private UsersService usersService;
 
     //查询用户信息
+    @LoginRequired
     @ApiOperation(value = "查看用户信息接口")
     @PostMapping(value = "/getUser")
     public UsersVo getUser(@RequestParam @ApiParam(value = "用户id", required = true) String userId,
@@ -45,6 +47,7 @@ public class UsersController {
     }
 
     //插入用户信息
+    @LoginRequired
     @ApiOperation(value = "添加用户信息接口")
     @PostMapping(value = "/insertUser")
     public String insertUser(@RequestBody UsersParam usersParam) {
@@ -57,6 +60,7 @@ public class UsersController {
     }
 
     //修改用户信息
+    @LoginRequired
     @ApiOperation(value = "修护用户地址接口")
     @PostMapping(value = "/updateUser")
     public String updateUser(@RequestBody @ApiParam(value = "用户信息", required = true) UsersParam usersParam) {
@@ -65,6 +69,7 @@ public class UsersController {
     }
 
     //上传头像
+    @LoginRequired
     @PostMapping("/uploadPic")
     @ApiOperation(value = "修改个人头像接口")
     public ReturnResult uploadHeadPic(@RequestParam(value = "file") @ApiParam(value = "头像", required = true) MultipartFile file,
@@ -81,6 +86,7 @@ public class UsersController {
         return result;
     }
 
+    @LoginRequired
     @ApiOperation(value = "查询收货地址")
     @PostMapping("/publishReview")
     public ReturnResult publishReview(@RequestParam @ApiParam(value = "商品编号", required = true) String orderId,

@@ -1,5 +1,6 @@
 package com.suning.cn.controller;
 
+import com.suning.cn.config.api.LoginRequired;
 import com.suning.cn.dto.Cart;
 import com.suning.cn.params.CartParam;
 import com.suning.cn.service.CartService;
@@ -32,6 +33,7 @@ public class CartController {
     @Autowired
     private CartService cartService;
 
+    @LoginRequired
     @ApiOperation(value = "查看购物车中的商品")
     @PostMapping(value = "/lookCart")
     public ReturnResult selectCartInfo(@RequestBody @ApiParam(value = "用户id", required = true) String userId){
@@ -48,6 +50,7 @@ public class CartController {
         return ReturnResultUtils.returnFail(988, "查看购物车中的商品错误!");
     }
 
+    @LoginRequired
     @ApiOperation(value = "商品加入购物车")
     @PostMapping(value = "/addToCart")
     public ReturnResult addToCart(@RequestBody @ApiParam(value = "购物车参数表", required = true) CartParam cartParam) {
@@ -68,6 +71,7 @@ public class CartController {
         return ReturnResultUtils.returnFail(908,"添加发生错误！");
     }
 
+    @LoginRequired
     @ApiOperation(value = "更改购物车中的商品数量", notes = "每次更改一个商品")
     @PostMapping(value = "/updateNum")
     public ReturnResult updateGoodsNum(@RequestBody @ApiParam(value = "购物车参数表", required = true) CartParam cartParam){
@@ -86,6 +90,7 @@ public class CartController {
     }
 
 
+    @LoginRequired
     @ApiOperation(value = "删除购物车中的商品")
     @PostMapping(value = "/delCart")
     public ReturnResult isDelCart(@RequestParam @ApiParam(required = true) String userId,
