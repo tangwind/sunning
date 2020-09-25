@@ -40,9 +40,8 @@ public class UsersController {
         String fileName = userInfo.getPhotoHead();
         String requestURL = request.getRequestURL().toString();
         String requestURI = request.getRequestURI();
-        //String url = requestURL.substring(0, requestURL.length() - requestURI.length() + 1);
-        //url += "/usr/local/project/upload" + fileName;
-        String url = "https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=2399211443,3903620952&fm=26&gp=0.jpg";
+        String url = requestURL.substring(0, requestURL.length() - requestURI.length() + 1);
+        url += "/usr/local/project/upload" + fileName;
         userInfo.setPhotoHead(url);
         return userInfo;
     }
@@ -62,12 +61,11 @@ public class UsersController {
     }
 
     //修改用户信息
+    //https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=2399211443,3903620952&fm=26&gp=0.jpg
     @LoginRequired
     @ApiOperation(value = "修护用户信息接口")
     @PostMapping(value = "/updateUser")
     public ReturnResult updateUser(@RequestBody @ApiParam(value = "用户信息", required = true) UsersParam usersParam) {
-        String url ="https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=2399211443,3903620952&fm=26&gp=0.jpg";
-        usersParam.setPhotoHead(url);
         ReturnResult result = usersService.updateUserInfo(usersParam);
         return result;
     }
