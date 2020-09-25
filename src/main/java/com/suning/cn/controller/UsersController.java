@@ -60,7 +60,7 @@ public class UsersController {
         }
     }
 
-    //修改用户信息
+    //修改用户的信息
     //https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=2399211443,3903620952&fm=26&gp=0.jpg
     @LoginRequired
     @ApiOperation(value = "修护用户信息接口")
