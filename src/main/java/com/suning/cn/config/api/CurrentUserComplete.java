@@ -29,4 +29,5 @@ public class CurrentUserComplete implements HandlerMethodArgumentResolver {
         }
         return null;
     }
+
 }

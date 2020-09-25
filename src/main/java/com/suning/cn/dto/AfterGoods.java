@@ -5,6 +5,7 @@ import lombok.Data;
 
 @Data
 public class AfterGoods {
+
     /**
      * Database Column Remarks:
      *   商品id

@@ -42,6 +42,7 @@ public class LoginRequiredComplete implements HandlerInterceptor {
                 throw new RuntimeException("token:{}Redis中的token异常");
             }
 
+
             return true;
         }
 

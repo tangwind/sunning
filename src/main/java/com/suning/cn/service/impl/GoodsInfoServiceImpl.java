@@ -55,6 +55,7 @@ public class GoodsInfoServiceImpl extends BaseServiceImpl implements GoodsInfoSe
         //获取副图
         List<String> sideImg = getImg(goodsId, NOT_MAIN);
         String sideImgStr = String.join(";", sideImg);
+
         goodsInfoVo.setSideImg(sideImgStr);
 
         //获取店铺名

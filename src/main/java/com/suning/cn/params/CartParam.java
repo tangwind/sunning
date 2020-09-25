@@ -12,6 +12,7 @@ import java.io.Serializable;
 @Data
 public class CartParam implements Serializable {
 
+
     @ApiModelProperty("用户id")
     private String userId;
 

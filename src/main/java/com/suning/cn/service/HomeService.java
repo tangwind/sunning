@@ -9,6 +9,7 @@ import com.suning.cn.vo.HomeGoodsVo;
  */
 public interface HomeService {
 
+
     /**
      * 获取精选商品
      */

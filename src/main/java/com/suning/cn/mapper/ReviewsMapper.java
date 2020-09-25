@@ -2,10 +2,7 @@ package com.suning.cn.mapper;
 
 import com.suning.cn.dto.Reviews;
 import com.suning.cn.dto.ReviewsExample;
-
 import java.util.List;
-
-import com.suning.cn.utils.ReturnResult;
 import org.apache.ibatis.annotations.Param;
 
 public interface ReviewsMapper {
@@ -65,9 +62,9 @@ public interface ReviewsMapper {
      */
     int updateByExample(@Param("record") Reviews record, @Param("example") ReviewsExample example);
 
-    List<Reviews> selectByGoodsId(@Param("goodsId") String goodsId, @Param("limit") Integer limit);
+    List<Reviews> selectByGoodsId(@Param("goodsId")String goodsId, @Param("limit") int limit);
 
-    long countByGoodsId(String goodsId);
+    long countByGoodsId(@Param("goodsId") String goodsId);
 
-    int insertReviewInfo(Reviews reviews);
+    int insertReviewInfo(@Param("reviews") Reviews reviews);
 }

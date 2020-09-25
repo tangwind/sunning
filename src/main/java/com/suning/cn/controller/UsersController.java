@@ -50,23 +50,22 @@ public class UsersController {
     @LoginRequired
     @ApiOperation(value = "添加用户信息接口")
     @PostMapping(value = "/insertUser")
-    public ReturnResult insertUser(@RequestBody UsersParam usersParam) {
+    public String insertUser(@RequestBody UsersParam usersParam) {
         log.info(usersParam);
         int result = usersService.insertUserInfo(usersParam);
         if (result <= 0) {
-            return ReturnResultUtils.returnFail(701,"failed to insert userInfo");
+            return "false to insert userInfo";
         } else {
-            return ReturnResultUtils.returnSuccess("success insert");
+            return "success insert";
         }
     }
 
-    //修改用户的信息
-    //https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=2399211443,3903620952&fm=26&gp=0.jpg
+    //修改用户信息
     @LoginRequired
-    @ApiOperation(value = "修护用户信息接口")
+    @ApiOperation(value = "修护用户地址接口")
     @PostMapping(value = "/updateUser")
-    public ReturnResult updateUser(@RequestBody @ApiParam(value = "用户信息", required = true) UsersParam usersParam) {
-        ReturnResult result = usersService.updateUserInfo(usersParam);
+    public String updateUser(@RequestBody @ApiParam(value = "用户信息", required = true) UsersParam usersParam) {
+        String result = usersService.updateUserInfo(usersParam);
         return result;
     }
 

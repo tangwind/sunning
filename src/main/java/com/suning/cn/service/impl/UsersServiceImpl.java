@@ -16,8 +16,10 @@ import lombok.extern.log4j.Log4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.Date;
+
 @Log4j
 @Service
 public class UsersServiceImpl implements UsersService {
@@ -49,15 +51,15 @@ public class UsersServiceImpl implements UsersService {
     }
 
     @Override
-    public ReturnResult updateUserInfo(UsersParam usersParam) {
+    public String updateUserInfo(UsersParam usersParam) {
         Users users = new Users();
         BeanUtils.copyProperties(usersParam, users);
         users.setModifyTime(new Date());
         int result = usersMapper.updateByPrimaryKeySelective(users);
         if (result <= 0) {
-            return ReturnResultUtils.returnFail(702,"update fail");
+            return "update fail";
         }
-        return ReturnResultUtils.returnSuccess("update success");
+        return "update success";
     }
 
     @Override
@@ -101,10 +103,7 @@ public class UsersServiceImpl implements UsersService {
     @Override
     public boolean selectUserInfoById(String userId) {
         int count = usersMapper.selectCountById(userId);
-        if (count <= 0) {
-            return false;
-        }
-        return true;
+        return count>0;
     }
 
     @Override

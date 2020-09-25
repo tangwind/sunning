@@ -15,6 +15,7 @@ import java.util.Date;
 @ApiModel("评价表")
 public class ReviewsVo implements Serializable {
 
+
     @ApiModelProperty("用户头像")
     private String photoHead;
 

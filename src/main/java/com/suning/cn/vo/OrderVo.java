@@ -10,6 +10,7 @@ import java.util.List;
 @Data
 @ApiModel("订单数据")
 public class OrderVo implements Serializable {
+
     @ApiModelProperty(value = "订单编号")
     private String orderId;
     @ApiModelProperty(value = "商品数据")

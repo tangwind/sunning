@@ -59,6 +59,7 @@ public class BaseServiceImpl {
      * @return 店铺名
      */
     protected String shopName(String goodsId) {
+
         RelationalShop relationalShop = relationalShopMapper.selectByPrimaryKey(goodsId);
 
         if (ObjectUtils.isEmpty(relationalShop)) {

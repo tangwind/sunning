@@ -12,6 +12,7 @@ import java.io.Serializable;
  */
 @Data
 public class GoodsLimitParam implements Serializable {
+
     @ApiModelProperty(value = "当前页码")
     private Integer pageNo;
     @ApiModelProperty(value = "每页条数")

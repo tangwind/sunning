@@ -14,6 +14,7 @@ import java.io.Serializable;
 @ApiModel("首页商品表")
 public class HomeGoodsVo implements Serializable {
 
+
     @ApiModelProperty("拇指图")
     private String thumbImg;
 

@@ -27,6 +27,7 @@ import java.util.Date;
 @RestController
 @RequestMapping(value = "/goods")
 public class GoodsInfoController {
+
     @Autowired
     private GoodsInfoService goodsInfoService;
 

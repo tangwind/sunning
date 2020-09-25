@@ -39,6 +39,7 @@ public class AddressController {
     public String insertAddress(@RequestBody @ApiParam(value = "收货地址信息", required = true) AddressParam addressParam) {
         String result = addressService.insertAddress(addressParam);
         return result;
+
     }
 
     //修改收货地址

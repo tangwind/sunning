@@ -6,6 +6,7 @@ import com.suning.cn.vo.AddressVo;
 import java.util.List;
 
 public interface AddressService {
+
     String insertAddress(AddressParam addressParam);
 
     String updateAddress(AddressParam addressParam);

@@ -49,6 +49,7 @@ public class CartServiceImpl implements CartService {
         List<Cart> cartList = cartMapper.selectByExample(cartExample);
         List<CartVo> cartVoList = new ArrayList<>();
         if (cartList.isEmpty()) {
+
             return cartVoList;
         }
         cartList.forEach(cart -> {

@@ -10,6 +10,7 @@ import com.suning.cn.vo.ReviewsVo;
  */
 public interface GoodsInfoService {
 
+
     GoodsInfoVo getGoodsAllInfo(String goodsId);
 
     PageUtils<ReviewsVo> getReviewsList(String goodsId, Integer pageNo, Integer pageSize);

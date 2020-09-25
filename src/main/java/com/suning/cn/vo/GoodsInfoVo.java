@@ -15,6 +15,7 @@ import java.util.Random;
 @ApiModel("商品详细信息表")
 public class GoodsInfoVo implements Serializable {
 
+
     @ApiModelProperty("拇指图")
     private String thumbImg;
 

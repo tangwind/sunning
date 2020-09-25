@@ -16,6 +16,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableSwagger2
 @EnableSwaggerBootstrapUI
 public class SwaggerConfig {
+
     // 配置Bean实例
     @Bean
     public Docket createRestApi() {

@@ -27,6 +27,7 @@ public class VxConfig {
         stringBuffer.append("&").append("js_code=").append(code);
         stringBuffer.append("&").append("grant_type=").append(getGrant_type());
         return stringBuffer.toString();
+
     }
 
 

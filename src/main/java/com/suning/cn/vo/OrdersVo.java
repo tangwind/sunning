@@ -10,6 +10,7 @@ import lombok.Data;
 @Data
 @ApiModel("支付所需订单信息")
 public class OrdersVo {
+
     @ApiModelProperty(value = "订单号")
     private String orderId;
     @ApiModelProperty(value = "实付款")

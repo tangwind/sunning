@@ -48,6 +48,7 @@ public class VxController {
     @Autowired
     private VxLoginService vxLoginService;
 
+
     @ApiOperation(value = "获取用户登录信息")
     @PostMapping(value = "/callBack")
     public String queryUserInfo(@RequestParam @ApiParam(value = "code") String code) throws IOException {

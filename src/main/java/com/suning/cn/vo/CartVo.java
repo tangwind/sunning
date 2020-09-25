@@ -9,6 +9,7 @@ import java.io.Serializable;
 @ApiModel(value = "购物车表")
 public class CartVo implements Serializable {
 
+
     @ApiModelProperty("店铺id")
     private String shopsId;
 

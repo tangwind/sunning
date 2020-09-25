@@ -16,4 +16,5 @@ public class RedisNameSpace {
     public final static long USER_LOGIN_TIME = 1200;
 
 
+
 }

@@ -11,6 +11,7 @@ import java.util.Date;
 @ApiModel("用户表")
 public class UsersVo implements Serializable {
 
+
     @ApiModelProperty("用户id")
     private String userId;
     @ApiModelProperty("用户头像")
