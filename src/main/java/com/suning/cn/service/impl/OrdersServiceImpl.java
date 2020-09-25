@@ -13,6 +13,8 @@ import org.springframework.stereotype.Service;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -29,6 +31,8 @@ public class OrdersServiceImpl implements OrdersService {
     @Autowired
     private GoodsStockMapper stockMapper;
     @Autowired
+    private OrdersMapper ordersMapper;
+    @Autowired
     private RedisUtils redisUtils;
 
 
@@ -41,13 +45,17 @@ public class OrdersServiceImpl implements OrdersService {
         // 根据用户id获取地址等信息
         ShippingAddress address = addressMapper.selectByPrimaryKey(userId);
         BeanUtils.copyProperties(address, addressVo);
-        //生成orderId
+
+        //该部分转交去支付部分实现，一个商品对应一个订单
+        /*//生成orderId
         String orderId = UUIDUtils.get12UUID();
         orderVo.setOrderId(orderId);
         //id为key，存redis,0:未支付
-        redisUtils.set(orderId, "0");
+        redisUtils.set(orderId, "0");*/
 
-
+        orderVo.setAddressVo(addressVo);
+        orderVo.setIsDel(0);
+        orderVo.setOffCost(0.0);
         // 商品信息
         Double totalCost = 0.0;
         for (GoodsParam goodsParam : goodsParams) {
@@ -78,12 +86,81 @@ public class OrdersServiceImpl implements OrdersService {
             goodsVoList.add(goodsVo);
         }
         orderVo.setGoodsVo(goodsVoList);
-        orderVo.setAddressVo(addressVo);
-        orderVo.setIsDel(0);
         orderVo.setTotalCost(totalCost);
-        orderVo.setOffCost(0.0);
         orderVo.setRealPay(orderVo.getTotalCost() - orderVo.getOffCost());
 
         return ReturnResultUtils.returnSuccess(orderVo);
     }
+
+    /**
+     * 生成订单列表并存数据库
+     *
+     * @param orderVo
+     */
+    @Override
+    public ReturnResult toPay(OrderVo orderVo) {
+        //获取待支付订单的商品列表，循环生成订单，商品订单一一对应
+        List<GoodsVo> goodsParams = orderVo.getGoodsVo();
+        List<OrdersVo> ordersToPay = Lists.newArrayList();
+        for (GoodsVo goodsVo : goodsParams) {
+            OrdersVo orderToPayVo = new OrdersVo();
+            //获取orderId，作为订单辨识
+            String orderId = UUIDUtils.get12UUID();
+            Orders order = new Orders();
+            order.setOrderId(orderId);
+            //存redis待支付状态
+            redisUtils.set(orderId, "0");
+            //以下逻辑可改为消息中间件完成
+            //待支付订单统一属性值
+            order.setIsDel(0);
+            order.setUserId(orderVo.getAddressVo().getUserId());
+            order.setCreateTime(new Date());
+            order.setModifyTime(new Date());
+            order.setOffCost(0.0);
+            //商品信息对应部分
+            order.setGoodsId(goodsVo.getGoodsId());
+            order.setCount(goodsVo.getCount());
+            order.setTotalCost(goodsVo.getCount() * goodsVo.getOffPrice());
+            order.setRealPay(order.getTotalCost() - order.getOffCost());
+            BeanUtils.copyProperties(order, orderToPayVo);
+            ordersToPay.add(orderToPayVo);
+            //订单存数据库
+            ordersMapper.insertSelective(order);
+        }
+        ;
+
+        return ReturnResultUtils.returnSuccess(ordersToPay);
+    }
+
+    @Override
+    public ReturnResult showAllOrders(String userId) {
+        OrdersExample ordersExample = new OrdersExample();
+        OrdersExample.Criteria criteria = ordersExample.createCriteria();
+        criteria.andUserIdEqualTo(userId);
+        List<Orders> ordersList = ordersMapper.selectByExample(ordersExample);
+        return ReturnResultUtils.returnSuccess(ordersList);
+    }
+
+    @Override
+    public ReturnResult showOrderDetail(String orderId) {
+        Orders order = ordersMapper.selectByPrimaryKey(orderId);
+        return ReturnResultUtils.returnSuccess(order);
+    }
+
+    @Override
+    public ReturnResult setorderGetPaied(String[] orderIds) {
+        List<String> orderIdList = Arrays.asList(orderIds);
+        orderIdList.forEach(orderId -> {
+            //redis修改状态
+            redisUtils.set(orderId, 1);
+            //数据库更新状态
+            Orders order = new Orders();
+            order.setOrderId(orderId);
+            order.setIsDel(1);
+            ordersMapper.updateByPrimaryKeySelective(order);
+        });
+
+        return ReturnResultUtils.returnSuccess();
+    }
+
 }
