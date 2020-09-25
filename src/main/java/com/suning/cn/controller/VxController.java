@@ -56,10 +56,5 @@ public class VxController {
     public String queryUserInfo(@RequestParam @ApiParam(value = "code") String code) throws IOException {
 
         return vxLoginService.vxLogin(code);
-
     }
-
-
-
-
 }
