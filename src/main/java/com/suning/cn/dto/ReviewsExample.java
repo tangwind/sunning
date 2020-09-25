@@ -555,6 +555,66 @@ public class ReviewsExample {
             return (Criteria) this;
         }
 
+        public Criteria andLikeIsNull() {
+            addCriterion("`like` is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLikeIsNotNull() {
+            addCriterion("`like` is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLikeEqualTo(Integer value) {
+            addCriterion("`like` =", value, "like");
+            return (Criteria) this;
+        }
+
+        public Criteria andLikeNotEqualTo(Integer value) {
+            addCriterion("`like` <>", value, "like");
+            return (Criteria) this;
+        }
+
+        public Criteria andLikeGreaterThan(Integer value) {
+            addCriterion("`like` >", value, "like");
+            return (Criteria) this;
+        }
+
+        public Criteria andLikeGreaterThanOrEqualTo(Integer value) {
+            addCriterion("`like` >=", value, "like");
+            return (Criteria) this;
+        }
+
+        public Criteria andLikeLessThan(Integer value) {
+            addCriterion("`like` <", value, "like");
+            return (Criteria) this;
+        }
+
+        public Criteria andLikeLessThanOrEqualTo(Integer value) {
+            addCriterion("`like` <=", value, "like");
+            return (Criteria) this;
+        }
+
+        public Criteria andLikeIn(List<Integer> values) {
+            addCriterion("`like` in", values, "like");
+            return (Criteria) this;
+        }
+
+        public Criteria andLikeNotIn(List<Integer> values) {
+            addCriterion("`like` not in", values, "like");
+            return (Criteria) this;
+        }
+
+        public Criteria andLikeBetween(Integer value1, Integer value2) {
+            addCriterion("`like` between", value1, value2, "like");
+            return (Criteria) this;
+        }
+
+        public Criteria andLikeNotBetween(Integer value1, Integer value2) {
+            addCriterion("`like` not between", value1, value2, "like");
+            return (Criteria) this;
+        }
+
         public Criteria andCreateTimeIsNull() {
             addCriterion("create_time is null");
             return (Criteria) this;
