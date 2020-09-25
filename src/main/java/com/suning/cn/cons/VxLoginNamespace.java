@@ -16,5 +16,5 @@ public class VxLoginNamespace {
      */
     public static final Integer NOT_REGISTER = 1;
 
-
 }
+
