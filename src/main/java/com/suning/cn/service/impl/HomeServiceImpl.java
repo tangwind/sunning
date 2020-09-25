@@ -39,10 +39,8 @@ public class HomeServiceImpl extends BaseServiceImpl implements HomeService {
         PageUtils<HomeGoodsVo> pageUtils = new PageUtils<HomeGoodsVo>();
         pageUtils.setPageNo(pageNo);
         pageUtils.setCurrentPage(pageNo);
-
         GoodsExample goodsExample = new GoodsExample();
         goodsExample.createCriteria().andTypeIdEqualTo(type);
-
         return getHomeGoodsVoPageUtils(pageSize, pageUtils, goodsExample);
     }
 
