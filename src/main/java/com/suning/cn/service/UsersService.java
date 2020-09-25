@@ -13,7 +13,7 @@ public interface UsersService {
 
     int insertUserInfo(UsersParam usersParam);
 
-    String updateUserInfo(UsersParam usersParam);
+    ReturnResult updateUserInfo(UsersParam usersParam);
 
     ReturnResult uploadHeadPic(String userId, String filename);
 

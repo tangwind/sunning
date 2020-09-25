@@ -1,19 +1,20 @@
 package com.suning.cn.controller;
 
-import com.suning.cn.config.api.LoginRequired;
 import com.suning.cn.params.ReviewsParam;
 import com.suning.cn.params.UsersParam;
 import com.suning.cn.service.UsersService;
 import com.suning.cn.utils.ReturnResult;
 import com.suning.cn.utils.ReturnResultUtils;
 import com.suning.cn.vo.UsersVo;
-import io.swagger.annotations.*;
+import io.swagger.annotations.Api;
+/*import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;*/
+import io.swagger.annotations.ApiParam;
 import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
 import java.util.UUID;
@@ -31,47 +32,35 @@ public class UsersController {
     private UsersService usersService;
 
     //查询用户信息
-    @LoginRequired
-    @ApiOperation(value = "查看用户信息接口")
     @PostMapping(value = "/getUser")
-    public UsersVo getUser(@RequestParam @ApiParam(value = "用户id", required = true) String userId,
-                           HttpServletRequest request) {
+    public UsersVo getUser(@RequestParam @ApiParam(value = "用户id", required = true) String userId) {
         UsersVo userInfo = usersService.getUserInfo(userId);
-        String fileName = userInfo.getPhotoHead();
-        String requestURL = request.getRequestURL().toString();
-        String requestURI = request.getRequestURI();
-        String url = requestURL.substring(0, requestURL.length() - requestURI.length() + 1);
-        url += "/usr/local/project/upload" + fileName;
-        userInfo.setPhotoHead(url);
         return userInfo;
     }
 
     //插入用户信息
-    @LoginRequired
-    @ApiOperation(value = "添加用户信息接口")
+    //https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=2399211443,3903620952&fm=26&gp=0.jpg
     @PostMapping(value = "/insertUser")
-    public String insertUser(@RequestBody UsersParam usersParam) {
+    public ReturnResult insertUser(@RequestBody UsersParam usersParam) {
+        String url = "https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=2399211443,3903620952&fm=26&gp=0.jpg";
+        usersParam.setPhotoHead(url);
         int result = usersService.insertUserInfo(usersParam);
         if (result <= 0) {
-            return "false to insert userInfo";
+            return ReturnResultUtils.returnFail(701,"fail to insert userInfo");
         } else {
-            return "success insert";
+            return ReturnResultUtils.returnSuccess("success insert");
         }
     }
 
     //修改用户信息
-    @LoginRequired
-    @ApiOperation(value = "修护用户地址接口")
     @PostMapping(value = "/updateUser")
-    public String updateUser(@RequestBody @ApiParam(value = "用户信息", required = true) UsersParam usersParam) {
-        String result = usersService.updateUserInfo(usersParam);
+    public ReturnResult updateUser(@RequestBody @ApiParam(value = "用户信息", required = true) UsersParam usersParam) {
+        ReturnResult result = usersService.updateUserInfo(usersParam);
         return result;
     }
 
     //上传头像
-    @LoginRequired
-    @PostMapping("/uploadPic")
-    @ApiOperation(value = "修改个人头像接口")
+    /*@PostMapping("/uploadPic")*/
     public ReturnResult uploadHeadPic(@RequestParam(value = "file") @ApiParam(value = "头像", required = true) MultipartFile file,
                                       @RequestParam @ApiParam(value = "用户id", required = true) String userId) throws IOException {
         //1.确定保存的文件夹
@@ -86,8 +75,6 @@ public class UsersController {
         return result;
     }
 
-    @LoginRequired
-    @ApiOperation(value = "查询收货地址")
     @PostMapping("/publishReview")
     public ReturnResult publishReview(@RequestParam @ApiParam(value = "商品编号", required = true) String orderId,
                                       @RequestParam @ApiParam(value = "评论内容", required = true) String content,
