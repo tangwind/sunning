@@ -1,10 +1,6 @@
 package com.suning.cn.config.api;
 
-import com.alibaba.fastjson.JSONObject;
 import com.suning.cn.utils.RedisUtils;
-import com.suning.cn.vo.LoginUsersVo;
-import com.suning.cn.vo.UsersVo;
-import io.swagger.annotations.Example;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
@@ -46,8 +42,6 @@ public class LoginRequiredComplete implements HandlerInterceptor {
                 throw new RuntimeException("token:{}Redis中的token异常");
             }
 
-            LoginUsersVo loginUsersVo = JSONObject.parseObject(tokenObj.toString(), LoginUsersVo.class);
-            httpServletRequest.setAttribute("loginUsersVo", loginUsersVo);
             return true;
         }
 
