@@ -19,10 +19,7 @@ import lombok.extern.log4j.Log4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.nio.file.attribute.UserPrincipal;
@@ -44,7 +41,7 @@ import static com.suning.cn.cons.RedisNameSpace.USER_LOGIN_TIME;
  */
 @Api(tags = "微信登录接口")
 @Log4j
-@Controller
+@RestController
 @RequestMapping(value = "/vx")
 public class VxController {
 
@@ -55,5 +52,6 @@ public class VxController {
     @RequestMapping(value = "/callBack")
     public String queryUserInfo(@RequestParam @ApiParam(value = "code") String code) throws IOException {
         return vxLoginService.vxLogin(code);
+
     }
 }
