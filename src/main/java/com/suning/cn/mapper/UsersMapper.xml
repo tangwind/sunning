@@ -315,4 +315,8 @@
   <insert id="addUser">
     insert into users(user_id) value (#{openId})
   </insert>
+
+  <select id="countUser" resultType="int">
+    select count(1) from users where user_id = #{openId}
+    </select>
 </mapper>

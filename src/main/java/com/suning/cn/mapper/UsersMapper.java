@@ -101,4 +101,6 @@ public interface UsersMapper {
     int uploadHeadPic(@Param("userId") String userId, @Param("filename") String filename, @Param("time") Date time);
 
     int addUser(String openId);
+
+    int countUser(@Param("openId") String openId);
 }

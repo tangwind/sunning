@@ -54,7 +54,6 @@ public class VxController {
     @ApiOperation(value = "获取用户登录信息")
     @RequestMapping(value = "/callBack")
     public String queryUserInfo(@RequestParam @ApiParam(value = "code") String code) throws IOException {
-
         return vxLoginService.vxLogin(code);
     }
 }

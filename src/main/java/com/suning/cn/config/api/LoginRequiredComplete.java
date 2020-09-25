@@ -34,18 +34,18 @@ public class LoginRequiredComplete implements HandlerInterceptor {
         LoginRequired annotation = method.getAnnotation(LoginRequired.class);
         if (ObjectUtils.isEmpty(annotation)){
 
-            String access_token = httpServletRequest.getHeader("access_token");
+            String access_token = httpServletRequest.getHeader("token");
             // 判断前台获取的token是否为空
             if (StringUtils.isEmpty(access_token)) {
                 throw new RuntimeException("Login:{}获取token异常！");
             }
+
             Object tokenObj = redisUtils.get(access_token);
             if (ObjectUtils.isEmpty(tokenObj)) {
                 throw new RuntimeException("token:{}Redis中的token异常");
             }
 
             UsersVo usersVo = JSONObject.parseObject(tokenObj.toString(), UsersVo.class);
-            // todo 这个存==》loginUsersVo --是自定义的？
             httpServletRequest.setAttribute("loginUsersVo", usersVo);
             return true;
         }
