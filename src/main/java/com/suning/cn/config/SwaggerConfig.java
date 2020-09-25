@@ -31,9 +31,9 @@ public class SwaggerConfig {
 
         return new ApiInfoBuilder()
                 .title("API接口文档")
-                .contact(new Contact("1组","null","1711424366@qq.com"))
+                .contact(new Contact("KH83-1组","null","1711424366@qq.com"))
                 .description("前后端分离项目做--苏宁易购小程序")
-                .termsOfServiceUrl("https://www.cnblogs.com/xiebq/")
+                .termsOfServiceUrl("http://47.116.79.240:8080/")
                 .version("1.0")
                 .build();
     }

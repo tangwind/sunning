@@ -107,7 +107,7 @@ public class UsersServiceImpl implements UsersService {
     }
 
     @Override
-    public int addUserInfo(UsersParam users) {
+    public int addUserInfo(Users users) {
         int row = usersMapper.insertUserInfo(users.getUserId());
         log.info("添加行数" + row);
         return row;
