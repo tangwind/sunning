@@ -19,6 +19,7 @@ public class UsersInfoParam implements Serializable {
     @ApiModelProperty("性别 （0-未知、1-男、2-女）")
     private Integer sex;
     */
+
     @ApiModelProperty("用户头像")
     private String photoHead;
     @ApiModelProperty("用户昵称")
