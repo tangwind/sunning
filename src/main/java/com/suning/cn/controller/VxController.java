@@ -7,6 +7,7 @@ import com.suning.cn.dto.Users;
 import com.suning.cn.params.UsersInfoParam;
 import com.suning.cn.params.UsersParam;
 import com.suning.cn.service.UsersService;
+import com.suning.cn.service.VxLoginService;
 import com.suning.cn.utils.HttpClientUtils;
 import com.suning.cn.utils.RedisUtils;
 import com.suning.cn.utils.ReturnResult;
@@ -25,6 +26,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.io.IOException;
 import java.nio.file.attribute.UserPrincipal;
+
+import static com.suning.cn.cons.RedisNameSpace.USER_LOGIN;
+import static com.suning.cn.cons.RedisNameSpace.USER_LOGIN_TIME;
 
 /**
  * Created by  lzy  on 2020/9/23 9:12
@@ -45,54 +49,17 @@ import java.nio.file.attribute.UserPrincipal;
 public class VxController {
 
     @Autowired
-    private VxConfig vxConfig;
-
-    @Autowired
-    private RedisUtils redisUtils;
-    @Autowired
-    private UsersService usersService;
+    private VxLoginService vxLoginService;
 
     @ApiOperation(value = "获取用户登录信息")
     @RequestMapping(value = "/callBack")
-    public String queryUserInfo(@RequestParam @ApiParam(value = "code") String code,
-                                @RequestParam @ApiParam(value = "用户信息") UsersInfoParam usersInfoParam){
-        try {
-            //1、通过code换取网页授权access_token和openid
-            String callBackStr = HttpClientUtils.doGet(vxConfig.getAccessToken(code));
-            JSONObject jsonObject = JSONObject.parseObject(callBackStr);
-            String openId = jsonObject.getString("openid");
+    public String queryUserInfo(@RequestParam @ApiParam(value = "code") String code) throws IOException {
 
-           /* //3、如果需要，可以刷新网页授权access_token，避免过期
-            String refreshToken = jsonObject.getString("refresh_token");
-            HttpClientUtils.doGet(vxConfig.refreshTokenInfo(refreshToken));
-            //4、通过网页授权access_token和openid获取用户基本信息（支持UnionID机制）
-            String access_token = jsonObject.getString("access_token");
-            String userInfoStr = HttpClientUtils.doGet(vxConfig.getUserInfo(access_token, openId));*/
+        return vxLoginService.vxLogin(code);
 
-            // 存储数据
-            JSONObject userInfoObj = JSONObject.parseObject(usersInfoParam.toString());
-
-            redisUtils.set(RedisNameSpace.USERS_NAMESPACE + "Users" + openId, userInfoObj); // 存redis中
-            //redisUtils.set()
-
-            // 判断用户是否为首次登陆
-            boolean flag = usersService.selectUserInfoById(openId);
-            if (!flag) {
-                // 注册
-                Users users = new Users();
-                users.setUserId(userInfoObj.getString("openid"));
-                users.setNickName(userInfoObj.getString("nickname"));
-                users.setGender(Integer.valueOf(userInfoObj.getString("sex")));
-                users.setPhotoHead(userInfoObj.getString("headimgurl"));
-                usersService.addUserInfo(users);
-                log.info("用户保存成功");
-            }
-            // 返回openid对应的用户数据，标记为登录状态
-            return openId;//   return "redirect:"+"前端地址?userInfo"+ userInfo_str;
-        } catch (IOException e) {
-            log.info("微信登录异常：{}" + e);
-            e.printStackTrace();
-        }
-        return "redirect:登录异常！";
     }
+
+
+
+
 }

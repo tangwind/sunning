@@ -311,4 +311,8 @@
     modify_time = #{time}
     where user_id = #{userId}
   </update>
+
+  <insert id="addUser">
+    insert into users(user_id) value (#{openId})
+  </insert>
 </mapper>

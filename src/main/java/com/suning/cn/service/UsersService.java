@@ -21,6 +21,7 @@ public interface UsersService {
 
     // 微信登录-查询用户id
     boolean selectUserInfoById(String userId);
+
     // 微信登录-加入到MySQL数据库
     int addUserInfo(Users users);
 }
