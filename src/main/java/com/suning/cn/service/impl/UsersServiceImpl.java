@@ -51,15 +51,15 @@ public class UsersServiceImpl implements UsersService {
     }
 
     @Override
-    public String updateUserInfo(UsersParam usersParam) {
+    public ReturnResult updateUserInfo(UsersParam usersParam) {
         Users users = new Users();
         BeanUtils.copyProperties(usersParam, users);
         users.setModifyTime(new Date());
         int result = usersMapper.updateByPrimaryKeySelective(users);
         if (result <= 0) {
-            return "update fail";
+            return ReturnResultUtils.returnFail(702,"update fail");
         }
-        return "update success";
+        return ReturnResultUtils.returnSuccess("update success");
     }
 
     @Override

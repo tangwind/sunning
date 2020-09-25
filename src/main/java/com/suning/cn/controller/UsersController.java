@@ -50,13 +50,13 @@ public class UsersController {
     @LoginRequired
     @ApiOperation(value = "添加用户信息接口")
     @PostMapping(value = "/insertUser")
-    public String insertUser(@RequestBody UsersParam usersParam) {
+    public ReturnResult insertUser(@RequestBody UsersParam usersParam) {
         log.info(usersParam);
         int result = usersService.insertUserInfo(usersParam);
         if (result <= 0) {
-            return "false to insert userInfo";
+            return ReturnResultUtils.returnFail(701,"false to insert userInfo");
         } else {
-            return "success insert";
+            return ReturnResultUtils.returnSuccess("success insert");
         }
     }
 
@@ -64,8 +64,8 @@ public class UsersController {
     @LoginRequired
     @ApiOperation(value = "修护用户地址接口")
     @PostMapping(value = "/updateUser")
-    public String updateUser(@RequestBody @ApiParam(value = "用户信息", required = true) UsersParam usersParam) {
-        String result = usersService.updateUserInfo(usersParam);
+    public ReturnResult updateUser(@RequestBody @ApiParam(value = "用户信息", required = true) UsersParam usersParam) {
+        ReturnResult result = usersService.updateUserInfo(usersParam);
         return result;
     }
 
