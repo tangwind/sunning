@@ -48,12 +48,9 @@ public class VxLoginServiceImpl implements VxLoginService {
         redisUtils.set(openId, "token");
 
         int count = usersMapper.countUser(openId);
-
-
         if (count == 0) {
             usersMapper.addUser(openId);
         }
-
         return openId;
     }
 

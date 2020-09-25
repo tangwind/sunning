@@ -9,6 +9,7 @@ import com.suning.cn.utils.ReturnResultUtils;
 import com.suning.cn.vo.OrderVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,7 +34,7 @@ public class OrdersController {
     @LoginRequired
     @ApiOperation(value = "生成未支付订单",notes = "goodParams参数为对象数组")
     @PostMapping(value = "/confirm")
-    public ReturnResult generatorOrder(@RequestParam String userId, @RequestBody GoodsParam... goodsParams) {
+    public ReturnResult generatorOrder(@RequestParam @ApiParam(value = "用户id") String userId, @RequestBody @ApiParam(value = "购物车的商品集合") GoodsParam... goodsParams) {
         //return ordersService.generatorOrder(orderParam);
         try {
             return ordersService.generatorOrder(goodsParams, userId);

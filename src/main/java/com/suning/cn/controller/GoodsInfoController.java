@@ -1,5 +1,6 @@
 package com.suning.cn.controller;
 
+import com.suning.cn.params.GoodsLimitParam;
 import com.suning.cn.service.GoodsInfoService;
 import com.suning.cn.utils.PageUtils;
 import com.suning.cn.utils.ReturnResult;
@@ -18,6 +19,8 @@ import java.util.Date;
 /**
  * @author tangchaochao
  * @create 2020-2020-09-23 09:00
+ * 567：商品加载错误
+ * 789：显示评论失败
  */
 @Api(tags = "商品详情")
 @Log4j
@@ -43,18 +46,16 @@ public class GoodsInfoController {
 
     @ApiOperation("显示评论接口")
     @PostMapping(value = "/getReview")
-    public ReturnResult<ReviewsVo> getReview(@RequestParam @ApiParam(value = "当前页码", required = true) Integer pageNo,
-                                             @RequestParam @ApiParam(value = "每页条数", required = true) Integer pageSize,
-                                             @RequestParam @ApiParam(value = "商品id", required = true) String goodsId) {
+    public ReturnResult<ReviewsVo> getReview(@RequestBody @ApiParam GoodsLimitParam goodsParam) {
 
         try {
-            PageUtils<ReviewsVo> reviewsList = goodsInfoService.getReviewsList(goodsId, pageNo, pageSize);
+            PageUtils<ReviewsVo> reviewsList = goodsInfoService.getReviewsList(goodsParam.getGoodsId(), goodsParam.getPageNo(), goodsParam.getPageSize());
             return ReturnResultUtils.returnSuccess(reviewsList);
         } catch (Exception e) {
             log.error("显示评论: " + e);
         }
 
-        return ReturnResultUtils.returnFail(789, "failedToDisplayComments!");
+        return ReturnResultUtils.returnFail(789, "显示评论失败!");
     }
 
 
