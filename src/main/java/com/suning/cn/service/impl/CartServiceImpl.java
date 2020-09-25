@@ -43,6 +43,7 @@ public class CartServiceImpl implements CartService {
      */
     @Override
     public List<CartVo> selectGoodsInfo(String userId) {
+        log.info("1");
         CartExample cartExample = new CartExample();
         cartExample.createCriteria().andUserIdEqualTo(userId);
         List<Cart> cartList = cartMapper.selectByExample(cartExample);
