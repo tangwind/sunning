@@ -7,8 +7,6 @@ import com.suning.cn.vo.OrderVo;
 
 public interface OrdersService {
 
-
-
     ReturnResult generatorOrder(GoodsParam[] goodsParams, String userId);
 
     ReturnResult setOrderGetPayed(String[] orderIds);

@@ -80,7 +80,7 @@ public class OrdersServiceImpl extends BaseServiceImpl implements OrdersService 
                 return ReturnResultUtils.returnFail(747, good.getGoodsName() + "无店家售卖");
             }
             goodsVo.setCount(goodsParam.getCount());
-            goodsVo.setThumbImg(getImg(goodsId,"1").get(0));
+            goodsVo.setThumbImg(getImg(goodsId, "1").get(0));
             double cost = goodsVo.getCount() * goodsVo.getOffPrice();
             DecimalFormat df = new DecimalFormat("#.00");
 
@@ -129,8 +129,6 @@ public class OrdersServiceImpl extends BaseServiceImpl implements OrdersService 
             //订单存数据库
             ordersMapper.insertSelective(order);
         }
-        ;
-
         return ReturnResultUtils.returnSuccess(ordersToPay);
     }
 
@@ -144,16 +142,16 @@ public class OrdersServiceImpl extends BaseServiceImpl implements OrdersService 
         ordersList.forEach(orders -> {
             //转vo
             OrderShowVo orderShowVo = new OrderShowVo();
-            BeanUtils.copyProperties(orders,orderShowVo);
+            BeanUtils.copyProperties(orders, orderShowVo);
             //塞商品
             GoodsVo goodsVo = new GoodsVo();
             Goods goods = goodsMapper.selectByPrimaryKey(orders.getGoodsId());
-            BeanUtils.copyProperties(goods,goodsVo);
+            BeanUtils.copyProperties(goods, goodsVo);
             String shopId = rSMapper.selectByPrimaryKey(orders.getGoodsId()).getShopId();
             String shopName = shopsMapper.selectNameByPrimaryKey(shopId);
             goodsVo.setShops_name(shopName);
             goodsVo.setCount(orders.getCount());
-            goodsVo.setThumbImg(getImg(orders.getGoodsId(),"1").get(0));
+            goodsVo.setThumbImg(getImg(orders.getGoodsId(), "1").get(0));
             orderShowVo.setGoodsVo(goodsVo);
             orderShowVoList.add(orderShowVo);
         });
@@ -180,12 +178,19 @@ public class OrdersServiceImpl extends BaseServiceImpl implements OrdersService 
             ordersMapper.updateByPrimaryKeySelective(order);
         });
 
-        return ReturnResultUtils.returnSuccess();
+        return ReturnResultUtils.returnSuccess("订单支付成功");
     }
 
     @Override
     public ReturnResult setOrderGetReceived(String orderId) {
-        return null;
+        //redis修改状态
+        redisUtils.set(orderId, 2);
+        //数据库更新状态
+        Orders order = new Orders();
+        order.setOrderId(orderId);
+        order.setIsDel(2);
+        ordersMapper.updateByPrimaryKeySelective(order);
+        return ReturnResultUtils.returnSuccess("收货成功");
     }
 
 }
