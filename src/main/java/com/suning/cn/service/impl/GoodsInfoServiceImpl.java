@@ -68,6 +68,7 @@ public class GoodsInfoServiceImpl extends BaseServiceImpl implements GoodsInfoSe
            return  goodsInfoVo;
         }
         Reviews reviews = reviewsList.get(GET_REVIEW);
+        reviews.setImages(this.getImgUrl(reviews.getImages()));
         BeanUtils.copyProperties(reviews, goodsInfoVo);
 
         //获取库存
@@ -110,6 +111,7 @@ public class GoodsInfoServiceImpl extends BaseServiceImpl implements GoodsInfoSe
         List<ReviewsVo> reviewsVos = new ArrayList<>();
         reviewsList.forEach(reviews -> {
             ReviewsVo reviewsVo = new ReviewsVo();
+            reviews.setImages(this.getImgUrl(reviews.getImages()));
             BeanUtils.copyProperties(reviews, reviewsVo);
             reviewsVos.add(reviewsVo);
         });
@@ -117,5 +119,10 @@ public class GoodsInfoServiceImpl extends BaseServiceImpl implements GoodsInfoSe
         return pageUtils;
     }
 
+    private String getImgUrl(String fileName){
+        String imgUrl = "http://47.116.79.240:6666/usr/local/project/img/";
+        imgUrl += fileName;
+        return imgUrl;
+    }
 
 }
