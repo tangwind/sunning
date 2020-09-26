@@ -11,11 +11,13 @@ public interface OrdersService {
 
     ReturnResult generatorOrder(GoodsParam[] goodsParams, String userId);
 
-    ReturnResult setorderGetPaied(String[] orderIds);
+    ReturnResult setOrderGetPayed(String[] orderIds);
 
     ReturnResult toPay(OrderVo orderVo);
 
     ReturnResult showAllOrders(String userId);
 
     ReturnResult showOrderDetail(String orderId);
+
+    ReturnResult setOrderGetReceived(String orderId);
 }

@@ -98,9 +98,22 @@ public class OrdersController {
      */
     @ApiOperation(value = "确认支付",notes = "本方法为模拟用户支付成功回调部分，需要返回的订单编号orderId[s]，从上一部前往支付的返回值获取")
     @PostMapping(value = "/getPay")
-    public ReturnResult orderGetPaied(@RequestBody String... orderIds){
+    public ReturnResult orderGetPayed(@RequestBody String... orderIds){
         try {
-            return ordersService.setorderGetPaied(orderIds);
+            return ordersService.setOrderGetPayed(orderIds);
+        }catch (Exception e){
+            return ReturnResultUtils.returnFail(709,"订单状态异常，请联系客服xxx");
+        }
+    }
+
+    /**
+     * 用户确认收货
+     * 参数 orderId
+     */
+    @PostMapping(value = "/getReceived")
+    public ReturnResult orderGetReceived(@RequestBody String orderId){
+        try {
+            return ordersService.setOrderGetReceived(orderId);
         }catch (Exception e){
             return ReturnResultUtils.returnFail(709,"订单状态异常，请联系客服xxx");
         }

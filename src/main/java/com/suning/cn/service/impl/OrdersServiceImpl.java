@@ -18,7 +18,7 @@ import java.util.Date;
 import java.util.List;
 
 @Service
-public class OrdersServiceImpl implements OrdersService {
+public class OrdersServiceImpl extends BaseServiceImpl implements OrdersService {
 
 
     @Autowired
@@ -80,6 +80,7 @@ public class OrdersServiceImpl implements OrdersService {
                 return ReturnResultUtils.returnFail(747, good.getGoodsName() + "无店家售卖");
             }
             goodsVo.setCount(goodsParam.getCount());
+            goodsVo.setThumbImg(getImg(goodsId,"1").get(0));
             double cost = goodsVo.getCount() * goodsVo.getOffPrice();
             DecimalFormat df = new DecimalFormat("#.00");
 
@@ -139,17 +140,35 @@ public class OrdersServiceImpl implements OrdersService {
         OrdersExample.Criteria criteria = ordersExample.createCriteria();
         criteria.andUserIdEqualTo(userId);
         List<Orders> ordersList = ordersMapper.selectByExample(ordersExample);
-        return ReturnResultUtils.returnSuccess(ordersList);
+        List<OrderShowVo> orderShowVoList = Lists.newArrayList();
+        ordersList.forEach(orders -> {
+            //转vo
+            OrderShowVo orderShowVo = new OrderShowVo();
+            BeanUtils.copyProperties(orders,orderShowVo);
+            //塞商品
+            GoodsVo goodsVo = new GoodsVo();
+            Goods goods = goodsMapper.selectByPrimaryKey(orders.getGoodsId());
+            BeanUtils.copyProperties(goods,goodsVo);
+            String shopId = rSMapper.selectByPrimaryKey(orders.getGoodsId()).getShopId();
+            String shopName = shopsMapper.selectNameByPrimaryKey(shopId);
+            goodsVo.setShops_name(shopName);
+            goodsVo.setCount(orders.getCount());
+            goodsVo.setThumbImg(getImg(orders.getGoodsId(),"1").get(0));
+            orderShowVo.setGoodsVo(goodsVo);
+            orderShowVoList.add(orderShowVo);
+        });
+        return ReturnResultUtils.returnSuccess(orderShowVoList);
     }
 
     @Override
     public ReturnResult showOrderDetail(String orderId) {
         Orders order = ordersMapper.selectByPrimaryKey(orderId);
+        //todo 转订单详情vo
         return ReturnResultUtils.returnSuccess(order);
     }
 
     @Override
-    public ReturnResult setorderGetPaied(String[] orderIds) {
+    public ReturnResult setOrderGetPayed(String[] orderIds) {
         List<String> orderIdList = Arrays.asList(orderIds);
         orderIdList.forEach(orderId -> {
             //redis修改状态
@@ -162,6 +181,11 @@ public class OrdersServiceImpl implements OrdersService {
         });
 
         return ReturnResultUtils.returnSuccess();
+    }
+
+    @Override
+    public ReturnResult setOrderGetReceived(String orderId) {
+        return null;
     }
 
 }
