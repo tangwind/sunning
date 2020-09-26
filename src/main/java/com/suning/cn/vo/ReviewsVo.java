@@ -1,5 +1,6 @@
 package com.suning.cn.vo;
 
+import com.suning.cn.utils.UUIDUtils;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;

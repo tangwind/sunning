@@ -46,17 +46,21 @@ public class OrdersServiceImpl extends BaseServiceImpl implements OrdersService 
         Orders order = new Orders();
         AddressVo addressVo = new AddressVo();
         // 根据用户id获取地址等信息
-        ShippingAddress address = addressMapper.selectByPrimaryKey(userId);
-        BeanUtils.copyProperties(address, addressVo);
+        try {
+            ShippingAddress address = addressMapper.selectByPrimaryKey(userId);
+            BeanUtils.copyProperties(address, addressVo);
 
-        //该部分转交去支付部分实现，一个商品对应一个订单
+            //该部分转交去支付部分实现，一个商品对应一个订单
         /*//生成orderId
         String orderId = UUIDUtils.get12UUID();
         orderVo.setOrderId(orderId);
         //id为key，存redis,0:未支付
         redisUtils.set(orderId, "0");*/
 
-        orderVo.setAddressVo(addressVo);
+            orderVo.setAddressVo(addressVo);
+        }catch ( Exception e){
+            return ReturnResultUtils.returnFail(705,"收货地址异常");
+        }
         orderVo.setIsDel(0);
         orderVo.setOffCost(0.0);
         // 商品信息
