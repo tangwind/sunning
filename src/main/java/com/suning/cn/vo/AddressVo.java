@@ -12,6 +12,8 @@ public class AddressVo implements Serializable {
 
     @ApiModelProperty("用户id")
     private String userId;
+    @ApiModelProperty("地址id")
+    private String addressId;
     @ApiModelProperty("收件人姓名")
     private String reciver;
     @ApiModelProperty("收件人手机号")

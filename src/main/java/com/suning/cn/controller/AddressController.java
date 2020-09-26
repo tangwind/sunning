@@ -29,7 +29,7 @@ public class AddressController {
     @ApiOperation(value = "查看自己的收货地址")
     @ResponseBody
     @PostMapping(value = "/selectAddress")
-    public ReturnResult selectAddress(@RequestBody String userId) {
+    public ReturnResult selectAddress(@ApiParam(value = "用户id", required = true) @RequestParam("userId") String userId) {
         try {
             List<AddressVo> addressVos = addressService.selectAddress(userId);
             if (addressVos.size() == 0) {
@@ -64,8 +64,9 @@ public class AddressController {
     @LoginRequired
     @ApiOperation(value = "删除地址")
     @PostMapping(value = "/deleteAddress")
-    public ReturnResult deleteAddress(@RequestParam("userId") @ApiParam(value = "用户id", required = true) String userId) {
-        ReturnResult result = addressService.deleteAddress(userId);
+    public ReturnResult deleteAddress(@RequestParam("userId") @ApiParam(value = "用户id", required = true) String userId,
+                                      @ApiParam(value = "地址id", required = true) @RequestParam("addressId") String addressId) {
+        ReturnResult result = addressService.deleteAddress(userId,addressId);
         return result;
     }
 }

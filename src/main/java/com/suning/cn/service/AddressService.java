@@ -12,7 +12,7 @@ public interface AddressService {
 
     ReturnResult updateAddress(AddressParam addressParam);
 
-    ReturnResult deleteAddress(String userId);
+    ReturnResult deleteAddress(String userId, String addressId);
 
     List<AddressVo> selectAddress(String userId);
 }

@@ -47,8 +47,11 @@ public class OrdersServiceImpl extends BaseServiceImpl implements OrdersService 
         AddressVo addressVo = new AddressVo();
         // 根据用户id获取地址等信息
         try {
-            ShippingAddress address = addressMapper.selectByPrimaryKey(userId);
-            BeanUtils.copyProperties(address, addressVo);
+            ShippingAddressExample addressExample = new ShippingAddressExample();
+            ShippingAddressExample.Criteria criteria = addressExample.createCriteria();
+            criteria.andUserIdEqualTo(userId);
+            List<ShippingAddress> addresses = addressMapper.selectByExample(addressExample);
+            BeanUtils.copyProperties(addresses.get(0), addressVo);
 
             //该部分转交去支付部分实现，一个商品对应一个订单
         /*//生成orderId
@@ -176,8 +179,12 @@ public class OrdersServiceImpl extends BaseServiceImpl implements OrdersService 
         BeanUtils.copyProperties(order,detailVo);
         // 根据用户id获取地址等信息
         AddressVo addressVo = new AddressVo();
-        ShippingAddress address = addressMapper.selectByPrimaryKey(order.getUserId());
-        BeanUtils.copyProperties(address, addressVo);
+        ShippingAddressExample addressExample = new ShippingAddressExample();
+        ShippingAddressExample.Criteria criteria = addressExample.createCriteria();
+        criteria.andUserIdEqualTo(order.getUserId());
+        List<ShippingAddress> addresses = addressMapper.selectByExample(addressExample);
+        BeanUtils.copyProperties(addresses.get(0), addressVo);
+
         detailVo.setAddressVo(addressVo);
         //塞商品
         GoodsVo goodsVo = new GoodsVo();
