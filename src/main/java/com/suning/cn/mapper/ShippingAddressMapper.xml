@@ -302,6 +302,6 @@
   </update>
   <select id="selectAddress" parameterType="com.suning.cn.dto.ShippingAddress" resultMap="BaseResultMap">
     select <include refid="Base_Column_List" />
-    from shipping_address
+    from shipping_address where user_id = #{userId}
   </select>
 </mapper>

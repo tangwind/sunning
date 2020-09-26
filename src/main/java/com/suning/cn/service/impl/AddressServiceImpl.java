@@ -5,6 +5,8 @@ import com.suning.cn.dto.Users;
 import com.suning.cn.mapper.ShippingAddressMapper;
 import com.suning.cn.params.AddressParam;
 import com.suning.cn.service.AddressService;
+import com.suning.cn.utils.ReturnResult;
+import com.suning.cn.utils.ReturnResultUtils;
 import com.suning.cn.vo.AddressVo;
 import com.suning.cn.vo.UsersVo;
 import org.springframework.beans.BeanUtils;
@@ -22,40 +24,40 @@ public class AddressServiceImpl implements AddressService {
     private ShippingAddressMapper addressMapper;
 
     @Override
-    public String insertAddress(AddressParam addressParam) {
+    public ReturnResult insertAddress(AddressParam addressParam) {
         ShippingAddress address = new ShippingAddress();
         BeanUtils.copyProperties(addressParam,address);
         int result = addressMapper.insertSelective(address);
         if (result <= 0) {
-            return "fail";
+            return ReturnResultUtils.returnFail(703,"fail to insert address");
         }
-        return "success";
+        return ReturnResultUtils.returnSuccess("insert address success");
     }
 
     @Override
-    public String updateAddress(AddressParam addressParam) {
+    public ReturnResult updateAddress(AddressParam addressParam) {
         ShippingAddress address = new ShippingAddress();
         BeanUtils.copyProperties(addressParam,address);
         int result = addressMapper.updateByPrimaryKeySelective(address);
         if (result <= 0) {
-            return "fail";
+            return ReturnResultUtils.returnFail(704,"fail to update address");
         }
-        return "success";
+        return ReturnResultUtils.returnSuccess("update address success");
     }
 
     @Override
-    public String deleteAddress(String userId) {
+    public ReturnResult deleteAddress(String userId) {
         int result = addressMapper.deleteByPrimaryKey(userId);
         if (result <= 0) {
-            return "fail";
+            return ReturnResultUtils.returnFail(705,"fail to del address");
         }
-        return "success";
+        return ReturnResultUtils.returnSuccess("del address success");
     }
 
     @Override
-    public List<AddressVo> selectAddress() {
+    public List<AddressVo> selectAddress(String userId) {
         List<AddressVo> addressVoList = new ArrayList<>();
-        List<ShippingAddress> addresses = addressMapper.selectAddress();
+        List<ShippingAddress> addresses = addressMapper.selectAddress(userId);
         addresses.forEach(address -> {
             AddressVo addressVo = new AddressVo();
             BeanUtils.copyProperties(address,addressVo);
