@@ -58,10 +58,6 @@ public class CartServiceImpl implements CartService {
         cartList.forEach(cart -> {
             CartVo cartVo = new CartVo();
             BeanUtils.copyProperties(cart, cartVo);
-            RelationalShop relationalShop = relationalShopMapper.selectByPrimaryKey(cart.getGoodsId());
-            Shops shops = shopsMapper.selectByPrimaryKey(relationalShop.getShopId());
-            cartVo.setShopsName(shops.getShopsName());
-            cartVo.setShopsId(shops.getShopsId());
 
             Goods goods = goodsMapper.selectByPrimaryKey(cart.getGoodsId());
             cartVo.setGoodsName(goods.getGoodsName());
@@ -74,8 +70,17 @@ public class CartServiceImpl implements CartService {
                 goodsStock = MAX_NUM;
             }
             cartVo.setGoodsStock(goodsStock);
+
+            RelationalShop relationalShop = relationalShopMapper.selectByPrimaryKey(cart.getGoodsId());
+            if (!ObjectUtils.isEmpty(relationalShop)) {
+                Shops shops = shopsMapper.selectByPrimaryKey(relationalShop.getShopId());
+                cartVo.setShopsName(shops.getShopsName());
+                cartVo.setShopsId(shops.getShopsId());
+            }
             cartVoList.add(cartVo);
         });
+
+        log.info(cartVoList);
 
         return cartVoList;
     }
