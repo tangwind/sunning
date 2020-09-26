@@ -2,6 +2,7 @@ package com.suning.cn.service.impl;
 
 import com.suning.cn.dto.*;
 import com.suning.cn.mapper.*;
+import com.suning.cn.params.CartDelParam;
 import com.suning.cn.params.CartParam;
 import com.suning.cn.service.CartService;
 import com.suning.cn.vo.CartVo;
@@ -102,22 +103,10 @@ public class CartServiceImpl implements CartService {
             return CART_NUM;
         }
 
-        //判断数据库有没有改订单
-        CartExample cartExample = new CartExample();
-        cartExample.createCriteria().andGoodsIdEqualTo(cartParam.getGoodsId()).andUserIdEqualTo(cartParam.getUserId());
-        long cartData = cartMapper.countByExample(cartExample);
-        if (cartData > 0) {
-
-            int num = cartMapper.selectNumByGIdAndUId(cartParam.getGoodsId(), cartParam.getUserId());
-
-            Integer updateNum = num + cartParam.getGoodsNum();
-
-            if(toCompareStock(cartParam.getGoodsId(), cartParam.getGoodsNum())) {
-                return CART_NUM;
-            }
-            updateNum(cartParam.getGoodsId(), cartParam.getUserId(), updateNum);
-
-            return CART_SUCCESS;
+        //判断购物车中是否存在数据
+        if (isCart(cartParam.getGoodsId(), cartParam.getUserId())) {
+            String result = updateNumByAddCart(cartParam.getGoodsId(), cartParam.getUserId(), cartParam.getGoodsNum());
+            return result;
         }
 
         Cart cart = new Cart();
@@ -165,28 +154,62 @@ public class CartServiceImpl implements CartService {
 
     /**
      * 删除购物车
-     * @param userId 用户id
-     * @param goodsId 商品id
-     * @return 删除成功true
+     * @param cartDelParams
+     * @return
      */
     @Override
-    public boolean isDel(String userId, String goodsId) {
+    public boolean isDel(CartDelParam... cartDelParams) {
 
         //传参不能为空
-        if (StringUtils.isEmpty(userId) && StringUtils.isEmpty(goodsId)) {
+        if (StringUtils.isEmpty(cartDelParams)) {
             return false;
         }
 
-        try {
-            int row = cartMapper.updateByUserIdAndGoodsId(userId, goodsId, CART_DEL);
-            return row > 0;
-        } catch (Exception e) {
-            log.error("删除购物车: " + new Date() + e);
+        for (CartDelParam cartDelParam : cartDelParams) {
+            try {
+                int row = cartMapper.updateByUserIdAndGoodsId(cartDelParam.getUserId(), cartDelParam.getGoodsId(), CART_DEL);
+                return row > 0;
+            } catch (Exception e) {
+                log.error("删除购物车: " + new Date() + e);
+            }
         }
+
+
         return false;
     }
 
+    /**
+     * 判断购物车中是否存在数据
+     * @param goodsId
+     * @param userId
+     * @return
+     */
+    public boolean isCart(String goodsId, String userId) {
+        CartExample cartExample = new CartExample();
+        cartExample.createCriteria().andGoodsIdEqualTo(goodsId).andUserIdEqualTo(userId);
+        long cartData = cartMapper.countByExample(cartExample);
+        return cartData > 0;
+    }
 
+    /**
+     * 更新数据
+     * @param goodsId
+     * @param userId
+     * @param goodsNum
+     * @return
+     */
+    public String updateNumByAddCart(String goodsId, String userId, Integer goodsNum) {
+        //获取商品数量
+        int num = cartMapper.selectNumByGIdAndUId(goodsId, userId);
+        Integer updateNum = num + goodsNum;
+        //购买数量不能大于库存
+        if(toCompareStock(goodsId, updateNum)) {
+            return CART_NUM;
+        }
+        //更新数据
+        updateNum(goodsId, userId, updateNum);
+        return CART_SUCCESS;
+    }
 
     /**
      * 购买数与库存的比较

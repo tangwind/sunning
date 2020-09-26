@@ -2,6 +2,7 @@ package com.suning.cn.controller;
 
 import com.suning.cn.config.api.LoginRequired;
 import com.suning.cn.dto.Cart;
+import com.suning.cn.params.CartDelParam;
 import com.suning.cn.params.CartParam;
 import com.suning.cn.service.CartService;
 import com.suning.cn.utils.ReturnResult;
@@ -94,10 +95,9 @@ public class CartController {
     @LoginRequired
     @ApiOperation(value = "删除购物车中的商品")
     @PostMapping(value = "/delCart")
-    public ReturnResult isDelCart(@RequestParam @ApiParam(required = true) String userId,
-                                  @RequestParam @ApiParam(required = true) String goodsId){
+    public ReturnResult isDelCart(@RequestBody @ApiParam(value = "购物车删除表", required = true) CartDelParam... cartDelParams){
         try {
-            boolean flag = cartService.isDel(userId, goodsId);
+            boolean flag = cartService.isDel(cartDelParams);
             if (flag) {
                 return ReturnResultUtils.returnSuccess("已删除");
             }
