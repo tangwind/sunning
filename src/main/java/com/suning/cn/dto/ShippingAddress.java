@@ -22,6 +22,7 @@ public class ShippingAddress {
      */
     private String userId;
 
+
     /**
      * Database Column Remarks:
      *   地址id

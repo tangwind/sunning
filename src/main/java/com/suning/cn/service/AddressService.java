@@ -8,6 +8,7 @@ import java.util.List;
 
 public interface AddressService {
 
+
     ReturnResult insertAddress(AddressParam addressParam);
 
     ReturnResult updateAddress(AddressParam addressParam);

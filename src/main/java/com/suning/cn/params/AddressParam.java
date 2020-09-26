@@ -8,6 +8,7 @@ import java.io.Serializable;
 @Data
 public class AddressParam implements Serializable {
 
+
     @ApiModelProperty("用户id")
     private String userId;
     @ApiModelProperty("收件人姓名")

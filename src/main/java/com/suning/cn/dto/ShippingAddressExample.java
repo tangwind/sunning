@@ -10,6 +10,7 @@ public class ShippingAddressExample {
      *
      * @mbg.generated
      */
+
     protected String orderByClause;
 
     /**

@@ -60,6 +60,7 @@ public interface ShippingAddressMapper {
      *
      * @mbg.generated
      */
+
     int updateByExample(@Param("record") ShippingAddress record, @Param("example") ShippingAddressExample example);
 
     int deleteByuserId(@Param("userId") String userId, @Param("addressId") String addressId);
