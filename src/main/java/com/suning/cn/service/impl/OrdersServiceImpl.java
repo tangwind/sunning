@@ -10,6 +10,8 @@ import com.suning.cn.vo.*;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
+import org.springframework.util.StringUtils;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -139,7 +141,7 @@ public class OrdersServiceImpl extends BaseServiceImpl implements OrdersService 
         criteria.andUserIdEqualTo(userId);
         List<Orders> ordersList = ordersMapper.selectByExample(ordersExample);
         List<OrderShowVo> orderShowVoList = Lists.newArrayList();
-        ordersList.forEach(orders -> {
+        for (Orders orders:ordersList){
             //转vo
             OrderShowVo orderShowVo = new OrderShowVo();
             BeanUtils.copyProperties(orders, orderShowVo);
@@ -147,22 +149,45 @@ public class OrdersServiceImpl extends BaseServiceImpl implements OrdersService 
             GoodsVo goodsVo = new GoodsVo();
             Goods goods = goodsMapper.selectByPrimaryKey(orders.getGoodsId());
             BeanUtils.copyProperties(goods, goodsVo);
-            String shopId = rSMapper.selectByPrimaryKey(orders.getGoodsId()).getShopId();
-            String shopName = shopsMapper.selectNameByPrimaryKey(shopId);
+            String shopName = "商家已下架商品";
+            RelationalShop rS =rSMapper.selectByPrimaryKey(orders.getGoodsId());
+            if (!ObjectUtils.isEmpty(rS)){
+                String shopId = rS.getShopId();
+                shopName = shopsMapper.selectNameByPrimaryKey(shopId);
+            }
             goodsVo.setShops_name(shopName);
             goodsVo.setCount(orders.getCount());
             goodsVo.setThumbImg(getImg(orders.getGoodsId(), "1").get(0));
             orderShowVo.setGoodsVo(goodsVo);
             orderShowVoList.add(orderShowVo);
-        });
+        };
         return ReturnResultUtils.returnSuccess(orderShowVoList);
     }
 
     @Override
     public ReturnResult showOrderDetail(String orderId) {
         Orders order = ordersMapper.selectByPrimaryKey(orderId);
-        //todo 转订单详情vo
-        return ReturnResultUtils.returnSuccess(order);
+        //转订单详情vo
+        OrderDetailVo detailVo = new OrderDetailVo();
+        BeanUtils.copyProperties(order,detailVo);
+        // 根据用户id获取地址等信息
+        AddressVo addressVo = new AddressVo();
+        ShippingAddress address = addressMapper.selectByPrimaryKey(order.getUserId());
+        BeanUtils.copyProperties(address, addressVo);
+        detailVo.setAddressVo(addressVo);
+        //塞商品
+        GoodsVo goodsVo = new GoodsVo();
+        Goods goods = goodsMapper.selectByPrimaryKey(order.getGoodsId());
+        BeanUtils.copyProperties(goods, goodsVo);
+        String shopId = rSMapper.selectByPrimaryKey(order.getGoodsId()).getShopId();
+        String shopName = shopsMapper.selectNameByPrimaryKey(shopId);
+        goodsVo.setShops_name(shopName);
+        goodsVo.setCount(order.getCount());
+        goodsVo.setThumbImg(getImg(order.getGoodsId(), "1").get(0));
+        detailVo.setGoodsVo(goodsVo);
+
+
+        return ReturnResultUtils.returnSuccess(detailVo);
     }
 
     @Override
