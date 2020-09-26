@@ -96,18 +96,22 @@ public class GoodsInfoServiceImpl extends BaseServiceImpl implements GoodsInfoSe
      */
     @Override
     public PageUtils<ReviewsVo> getReviewsList(String goodsId, Integer pageNo, Integer pageSize) {
+
         PageUtils pageUtils = new PageUtils();
         pageUtils.setPageNo(pageNo);
         pageUtils.setCurrentPage(pageNo);
         pageUtils.setPageSize(pageSize);
+
         long reviewsCount = reviewsMapper.countByGoodsId(goodsId);
         pageUtils.setTotalCount(Integer.parseInt(String.valueOf(reviewsCount)));
+
         ReviewsExample reviewsExample = new ReviewsExample();
         reviewsExample.createCriteria().andGoodsIdEqualTo(goodsId);
         reviewsExample.setLimit(pageNo);
         reviewsExample.setOffset(pageSize);
         reviewsExample.setOrderByClause(REVIEW_BY + " DESC");
         List<Reviews> reviewsList = reviewsMapper.selectByExample(reviewsExample);
+
         List<ReviewsVo> reviewsVos = new ArrayList<>();
         reviewsList.forEach(reviews -> {
             ReviewsVo reviewsVo = new ReviewsVo();
@@ -115,8 +119,10 @@ public class GoodsInfoServiceImpl extends BaseServiceImpl implements GoodsInfoSe
             BeanUtils.copyProperties(reviews, reviewsVo);
             reviewsVos.add(reviewsVo);
         });
+
         pageUtils.setCurrentList(reviewsVos);
         return pageUtils;
+
     }
 
     private String getImgUrl(String fileName){
