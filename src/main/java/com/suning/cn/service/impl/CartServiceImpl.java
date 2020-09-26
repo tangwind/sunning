@@ -241,10 +241,8 @@ public class CartServiceImpl implements CartService {
      */
     public String updateNum (String goodsId, String userId, Integer num) {
         try {
-            int row = cartMapper.updateStock(goodsId, userId, num);
-            if (row > 0) {
-                return CART_SUCCESS;
-            }
+            cartMapper.updateStock(goodsId, userId, num);
+            return CART_SUCCESS;
         } catch (Exception e) {
             log.info("更新商品数量异常: " + new Date() + e);
         }
