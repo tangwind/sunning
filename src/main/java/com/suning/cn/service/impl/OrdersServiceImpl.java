@@ -179,8 +179,12 @@ public class OrdersServiceImpl extends BaseServiceImpl implements OrdersService 
         GoodsVo goodsVo = new GoodsVo();
         Goods goods = goodsMapper.selectByPrimaryKey(order.getGoodsId());
         BeanUtils.copyProperties(goods, goodsVo);
-        String shopId = rSMapper.selectByPrimaryKey(order.getGoodsId()).getShopId();
-        String shopName = shopsMapper.selectNameByPrimaryKey(shopId);
+        String shopName = "商家已下架商品";
+        RelationalShop rS =rSMapper.selectByPrimaryKey(order.getGoodsId());
+        if (!ObjectUtils.isEmpty(rS)){
+            String shopId = rS.getShopId();
+            shopName = shopsMapper.selectNameByPrimaryKey(shopId);
+        }
         goodsVo.setShops_name(shopName);
         goodsVo.setCount(order.getCount());
         goodsVo.setThumbImg(getImg(order.getGoodsId(), "1").get(0));
