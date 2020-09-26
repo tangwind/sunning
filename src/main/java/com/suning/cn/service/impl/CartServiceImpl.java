@@ -151,8 +151,8 @@ public class CartServiceImpl implements CartService {
             return CART_NUM;
         }
         //更新数据
-        updateNum(cartParam.getGoodsId(), cartParam.getUserId(), cartParam.getGoodsNum());
-        return CART_FAIL;
+        String result = updateNum(cartParam.getGoodsId(), cartParam.getUserId(), cartParam.getGoodsNum());
+        return result;
     }
 
     /**
