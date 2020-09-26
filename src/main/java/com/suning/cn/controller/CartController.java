@@ -80,7 +80,7 @@ public class CartController {
         String result = cartService.updateGoodsNum(cartParam);
 
         if (CART_SUCCESS.equals(result)) {
-            return ReturnResultUtils.returnSuccess("添加商品成功！");
+            return ReturnResultUtils.returnSuccess("修改商品数量成功！");
         }
 
         if (CART_NUM.equals(result)) {
