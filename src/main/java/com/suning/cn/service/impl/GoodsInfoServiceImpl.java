@@ -4,6 +4,7 @@ import com.suning.cn.dto.*;
 import com.suning.cn.mapper.*;
 import com.suning.cn.service.GoodsInfoService;
 import com.suning.cn.utils.PageUtils;
+import com.suning.cn.utils.UUIDUtils;
 import com.suning.cn.vo.GoodsInfoVo;
 
 import com.suning.cn.vo.ReviewsVo;
@@ -15,6 +16,7 @@ import org.springframework.util.ObjectUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import static com.suning.cn.cons.HomeNameSpace.*;
 
@@ -117,6 +119,9 @@ public class GoodsInfoServiceImpl extends BaseServiceImpl implements GoodsInfoSe
             ReviewsVo reviewsVo = new ReviewsVo();
             reviews.setImages(this.getImgUrl(reviews.getImages()));
             BeanUtils.copyProperties(reviews, reviewsVo);
+            Random random = new Random();
+            String name =  "1***" + random.nextInt(10);
+            reviewsVo.setUserName(name);
             reviewsVos.add(reviewsVo);
         });
 
