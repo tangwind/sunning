@@ -9,6 +9,9 @@ import lombok.extern.log4j.Log4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
+import org.springframework.util.StringUtils;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -84,11 +87,17 @@ public class CartServiceImpl implements CartService {
     @Override
     public String addToCart(CartParam cartParam) {
 
+        //数据不能为空
+        if (ObjectUtils.isEmpty(cartParam)) {
+            return CART_FAIL;
+        }
+
+        //购买数量不能大于最大购买量
         if (toCompareMax(cartParam.getGoodsNum())) {
             return CART_NUM;
         }
 
-
+        //购买数量不能大于库存
         if(toCompareStock(cartParam.getGoodsId(), cartParam.getGoodsNum())) {
             return CART_NUM;
         }
@@ -99,10 +108,6 @@ public class CartServiceImpl implements CartService {
         long cartData = cartMapper.countByExample(cartExample);
         if (cartData > 0) {
 
-            if (cartParam.getGoodsNum() == 0) {
-                return CART_FAIL;
-            }
-
             int num = cartMapper.selectNumByGIdAndUId(cartParam.getGoodsId(), cartParam.getUserId());
 
             Integer updateNum = num + cartParam.getGoodsNum();
@@ -110,8 +115,9 @@ public class CartServiceImpl implements CartService {
             if(toCompareStock(cartParam.getGoodsId(), cartParam.getGoodsNum())) {
                 return CART_NUM;
             }
-
             updateNum(cartParam.getGoodsId(), cartParam.getUserId(), updateNum);
+
+            return CART_SUCCESS;
         }
 
         Cart cart = new Cart();
@@ -137,15 +143,20 @@ public class CartServiceImpl implements CartService {
     @Override
     public String updateGoodsNum(CartParam cartParam) {
 
-        if (cartParam.getGoodsNum() > MAX_NUM) {
+        //数据不能为空
+        if (ObjectUtils.isEmpty(cartParam)) {
+            return CART_FAIL;
+        }
+
+        //购买数量不能大于最大购买量
+        if (toCompareMax(cartParam.getGoodsNum())) {
             return CART_NUM;
         }
 
-        int goodsStock = goodsStockMapper.selectNumByGoodsId(cartParam.getGoodsId());
-        if(cartParam.getGoodsNum() > goodsStock) {
+        //购买数量不能大于库存
+        if(toCompareStock(cartParam.getGoodsId(), cartParam.getGoodsNum())) {
             return CART_NUM;
         }
-
 
         updateNum(cartParam.getGoodsId(), cartParam.getUserId(), cartParam.getGoodsNum());
 
@@ -160,16 +171,29 @@ public class CartServiceImpl implements CartService {
      */
     @Override
     public boolean isDel(String userId, String goodsId) {
+
+        //传参不能为空
+        if (StringUtils.isEmpty(userId) && StringUtils.isEmpty(goodsId)) {
+            return false;
+        }
+
         try {
             int row = cartMapper.updateByUserIdAndGoodsId(userId, goodsId, CART_DEL);
             return row > 0;
         } catch (Exception e) {
             log.error("删除购物车: " + new Date() + e);
         }
-
         return false;
     }
 
+
+
+    /**
+     * 购买数与库存的比较
+     * @param goodsId
+     * @param num
+     * @return
+     */
     public boolean toCompareStock(String goodsId, Integer num) {
         int goodsStock = goodsStockMapper.selectNumByGoodsId(goodsId);
         return num > goodsStock;
