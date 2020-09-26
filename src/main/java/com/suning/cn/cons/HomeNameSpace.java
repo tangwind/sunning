@@ -55,6 +55,10 @@ public class HomeNameSpace {
      * 删除购物车
      */
     public static final Integer CART_DEL = 0;
+    /**
+     * 未删除商品
+     */
+    public static final Integer CART_NO_DEL = 1;
 
     /**
      * 购物车商品数量大于库存

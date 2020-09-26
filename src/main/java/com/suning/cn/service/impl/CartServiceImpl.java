@@ -49,7 +49,7 @@ public class CartServiceImpl implements CartService {
     @Override
     public List<CartVo> selectGoodsInfo(String userId) {
         CartExample cartExample = new CartExample();
-        cartExample.createCriteria().andUserIdEqualTo(userId);
+        cartExample.createCriteria().andUserIdEqualTo(userId).andIsDelEqualTo(CART_NO_DEL);
         List<Cart> cartList = cartMapper.selectByExample(cartExample);
         List<CartVo> cartVoList = new ArrayList<>();
         if (cartList.isEmpty()) {
