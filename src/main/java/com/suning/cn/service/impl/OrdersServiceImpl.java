@@ -49,8 +49,13 @@ public class OrdersServiceImpl extends BaseServiceImpl implements OrdersService 
         try {
             ShippingAddressExample addressExample = new ShippingAddressExample();
             ShippingAddressExample.Criteria criteria = addressExample.createCriteria();
-            criteria.andUserIdEqualTo(userId);
+            //选取默认地址
+            criteria.andUserIdEqualTo(userId).andIsDefaultEqualTo(1);
             List<ShippingAddress> addresses = addressMapper.selectByExample(addressExample);
+            if (addresses.size()==0){
+                criteria.andIsDefaultEqualTo(0);
+                addresses = addressMapper.selectByExample(addressExample);
+            }
             BeanUtils.copyProperties(addresses.get(0), addressVo);
 
             //该部分转交去支付部分实现，一个商品对应一个订单
@@ -90,10 +95,10 @@ public class OrdersServiceImpl extends BaseServiceImpl implements OrdersService 
             }
             goodsVo.setCount(goodsParam.getCount());
             goodsVo.setThumbImg(getImg(goodsId, "1").get(0));
-            double cost = goodsVo.getCount() * goodsVo.getOffPrice();
             DecimalFormat df = new DecimalFormat("#.00");
+            double cost = Double.valueOf(df.format(goodsVo.getCount() * goodsVo.getOffPrice()));
 
-            totalCost += Double.valueOf(df.format(cost));
+            totalCost += cost;
             goodsVoList.add(goodsVo);
         }
         orderVo.setGoodsVo(goodsVoList);
@@ -128,6 +133,7 @@ public class OrdersServiceImpl extends BaseServiceImpl implements OrdersService 
             order.setCreateTime(new Date());
             order.setModifyTime(new Date());
             order.setOffCost(0.0);
+            order.setAddressId(orderVo.getAddressVo().getAddressId());
             //商品信息对应部分
             order.setGoodsId(goodsVo.getGoodsId());
             order.setCount(goodsVo.getCount());
@@ -177,11 +183,11 @@ public class OrdersServiceImpl extends BaseServiceImpl implements OrdersService 
         //转订单详情vo
         OrderDetailVo detailVo = new OrderDetailVo();
         BeanUtils.copyProperties(order,detailVo);
-        // 根据用户id获取地址等信息
+        // 根据收货地址id获取地址信息
         AddressVo addressVo = new AddressVo();
         ShippingAddressExample addressExample = new ShippingAddressExample();
         ShippingAddressExample.Criteria criteria = addressExample.createCriteria();
-        criteria.andUserIdEqualTo(order.getUserId());
+        criteria.andAddressIdEqualTo(order.getAddressId());
         List<ShippingAddress> addresses = addressMapper.selectByExample(addressExample);
         BeanUtils.copyProperties(addresses.get(0), addressVo);
 

@@ -2,9 +2,7 @@ package com.suning.cn.mapper;
 
 import com.suning.cn.dto.Orders;
 import com.suning.cn.dto.OrdersExample;
-
 import java.util.List;
-
 import org.apache.ibatis.annotations.Param;
 
 public interface OrdersMapper {
@@ -95,4 +93,6 @@ public interface OrdersMapper {
      * @mbg.generated
      */
     int updateByPrimaryKey(Orders record);
+
+    int selectIsDel(String orderId);
 }
