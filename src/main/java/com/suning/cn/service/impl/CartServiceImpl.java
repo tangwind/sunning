@@ -138,7 +138,7 @@ public class CartServiceImpl implements CartService {
 
         //数据不能为空
         if (ObjectUtils.isEmpty(cartParam)) {
-            return CART_FAIL;
+            return CART_NUM;
         }
 
         //购买数量不能大于最大购买量
