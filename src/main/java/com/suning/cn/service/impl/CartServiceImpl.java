@@ -246,8 +246,7 @@ public class CartServiceImpl implements CartService {
         } catch (Exception e) {
             log.info("更新商品数量异常: " + new Date() + e);
         }
-        //return CART_FAIL;
-        return "无效";
+        return CART_FAIL;
     }
 
 
