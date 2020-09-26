@@ -80,8 +80,6 @@ public class CartServiceImpl implements CartService {
             cartVoList.add(cartVo);
         });
 
-        log.info(cartVoList);
-
         return cartVoList;
     }
 
