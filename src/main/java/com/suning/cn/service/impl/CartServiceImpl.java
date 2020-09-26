@@ -10,6 +10,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import static com.suning.cn.cons.HomeNameSpace.*;
@@ -43,13 +44,11 @@ public class CartServiceImpl implements CartService {
      */
     @Override
     public List<CartVo> selectGoodsInfo(String userId) {
-        log.info("1");
         CartExample cartExample = new CartExample();
         cartExample.createCriteria().andUserIdEqualTo(userId);
         List<Cart> cartList = cartMapper.selectByExample(cartExample);
         List<CartVo> cartVoList = new ArrayList<>();
         if (cartList.isEmpty()) {
-
             return cartVoList;
         }
         cartList.forEach(cart -> {
@@ -84,21 +83,46 @@ public class CartServiceImpl implements CartService {
      */
     @Override
     public String addToCart(CartParam cartParam) {
-        if (cartParam.getGoodsNum() > MAX_NUM) {
+
+        if (toCompareMax(cartParam.getGoodsNum())) {
             return CART_NUM;
         }
 
-        int goodsStock = goodsStockMapper.selectNumByGoodsId(cartParam.getGoodsId());
-        if(cartParam.getGoodsNum() > goodsStock) {
+
+        if(toCompareStock(cartParam.getGoodsId(), cartParam.getGoodsNum())) {
             return CART_NUM;
         }
 
+        //判断数据库有没有改订单
+        CartExample cartExample = new CartExample();
+        cartExample.createCriteria().andGoodsIdEqualTo(cartParam.getGoodsId()).andUserIdEqualTo(cartParam.getUserId());
+        long cartData = cartMapper.countByExample(cartExample);
+        if (cartData > 0) {
+
+            if (cartParam.getGoodsNum() == 0) {
+                return CART_FAIL;
+            }
+
+            int num = cartMapper.selectNumByGIdAndUId(cartParam.getGoodsId(), cartParam.getUserId());
+
+            Integer updateNum = num + cartParam.getGoodsNum();
+
+            if(toCompareStock(cartParam.getGoodsId(), cartParam.getGoodsNum())) {
+                return CART_NUM;
+            }
+
+            updateNum(cartParam.getGoodsId(), cartParam.getUserId(), updateNum);
+        }
 
         Cart cart = new Cart();
         BeanUtils.copyProperties(cartParam, cart);
-        int row = cartMapper.insertSelective(cart);
-        if (row > 0) {
-            return CART_SUCCESS;
+        try {
+            int row = cartMapper.insertSelective(cart);
+            if (row > 0) {
+                return CART_SUCCESS;
+            }
+        } catch (Exception e) {
+            log.info("购物车添加商品异常: " + new Date() + e);
         }
 
         return CART_FAIL;
@@ -112,6 +136,7 @@ public class CartServiceImpl implements CartService {
      */
     @Override
     public String updateGoodsNum(CartParam cartParam) {
+
         if (cartParam.getGoodsNum() > MAX_NUM) {
             return CART_NUM;
         }
@@ -120,10 +145,10 @@ public class CartServiceImpl implements CartService {
         if(cartParam.getGoodsNum() > goodsStock) {
             return CART_NUM;
         }
-        int row = cartMapper.updateStock(cartParam.getGoodsId(), cartParam.getUserId(), cartParam.getGoodsNum());
-        if (row > 0) {
-            return CART_SUCCESS;
-        }
+
+
+        updateNum(cartParam.getGoodsId(), cartParam.getUserId(), cartParam.getGoodsNum());
+
         return CART_FAIL;
     }
 
@@ -135,9 +160,50 @@ public class CartServiceImpl implements CartService {
      */
     @Override
     public boolean isDel(String userId, String goodsId) {
-        int row = cartMapper.updateByUserIdAndGoodsId(userId, goodsId, CART_DEL);
-        return row > 0;
+        try {
+            int row = cartMapper.updateByUserIdAndGoodsId(userId, goodsId, CART_DEL);
+            return row > 0;
+        } catch (Exception e) {
+            log.error("删除购物车: " + new Date() + e);
+        }
+
+        return false;
     }
+
+    public boolean toCompareStock(String goodsId, Integer num) {
+        int goodsStock = goodsStockMapper.selectNumByGoodsId(goodsId);
+        return num > goodsStock;
+    }
+
+    /**
+     * 判断传入商品数量是否大于最大购买商品数量
+     * @param num
+     * @return
+     */
+    public boolean toCompareMax (Integer num) {
+        return num > MAX_NUM;
+    }
+
+    /**
+     * 跟新购物车中的商品数据
+     * @param goodsId
+     * @param userId
+     * @param num
+     * @return
+     */
+    public String updateNum (String goodsId, String userId, Integer num) {
+        try {
+            int row = cartMapper.updateStock(goodsId, userId, num);
+            if (row > 0) {
+                return CART_SUCCESS;
+            }
+        } catch (Exception e) {
+            log.info("更新商品数量异常: " + new Date() + e);
+        }
+        return CART_FAIL;
+    }
+
+
 
 
 }
