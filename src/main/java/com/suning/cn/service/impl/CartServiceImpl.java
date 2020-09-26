@@ -80,6 +80,7 @@ public class CartServiceImpl implements CartService {
         return cartVoList;
     }
 
+
     /**
      * 购物车添加商品
      * @param cartParam
@@ -146,9 +147,8 @@ public class CartServiceImpl implements CartService {
         if(toCompareStock(cartParam.getGoodsId(), cartParam.getGoodsNum())) {
             return CART_NUM;
         }
-
+        //更新数据
         updateNum(cartParam.getGoodsId(), cartParam.getUserId(), cartParam.getGoodsNum());
-
         return CART_FAIL;
     }
 

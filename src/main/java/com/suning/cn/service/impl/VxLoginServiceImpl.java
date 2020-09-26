@@ -2,22 +2,17 @@ package com.suning.cn.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
 import com.suning.cn.config.vxconfig.VxConfig;
-import com.suning.cn.dto.UsersExample;
 import com.suning.cn.mapper.UsersMapper;
 import com.suning.cn.service.VxLoginService;
 import com.suning.cn.utils.HttpClientUtils;
 import com.suning.cn.utils.RedisUtils;
-import com.suning.cn.utils.ReturnResult;
-import com.suning.cn.utils.ReturnResultUtils;
 import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.io.IOException;
-
 import static com.suning.cn.cons.RedisNameSpace.USER_LOGIN;
 import static com.suning.cn.cons.RedisNameSpace.USER_LOGIN_TIME;
-import static com.suning.cn.cons.VxLoginNamespace.REGISTER;
+
 
 /**
  * @author tangchaochao

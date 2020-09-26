@@ -86,6 +86,8 @@ public class HomeNameSpace {
      */
     public static final String NO_DATA = "没有数据！";
 
-
-
+    /**
+     * 评论图片地址
+     */
+    public static final String IMG_URL = "http://47.116.79.240:6666/usr/local/project/img/";
 }

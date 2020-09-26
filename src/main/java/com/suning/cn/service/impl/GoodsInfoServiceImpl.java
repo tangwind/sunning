@@ -120,7 +120,7 @@ public class GoodsInfoServiceImpl extends BaseServiceImpl implements GoodsInfoSe
     }
 
     private String getImgUrl(String fileName){
-        String imgUrl = "http://47.116.79.240:6666/usr/local/project/img/";
+        String imgUrl = IMG_URL;
         imgUrl += fileName;
         return imgUrl;
     }
