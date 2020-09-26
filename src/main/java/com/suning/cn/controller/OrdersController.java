@@ -23,28 +23,27 @@ public class OrdersController {
     /**
      * 查看用户所有订单
      */
-    @ApiOperation(value = "查看用户所有订单",notes = "参数用户id")
+    @ApiOperation(value = "查看用户所有订单", notes = "参数用户id")
     @PostMapping(value = "/showAllOrders")
-    public ReturnResult showAllOrders(@RequestBody String userId){
+    public ReturnResult showAllOrders(@RequestBody String userId) {
         try {
             return ordersService.showAllOrders(userId);
-        }catch (Exception e){
-            return ReturnResultUtils.returnFail(767,"加载订单失败");
+        } catch (Exception e) {
+            return ReturnResultUtils.returnFail(767, "加载订单失败");
         }
     }
 
     /**
      * 查看订单详情
      */
-    @ApiOperation(value = "查看某个订单详情",notes = "参数orderId")
+    @ApiOperation(value = "查看某个订单详情", notes = "参数orderId")
     @PostMapping(value = "/showOrderDetail")
-    public ReturnResult showOrderDetail(@RequestBody String orderId){
+    public ReturnResult showOrderDetail(@RequestBody String orderId) {
         try {
             return ordersService.showOrderDetail(orderId);
-        }catch (Exception e){
-            return ReturnResultUtils.returnFail(710,"加载订单失败");
+        } catch (Exception e) {
+            return ReturnResultUtils.returnFail(710, "加载订单失败");
         }
-
     }
 
 
@@ -58,51 +57,63 @@ public class OrdersController {
      * @return
      */
     @LoginRequired
-    @ApiOperation(value = "生成未支付订单",notes = "goodParams参数为对象数组")
+    @ApiOperation(value = "生成未支付订单", notes = "goodParams参数为对象数组")
     @PostMapping(value = "/confirm")
     public ReturnResult generatorOrder(@RequestParam @ApiParam(value = "用户id") String userId, @RequestBody @ApiParam(value = "购物车的商品集合") GoodsParam... goodsParams) {
         //return ordersService.generatorOrder(orderParam);
         try {
             return ordersService.generatorOrder(goodsParams, userId);
-        }catch (Exception e){
-            return ReturnResultUtils.returnFail(707,"订单生成失败");
+        } catch (Exception e) {
+            return ReturnResultUtils.returnFail(707, "订单生成失败");
         }
     }
 
     /**
      * 用户点击支付
      * 模拟支付接口，将生成的订单存入数据库，等待用户支付信息
-     * @param orderVo
-     * 参数包含商品信息，店铺名，订单信息，收货地址
-     * 用户点支付之后执行该方法
-     * 需要
+     *
+     * @param orderVo 参数包含商品信息，店铺名，订单信息，收货地址
+     *                用户点支付之后执行该方法
+     *                需要
      */
-    @ApiOperation(value = "前往支付",notes = "本方法为模拟支付接口前往支付部分，对应小程序前往微信支付，需要生成未支付订单的返回结果")
+    @ApiOperation(value = "前往支付", notes = "本方法为模拟支付接口前往支付部分，对应小程序前往微信支付，需要生成未支付订单的返回结果")
     @PostMapping(value = "toPay")
-    public ReturnResult toPay(@RequestBody OrderVo orderVo){
+    public ReturnResult toPay(@RequestBody OrderVo orderVo) {
         try {
             return ordersService.toPay(orderVo);
-        }catch (Exception e){
-            return ReturnResultUtils.returnFail(757,"订单生成异常，请重试");
+        } catch (Exception e) {
+            return ReturnResultUtils.returnFail(757, "订单生成异常，请重试");
         }
-
-
     }
 
 
     /**
      * 用户确认支付
-     *
+     * <p>
      * 传递orderId
      * 模拟微信支付接口，回调本函数
      */
-    @ApiOperation(value = "确认支付",notes = "本方法为模拟用户支付成功回调部分，需要返回的订单编号orderId[s]，从上一部前往支付的返回值获取")
+    @ApiOperation(value = "确认支付", notes = "本方法为模拟用户支付成功回调部分，需要返回的订单编号orderId[s]，从上一部前往支付的返回值获取")
     @PostMapping(value = "/getPay")
-    public ReturnResult orderGetPaied(@RequestBody String... orderIds){
+    public ReturnResult orderGetPayed(@RequestBody String... orderIds) {
         try {
-            return ordersService.setorderGetPaied(orderIds);
-        }catch (Exception e){
-            return ReturnResultUtils.returnFail(709,"订单状态异常，请联系客服xxx");
+            return ordersService.setOrderGetPayed(orderIds);
+        } catch (Exception e) {
+            return ReturnResultUtils.returnFail(709, "订单状态异常，请联系客服xxx");
+        }
+    }
+
+    /**
+     * 用户确认收货
+     * 参数 orderId
+     */
+    @ApiOperation(value = "用户确认收货")
+    @PostMapping(value = "/getReceived")
+    public ReturnResult orderGetReceived(@RequestBody String orderId) {
+        try {
+            return ordersService.setOrderGetReceived(orderId);
+        } catch (Exception e) {
+            return ReturnResultUtils.returnFail(709, "订单状态异常，请联系客服xxx");
         }
     }
 }

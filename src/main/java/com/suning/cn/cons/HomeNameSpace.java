@@ -55,6 +55,10 @@ public class HomeNameSpace {
      * 删除购物车
      */
     public static final Integer CART_DEL = 0;
+    /**
+     * 未删除商品
+     */
+    public static final Integer CART_NO_DEL = 1;
 
     /**
      * 购物车商品数量大于库存
@@ -86,6 +90,8 @@ public class HomeNameSpace {
      */
     public static final String NO_DATA = "没有数据！";
 
-
-
+    /**
+     * 评论图片地址
+     */
+    public static final String IMG_URL = "http://47.116.79.240:6666/usr/local/project/img/";
 }

@@ -3,6 +3,8 @@ package com.suning.cn.controller;
 import com.suning.cn.config.api.LoginRequired;
 import com.suning.cn.params.AddressParam;
 import com.suning.cn.service.AddressService;
+import com.suning.cn.utils.ReturnResult;
+import com.suning.cn.utils.ReturnResultUtils;
 import com.suning.cn.vo.AddressVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -27,17 +29,24 @@ public class AddressController {
     @ApiOperation(value = "查看自己的收货地址")
     @ResponseBody
     @PostMapping(value = "/selectAddress")
-    public List<AddressVo> selectAddress() {
-        List<AddressVo> addressVos = addressService.selectAddress();
-        return addressVos;
+    public ReturnResult selectAddress(@RequestBody String userId) {
+        try {
+            List<AddressVo> addressVos = addressService.selectAddress(userId);
+            if (addressVos.size() == 0) {
+                return ReturnResultUtils.returnSuccess("您尚未添加收货地址");
+            }
+            return ReturnResultUtils.returnSuccess(addressVos);
+        } catch (Exception e) {
+            return ReturnResultUtils.returnFail(818, "查询收货地址异常");
+        }
     }
 
     //插入收货地址
     @LoginRequired
     @ApiOperation(value = "添加收货地址")
     @PostMapping(value = "/insertAddress")
-    public String insertAddress(@RequestBody @ApiParam(value = "收货地址信息", required = true) AddressParam addressParam) {
-        String result = addressService.insertAddress(addressParam);
+    public ReturnResult insertAddress(@RequestBody @ApiParam(value = "收货地址信息", required = true) AddressParam addressParam) {
+        ReturnResult result = addressService.insertAddress(addressParam);
         return result;
 
     }
@@ -46,8 +55,8 @@ public class AddressController {
     @LoginRequired
     @ApiOperation(value = "修改收货地址")
     @PostMapping(value = "/updateAddress")
-    public String updateAddress(@RequestBody @ApiParam(value = "收货地址信息", required = true) AddressParam addressParam) {
-        String result = addressService.updateAddress(addressParam);
+    public ReturnResult updateAddress(@RequestBody @ApiParam(value = "收货地址信息", required = true) AddressParam addressParam) {
+        ReturnResult result = addressService.updateAddress(addressParam);
         return result;
     }
 
@@ -55,8 +64,8 @@ public class AddressController {
     @LoginRequired
     @ApiOperation(value = "删除地址")
     @PostMapping(value = "/deleteAddress")
-    public String deleteAddress(@RequestParam("userId") @ApiParam(value = "用户id", required = true) String userId) {
-        String result = addressService.deleteAddress(userId);
+    public ReturnResult deleteAddress(@RequestParam("userId") @ApiParam(value = "用户id", required = true) String userId) {
+        ReturnResult result = addressService.deleteAddress(userId);
         return result;
     }
 }

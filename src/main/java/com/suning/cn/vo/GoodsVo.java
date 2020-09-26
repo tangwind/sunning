@@ -16,6 +16,8 @@ public class GoodsVo implements Serializable {
     private String goodsName;
     @ApiModelProperty(value = "商品现价/优惠价")
     private Double offPrice;
+    @ApiModelProperty(value = "商品主图")
+    private String thumbImg;
     @ApiModelProperty(value = "店铺名")
     private String shops_name;
     @ApiModelProperty(value = "商品数量")

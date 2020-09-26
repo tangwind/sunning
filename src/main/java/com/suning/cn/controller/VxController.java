@@ -1,31 +1,14 @@
 package com.suning.cn.controller;
 
-import com.alibaba.fastjson.JSONObject;
-import com.suning.cn.config.vxconfig.VxConfig;
-import com.suning.cn.cons.RedisNameSpace;
-import com.suning.cn.dto.Users;
-import com.suning.cn.params.UsersInfoParam;
-import com.suning.cn.params.UsersParam;
-import com.suning.cn.service.UsersService;
+
 import com.suning.cn.service.VxLoginService;
-import com.suning.cn.utils.HttpClientUtils;
-import com.suning.cn.utils.RedisUtils;
-import com.suning.cn.utils.ReturnResult;
-import com.suning.cn.utils.UUIDUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.extern.log4j.Log4j;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-
 import java.io.IOException;
-import java.nio.file.attribute.UserPrincipal;
-
-import static com.suning.cn.cons.RedisNameSpace.USER_LOGIN;
-import static com.suning.cn.cons.RedisNameSpace.USER_LOGIN_TIME;
 
 /**
  * Created by  lzy  on 2020/9/23 9:12
@@ -47,7 +30,6 @@ public class VxController {
 
     @Autowired
     private VxLoginService vxLoginService;
-
 
     @ApiOperation(value = "获取用户登录信息")
     @PostMapping(value = "/callBack")

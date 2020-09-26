@@ -10,6 +10,8 @@ import com.suning.cn.vo.*;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
+import org.springframework.util.StringUtils;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -18,7 +20,7 @@ import java.util.Date;
 import java.util.List;
 
 @Service
-public class OrdersServiceImpl implements OrdersService {
+public class OrdersServiceImpl extends BaseServiceImpl implements OrdersService {
 
 
     @Autowired
@@ -80,6 +82,7 @@ public class OrdersServiceImpl implements OrdersService {
                 return ReturnResultUtils.returnFail(747, good.getGoodsName() + "无店家售卖");
             }
             goodsVo.setCount(goodsParam.getCount());
+            goodsVo.setThumbImg(getImg(goodsId, "1").get(0));
             double cost = goodsVo.getCount() * goodsVo.getOffPrice();
             DecimalFormat df = new DecimalFormat("#.00");
 
@@ -128,8 +131,6 @@ public class OrdersServiceImpl implements OrdersService {
             //订单存数据库
             ordersMapper.insertSelective(order);
         }
-        ;
-
         return ReturnResultUtils.returnSuccess(ordersToPay);
     }
 
@@ -139,17 +140,62 @@ public class OrdersServiceImpl implements OrdersService {
         OrdersExample.Criteria criteria = ordersExample.createCriteria();
         criteria.andUserIdEqualTo(userId);
         List<Orders> ordersList = ordersMapper.selectByExample(ordersExample);
-        return ReturnResultUtils.returnSuccess(ordersList);
+        List<OrderShowVo> orderShowVoList = Lists.newArrayList();
+        for (Orders orders:ordersList){
+            //转vo
+            OrderShowVo orderShowVo = new OrderShowVo();
+            BeanUtils.copyProperties(orders, orderShowVo);
+            //塞商品
+            GoodsVo goodsVo = new GoodsVo();
+            Goods goods = goodsMapper.selectByPrimaryKey(orders.getGoodsId());
+            BeanUtils.copyProperties(goods, goodsVo);
+            String shopName = "商家已下架商品";
+            RelationalShop rS =rSMapper.selectByPrimaryKey(orders.getGoodsId());
+            if (!ObjectUtils.isEmpty(rS)){
+                String shopId = rS.getShopId();
+                shopName = shopsMapper.selectNameByPrimaryKey(shopId);
+            }
+            goodsVo.setShops_name(shopName);
+            goodsVo.setCount(orders.getCount());
+            goodsVo.setThumbImg(getImg(orders.getGoodsId(), "1").get(0));
+            orderShowVo.setGoodsVo(goodsVo);
+            orderShowVoList.add(orderShowVo);
+        };
+        return ReturnResultUtils.returnSuccess(orderShowVoList);
     }
 
     @Override
     public ReturnResult showOrderDetail(String orderId) {
         Orders order = ordersMapper.selectByPrimaryKey(orderId);
-        return ReturnResultUtils.returnSuccess(order);
+        //转订单详情vo
+        OrderDetailVo detailVo = new OrderDetailVo();
+        BeanUtils.copyProperties(order,detailVo);
+        // 根据用户id获取地址等信息
+        AddressVo addressVo = new AddressVo();
+        ShippingAddress address = addressMapper.selectByPrimaryKey(order.getUserId());
+        BeanUtils.copyProperties(address, addressVo);
+        detailVo.setAddressVo(addressVo);
+        //塞商品
+        GoodsVo goodsVo = new GoodsVo();
+        Goods goods = goodsMapper.selectByPrimaryKey(order.getGoodsId());
+        BeanUtils.copyProperties(goods, goodsVo);
+        String shopName = "商家已下架商品";
+        RelationalShop rS =rSMapper.selectByPrimaryKey(order.getGoodsId());
+        if (!ObjectUtils.isEmpty(rS)){
+            String shopId = rS.getShopId();
+            shopName = shopsMapper.selectNameByPrimaryKey(shopId);
+        }
+        goodsVo.setShops_name(shopName);
+        goodsVo.setCount(order.getCount());
+        goodsVo.setThumbImg(getImg(order.getGoodsId(), "1").get(0));
+        detailVo.setGoodsVo(goodsVo);
+
+
+        return ReturnResultUtils.returnSuccess(detailVo);
     }
 
     @Override
-    public ReturnResult setorderGetPaied(String[] orderIds) {
+    public ReturnResult setOrderGetPayed(String[] orderIds) {
         List<String> orderIdList = Arrays.asList(orderIds);
         orderIdList.forEach(orderId -> {
             //redis修改状态
@@ -161,7 +207,19 @@ public class OrdersServiceImpl implements OrdersService {
             ordersMapper.updateByPrimaryKeySelective(order);
         });
 
-        return ReturnResultUtils.returnSuccess();
+        return ReturnResultUtils.returnSuccess("订单支付成功");
+    }
+
+    @Override
+    public ReturnResult setOrderGetReceived(String orderId) {
+        //redis修改状态
+        redisUtils.set(orderId, 2);
+        //数据库更新状态
+        Orders order = new Orders();
+        order.setOrderId(orderId);
+        order.setIsDel(2);
+        ordersMapper.updateByPrimaryKeySelective(order);
+        return ReturnResultUtils.returnSuccess("收货成功");
     }
 
 }

@@ -272,4 +272,8 @@
   <update id="updateStock">
     update cart set goods_num = #{goodsNum} where goods_id = #{goodsId} and user_id = #{userId}
   </update>
+
+  <select id="selectNumByGIdAndUId" resultType="int">
+    select goods_num from cart where goods_id = #{goodsId} and user_id = #{userId}
+    </select>
 </mapper>

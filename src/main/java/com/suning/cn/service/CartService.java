@@ -1,5 +1,6 @@
 package com.suning.cn.service;
 
+import com.suning.cn.params.CartDelParam;
 import com.suning.cn.params.CartParam;
 import com.suning.cn.vo.CartVo;
 
@@ -17,6 +18,6 @@ public interface CartService {
 
     String updateGoodsNum(CartParam cartParam);
 
-    boolean isDel(String userId, String goodsId);
+    boolean isDel(CartDelParam... cartDelParams);
 
 }

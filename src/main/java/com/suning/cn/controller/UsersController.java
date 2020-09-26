@@ -40,8 +40,8 @@ public class UsersController {
         String fileName = userInfo.getPhotoHead();
         String requestURL = request.getRequestURL().toString();
         String requestURI = request.getRequestURI();
-        String url = requestURL.substring(0, requestURL.length() - requestURI.length() + 1);
-        url += "/usr/local/project/upload" + fileName;
+        String url = "http://47.116.79.240:6666";
+        url += "/usr/local/project/upload/" + fileName;
         userInfo.setPhotoHead(url);
         return userInfo;
     }
@@ -88,7 +88,7 @@ public class UsersController {
     }
 
     @LoginRequired
-    @ApiOperation(value = "查询收货地址")
+    @ApiOperation(value = "添加评论")
     @PostMapping("/publishReview")
     public ReturnResult publishReview(@RequestParam @ApiParam(value = "商品编号", required = true) String orderId,
                                       @RequestParam @ApiParam(value = "评论内容", required = true) String content,

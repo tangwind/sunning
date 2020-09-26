@@ -98,5 +98,5 @@ public interface ShippingAddressMapper {
      */
     int updateByPrimaryKey(ShippingAddress record);
 
-    List<ShippingAddress> selectAddress();
+    List<ShippingAddress> selectAddress(@Param("userId") String userId);
 }

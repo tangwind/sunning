@@ -1,7 +1,7 @@
 package com.suning.cn.controller;
 
 import com.suning.cn.config.api.LoginRequired;
-import com.suning.cn.dto.Cart;
+import com.suning.cn.params.CartDelParam;
 import com.suning.cn.params.CartParam;
 import com.suning.cn.service.CartService;
 import com.suning.cn.utils.ReturnResult;
@@ -75,12 +75,11 @@ public class CartController {
     @ApiOperation(value = "更改购物车中的商品数量", notes = "每次更改一个商品")
     @PostMapping(value = "/updateNum")
     public ReturnResult updateGoodsNum(@RequestBody @ApiParam(value = "购物车参数表", required = true) CartParam cartParam){
-        log.info("cartParam为："+cartParam);
 
         String result = cartService.updateGoodsNum(cartParam);
 
         if (CART_SUCCESS.equals(result)) {
-            return ReturnResultUtils.returnSuccess("添加商品成功！");
+            return ReturnResultUtils.returnSuccess("修改商品数量成功！");
         }
 
         if (CART_NUM.equals(result)) {
@@ -94,10 +93,9 @@ public class CartController {
     @LoginRequired
     @ApiOperation(value = "删除购物车中的商品")
     @PostMapping(value = "/delCart")
-    public ReturnResult isDelCart(@RequestParam @ApiParam(required = true) String userId,
-                                  @RequestParam @ApiParam(required = true) String goodsId){
+    public ReturnResult isDelCart(@RequestBody @ApiParam(value = "购物车删除表", required = true) CartDelParam... cartDelParams){
         try {
-            boolean flag = cartService.isDel(userId, goodsId);
+            boolean flag = cartService.isDel(cartDelParams);
             if (flag) {
                 return ReturnResultUtils.returnSuccess("已删除");
             }

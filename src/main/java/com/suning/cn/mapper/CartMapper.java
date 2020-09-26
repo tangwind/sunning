@@ -65,4 +65,6 @@ public interface CartMapper {
     int updateStock(@Param("goodsId") String goodsId, @Param("userId") String userId, @Param("goodsNum") Integer goodsNum);
 
     int updateByUserIdAndGoodsId(@Param("userId") String userId, @Param("goodsId") String goodsId, @Param("cartDel") Integer cartDel);
+
+    int selectNumByGIdAndUId(@Param("goodsId") String goodsId, @Param("userId") String userId);
 }
