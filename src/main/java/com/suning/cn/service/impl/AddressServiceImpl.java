@@ -41,13 +41,13 @@ public class AddressServiceImpl implements AddressService {
     }
 
     @Override
-    public ReturnResult updateAddress(AddressParam addressParam) {
+    public ReturnResult updateAddress(AddressParam addressParam, String addressId) {
         ShippingAddress address = new ShippingAddress();
         BeanUtils.copyProperties(addressParam,address);
         //int result = addressMapper.updateByPrimaryKeySelective(address);
         ShippingAddressExample addressExample = new ShippingAddressExample();
         ShippingAddressExample.Criteria criteria = addressExample.createCriteria();
-        criteria.andUserIdEqualTo(address.getUserId());
+        criteria.andUserIdEqualTo(address.getUserId()).andAddressIdEqualTo(addressId);
         int result = addressMapper.updateByExampleSelective(address,addressExample);
         if (result <= 0) {
             return ReturnResultUtils.returnFail(704,"fail to update address");

@@ -11,7 +11,7 @@ public interface AddressService {
 
     ReturnResult insertAddress(AddressParam addressParam);
 
-    ReturnResult updateAddress(AddressParam addressParam);
+    ReturnResult updateAddress(AddressParam addressParam, String addressId);
 
     ReturnResult deleteAddress(String userId, String addressId);
 

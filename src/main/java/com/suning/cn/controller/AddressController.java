@@ -55,8 +55,9 @@ public class AddressController {
     @LoginRequired
     @ApiOperation(value = "修改收货地址")
     @PostMapping(value = "/updateAddress")
-    public ReturnResult updateAddress(@RequestBody @ApiParam(value = "收货地址信息", required = true) AddressParam addressParam) {
-        ReturnResult result = addressService.updateAddress(addressParam);
+    public ReturnResult updateAddress(@RequestBody @ApiParam(value = "收货地址信息", required = true) AddressParam addressParam,
+                                      @RequestParam @ApiParam(value = "地址id", required = true) String addressId) {
+        ReturnResult result = addressService.updateAddress(addressParam, addressId);
         return result;
     }
 
