@@ -23,6 +23,7 @@ public class OrdersController {
     /**
      * 查看用户所有订单
      */
+    @LoginRequired
     @ApiOperation(value = "查看用户所有订单", notes = "参数用户id")
     @PostMapping(value = "/showAllOrders")
     public ReturnResult showAllOrders(@RequestBody String userId) {
@@ -36,6 +37,7 @@ public class OrdersController {
     /**
      * 查看订单详情
      */
+    @LoginRequired
     @ApiOperation(value = "查看某个订单详情", notes = "参数orderId")
     @PostMapping(value = "/showOrderDetail")
     public ReturnResult showOrderDetail(@RequestBody String orderId) {
@@ -76,6 +78,7 @@ public class OrdersController {
      *                用户点支付之后执行该方法
      *                需要
      */
+    @LoginRequired
     @ApiOperation(value = "前往支付", notes = "本方法为模拟支付接口前往支付部分，对应小程序前往微信支付，需要生成未支付订单的返回结果")
     @PostMapping(value = "toPay")
     public ReturnResult toPay(@RequestBody OrderVo orderVo) {
@@ -93,6 +96,7 @@ public class OrdersController {
      * 传递orderId
      * 模拟微信支付接口，回调本函数
      */
+    @LoginRequired
     @ApiOperation(value = "确认支付", notes = "本方法为模拟用户支付成功回调部分，需要返回的订单编号orderId[s]，从上一部前往支付的返回值获取")
     @PostMapping(value = "/getPay")
     public ReturnResult orderGetPayed(@RequestBody String... orderIds) {
@@ -107,6 +111,7 @@ public class OrdersController {
      * 用户确认收货
      * 参数 orderId
      */
+    @LoginRequired
     @ApiOperation(value = "用户确认收货")
     @PostMapping(value = "/getReceived")
     public ReturnResult orderGetReceived(@RequestBody String orderId) {
