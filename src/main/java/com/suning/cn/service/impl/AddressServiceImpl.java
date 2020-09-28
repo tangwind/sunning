@@ -57,10 +57,16 @@ public class AddressServiceImpl implements AddressService {
 
     @Override
     public ReturnResult deleteAddress(String userId, String addressId) {
-        int result = addressMapper.deleteByuserId(userId, addressId);
+        int isDel = 1;
+        ShippingAddressExample addressExample = new ShippingAddressExample();
+        ShippingAddressExample.Criteria criteria = addressExample.createCriteria();
+        criteria.andUserIdEqualTo(userId).andAddressIdEqualTo(addressId);
+        ShippingAddress address = new ShippingAddress();
+        address.setIsDel(isDel);
+        int result = addressMapper.updateByExampleSelective(address, addressExample);
         if (result <= 0) {
-            return ReturnResultUtils.returnFail(705,"fail to del address");
-        }
+        return ReturnResultUtils.returnFail(705,"fail to del address");
+    }
         return ReturnResultUtils.returnSuccess("del address success");
     }
 
