@@ -189,6 +189,9 @@ public class OrdersServiceImpl extends BaseServiceImpl implements OrdersService 
         ShippingAddressExample.Criteria criteria = addressExample.createCriteria();
         criteria.andAddressIdEqualTo(order.getAddressId());
         List<ShippingAddress> addresses = addressMapper.selectByExample(addressExample);
+        if (addresses.size()==0){
+            return ReturnResultUtils.returnFail(701,"收货地址已删除");
+        }
         BeanUtils.copyProperties(addresses.get(0), addressVo);
 
         detailVo.setAddressVo(addressVo);
