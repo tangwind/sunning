@@ -170,13 +170,18 @@ public class CartServiceImpl implements CartService {
 
         for (CartDelParam cartDelParam : cartDelParams) {
             try {
-                cartMapper.updateByUserIdAndGoodsId(cartDelParam.getUserId(), cartDelParam.getGoodsId(), CART_DEL);
+                CartExample cartExample = new CartExample();
+                cartExample.createCriteria().andUserIdEqualTo(cartDelParam.getUserId()).andGoodsIdEqualTo(cartDelParam.getGoodsId());
+                int row = cartMapper.deleteByExample(cartExample);
+                log.info("row: " + row);
+                return row > 0;
+                //cartMapper.updateByUserIdAndGoodsId(cartDelParam.getUserId(), cartDelParam.getGoodsId(), CART_DEL);
             } catch (Exception e) {
                 log.error("删除购物车: " + new Date() + e);
             }
         }
 
-        return true;
+        return false;
     }
 
     /**

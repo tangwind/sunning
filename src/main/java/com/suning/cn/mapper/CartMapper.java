@@ -60,11 +60,11 @@ public interface CartMapper {
      *
      * @mbg.generated
      */
-    int updateByExample(@Param("record") Cart record, @Param("example") CartExample example);
+    Integer updateByExample(@Param("record") Cart record, @Param("example") CartExample example);
 
-    int updateStock(@Param("goodsId") String goodsId, @Param("userId") String userId, @Param("goodsNum") Integer goodsNum);
+    Integer updateStock(@Param("goodsId") String goodsId, @Param("userId") String userId, @Param("goodsNum") Integer goodsNum);
 
-    int updateByUserIdAndGoodsId(@Param("userId") String userId, @Param("goodsId") String goodsId, @Param("cartDel") Integer cartDel);
+    Integer updateByUserIdAndGoodsId(@Param("userId") String userId, @Param("goodsId") String goodsId, @Param("cartDel") Integer cartDel);
 
-    int selectNumByGIdAndUId(@Param("goodsId") String goodsId, @Param("userId") String userId);
+    Integer selectNumByGIdAndUId(@Param("goodsId") String goodsId, @Param("userId") String userId);
 }
