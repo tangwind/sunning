@@ -50,11 +50,14 @@ public class OrdersServiceImpl extends BaseServiceImpl implements OrdersService 
             ShippingAddressExample addressExample = new ShippingAddressExample();
             ShippingAddressExample.Criteria criteria = addressExample.createCriteria();
             //选取默认地址
-            criteria.andUserIdEqualTo(userId).andIsDefaultEqualTo(1);
+            criteria.andUserIdEqualTo(userId).andIsDefaultEqualTo(1).andIsDelEqualTo(0);
             List<ShippingAddress> addresses = addressMapper.selectByExample(addressExample);
-            if (addresses.size()==0){
+            if (addresses.size() == 0) {
                 criteria.andIsDefaultEqualTo(0);
                 addresses = addressMapper.selectByExample(addressExample);
+                if (addresses.size() == 0) {
+                    return ReturnResultUtils.returnFail(702, "您尚未添加收货地址");
+                }
             }
             BeanUtils.copyProperties(addresses.get(0), addressVo);
 
@@ -66,8 +69,8 @@ public class OrdersServiceImpl extends BaseServiceImpl implements OrdersService 
         redisUtils.set(orderId, "0");*/
 
             orderVo.setAddressVo(addressVo);
-        }catch ( Exception e){
-            return ReturnResultUtils.returnFail(705,"收货地址异常");
+        } catch (Exception e) {
+            return ReturnResultUtils.returnFail(705, "收货地址异常");
         }
         orderVo.setIsDel(0);
         orderVo.setOffCost(0.0);
@@ -154,7 +157,7 @@ public class OrdersServiceImpl extends BaseServiceImpl implements OrdersService 
         criteria.andUserIdEqualTo(userId);
         List<Orders> ordersList = ordersMapper.selectByExample(ordersExample);
         List<OrderShowVo> orderShowVoList = Lists.newArrayList();
-        for (Orders orders:ordersList){
+        for (Orders orders : ordersList) {
             //转vo
             OrderShowVo orderShowVo = new OrderShowVo();
             BeanUtils.copyProperties(orders, orderShowVo);
@@ -163,8 +166,8 @@ public class OrdersServiceImpl extends BaseServiceImpl implements OrdersService 
             Goods goods = goodsMapper.selectByPrimaryKey(orders.getGoodsId());
             BeanUtils.copyProperties(goods, goodsVo);
             String shopName = "商家已下架商品";
-            RelationalShop rS =rSMapper.selectByPrimaryKey(orders.getGoodsId());
-            if (!ObjectUtils.isEmpty(rS)){
+            RelationalShop rS = rSMapper.selectByPrimaryKey(orders.getGoodsId());
+            if (!ObjectUtils.isEmpty(rS)) {
                 String shopId = rS.getShopId();
                 shopName = shopsMapper.selectNameByPrimaryKey(shopId);
             }
@@ -173,7 +176,8 @@ public class OrdersServiceImpl extends BaseServiceImpl implements OrdersService 
             goodsVo.setThumbImg(getImg(orders.getGoodsId(), "1").get(0));
             orderShowVo.setGoodsVo(goodsVo);
             orderShowVoList.add(orderShowVo);
-        };
+        }
+        ;
         return ReturnResultUtils.returnSuccess(orderShowVoList);
     }
 
@@ -182,15 +186,15 @@ public class OrdersServiceImpl extends BaseServiceImpl implements OrdersService 
         Orders order = ordersMapper.selectByPrimaryKey(orderId);
         //转订单详情vo
         OrderDetailVo detailVo = new OrderDetailVo();
-        BeanUtils.copyProperties(order,detailVo);
+        BeanUtils.copyProperties(order, detailVo);
         // 根据收货地址id获取地址信息
         AddressVo addressVo = new AddressVo();
         ShippingAddressExample addressExample = new ShippingAddressExample();
         ShippingAddressExample.Criteria criteria = addressExample.createCriteria();
         criteria.andAddressIdEqualTo(order.getAddressId());
         List<ShippingAddress> addresses = addressMapper.selectByExample(addressExample);
-        if (addresses.size()==0){
-            return ReturnResultUtils.returnFail(701,"收货地址已删除");
+        if (addresses.size() == 0) {
+            return ReturnResultUtils.returnFail(701, "收货地址已删除");
         }
         BeanUtils.copyProperties(addresses.get(0), addressVo);
 
@@ -200,8 +204,8 @@ public class OrdersServiceImpl extends BaseServiceImpl implements OrdersService 
         Goods goods = goodsMapper.selectByPrimaryKey(order.getGoodsId());
         BeanUtils.copyProperties(goods, goodsVo);
         String shopName = "商家已下架商品";
-        RelationalShop rS =rSMapper.selectByPrimaryKey(order.getGoodsId());
-        if (!ObjectUtils.isEmpty(rS)){
+        RelationalShop rS = rSMapper.selectByPrimaryKey(order.getGoodsId());
+        if (!ObjectUtils.isEmpty(rS)) {
             String shopId = rS.getShopId();
             shopName = shopsMapper.selectNameByPrimaryKey(shopId);
         }
