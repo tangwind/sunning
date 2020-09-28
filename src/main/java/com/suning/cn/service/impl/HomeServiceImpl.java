@@ -74,7 +74,7 @@ public class HomeServiceImpl extends BaseServiceImpl implements HomeService {
         goodsExample.setOrderByClause(CAUSE + " DESC");
         List<Goods> goodsList = goodsMapper.selectByExample(goodsExample);
         List<HomeGoodsVo> homeGoodsVoList = new ArrayList<>();
-        for (Goods goods:goodsList){
+        for (Goods goods : goodsList) {
             HomeGoodsVo homeGoodsVo = new HomeGoodsVo();
             homeGoodsVo.setGoodsName(goods.getGoodsName());
             homeGoodsVo.setInitPrice(goods.getInitPrice());
@@ -93,7 +93,8 @@ public class HomeServiceImpl extends BaseServiceImpl implements HomeService {
             homeGoodsVo.setShopName(shopName);
 
             homeGoodsVoList.add(homeGoodsVo);
-        };
+        }
+        ;
 
         pageUtils.setCurrentList(homeGoodsVoList);
         return pageUtils;

@@ -30,8 +30,9 @@ public class BaseServiceImpl {
 
     /**
      * 获取商品图片
+     *
      * @param goodsId 商品id
-     * @param isMain 1为主图，0非主图
+     * @param isMain  1为主图，0非主图
      * @return 图片
      */
     public List<String> getImg(String goodsId, String isMain) {
@@ -45,16 +46,18 @@ public class BaseServiceImpl {
 
     /**
      * 获取评论总数
+     *
      * @param goodsId 商品id
      * @return 评论总数
      */
     public int reviewsCount(String goodsId) {
-        long count =  reviewsMapper.countByGoodsId(goodsId);
+        long count = reviewsMapper.countByGoodsId(goodsId);
         return Integer.parseInt(String.valueOf(count));
     }
 
     /**
      * 获取店铺名
+     *
      * @param goodsId 商品id
      * @return 店铺名
      */

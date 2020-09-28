@@ -67,7 +67,7 @@ public class GoodsInfoServiceImpl extends BaseServiceImpl implements GoodsInfoSe
         //获取评论
         List<Reviews> reviewsList = reviewsMapper.selectByGoodsId(goodsId, LIMIT);
         if (ObjectUtils.isEmpty(reviewsList)) {
-           return  goodsInfoVo;
+            return goodsInfoVo;
         }
         Reviews reviews = reviewsList.get(GET_REVIEW);
         reviews.setImages(this.getImgUrl(reviews.getImages()));
@@ -93,6 +93,7 @@ public class GoodsInfoServiceImpl extends BaseServiceImpl implements GoodsInfoSe
 
     /**
      * 获取评价列表
+     *
      * @param goodsId 商品
      * @return 评价列表
      */
@@ -120,7 +121,7 @@ public class GoodsInfoServiceImpl extends BaseServiceImpl implements GoodsInfoSe
             reviews.setImages(this.getImgUrl(reviews.getImages()));
             BeanUtils.copyProperties(reviews, reviewsVo);
             Random random = new Random();
-            String name =  "1***" + random.nextInt(10);
+            String name = "1***" + random.nextInt(10);
             reviewsVo.setUserName(name);
             reviewsVos.add(reviewsVo);
         });
@@ -130,7 +131,7 @@ public class GoodsInfoServiceImpl extends BaseServiceImpl implements GoodsInfoSe
 
     }
 
-    private String getImgUrl(String fileName){
+    private String getImgUrl(String fileName) {
         String imgUrl = IMG_URL;
         imgUrl += fileName;
         return imgUrl;

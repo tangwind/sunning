@@ -67,7 +67,7 @@ public class AddressController {
     @PostMapping(value = "/deleteAddress")
     public ReturnResult deleteAddress(@RequestParam("userId") @ApiParam(value = "用户id", required = true) String userId,
                                       @ApiParam(value = "地址id", required = true) @RequestParam("addressId") String addressId) {
-        ReturnResult result = addressService.deleteAddress(userId,addressId);
+        ReturnResult result = addressService.deleteAddress(userId, addressId);
         return result;
     }
 }

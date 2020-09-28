@@ -30,12 +30,12 @@ public class AddressServiceImpl implements AddressService {
     @Override
     public ReturnResult insertAddress(AddressParam addressParam) {
         ShippingAddress address = new ShippingAddress();
-        BeanUtils.copyProperties(addressParam,address);
+        BeanUtils.copyProperties(addressParam, address);
         String address_id = UUID.randomUUID().toString();
         address.setAddressId(address_id);
         int result = addressMapper.insertSelective(address);
         if (result <= 0) {
-            return ReturnResultUtils.returnFail(703,"fail to insert address");
+            return ReturnResultUtils.returnFail(703, "fail to insert address");
         }
         return ReturnResultUtils.returnSuccess("insert address success");
     }
@@ -43,14 +43,14 @@ public class AddressServiceImpl implements AddressService {
     @Override
     public ReturnResult updateAddress(AddressParam addressParam, String addressId) {
         ShippingAddress address = new ShippingAddress();
-        BeanUtils.copyProperties(addressParam,address);
+        BeanUtils.copyProperties(addressParam, address);
         //int result = addressMapper.updateByPrimaryKeySelective(address);
         ShippingAddressExample addressExample = new ShippingAddressExample();
         ShippingAddressExample.Criteria criteria = addressExample.createCriteria();
         criteria.andUserIdEqualTo(address.getUserId()).andAddressIdEqualTo(addressId);
-        int result = addressMapper.updateByExampleSelective(address,addressExample);
+        int result = addressMapper.updateByExampleSelective(address, addressExample);
         if (result <= 0) {
-            return ReturnResultUtils.returnFail(704,"fail to update address");
+            return ReturnResultUtils.returnFail(704, "fail to update address");
         }
         return ReturnResultUtils.returnSuccess("update address success");
     }
@@ -65,8 +65,8 @@ public class AddressServiceImpl implements AddressService {
         address.setIsDel(isDel);
         int result = addressMapper.updateByExampleSelective(address, addressExample);
         if (result <= 0) {
-        return ReturnResultUtils.returnFail(705,"fail to del address");
-    }
+            return ReturnResultUtils.returnFail(705, "fail to del address");
+        }
         return ReturnResultUtils.returnSuccess("del address success");
     }
 
@@ -74,9 +74,9 @@ public class AddressServiceImpl implements AddressService {
     public List<AddressVo> selectAddress(String userId) {
         List<AddressVo> addressVoList = new ArrayList<>();
         List<ShippingAddress> addresses = addressMapper.selectAddress(userId);
-        for (ShippingAddress address : addresses){
+        for (ShippingAddress address : addresses) {
             AddressVo addressVo = new AddressVo();
-            BeanUtils.copyProperties(address,addressVo);
+            BeanUtils.copyProperties(address, addressVo);
             addressVoList.add(addressVo);
         }
         return addressVoList;

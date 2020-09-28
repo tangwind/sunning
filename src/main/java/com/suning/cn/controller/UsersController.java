@@ -54,7 +54,7 @@ public class UsersController {
         log.info(usersParam);
         int result = usersService.insertUserInfo(usersParam);
         if (result <= 0) {
-            return ReturnResultUtils.returnFail(701,"false to insert userInfo");
+            return ReturnResultUtils.returnFail(701, "false to insert userInfo");
         } else {
             return ReturnResultUtils.returnSuccess("success insert");
         }
@@ -122,15 +122,15 @@ public class UsersController {
         String fileName = UUID.randomUUID().toString() + suffix;
         //创建文件对象，表示要保存的头像（文件夹，文件名）
         //File realfile = new File(dirFile, fileName);
-        File realfile = new File(dirFile+"/"+fileName);
-        if (!realfile.exists()){
+        File realfile = new File(dirFile + "/" + fileName);
+        if (!realfile.exists()) {
             try {
                 realfile.createNewFile();
                 if (!realfile.exists()) {
                     log.info("创建失败");
                     return null;
                 }
-            }catch (Exception e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }

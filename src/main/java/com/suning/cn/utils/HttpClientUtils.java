@@ -13,7 +13,6 @@ package com.suning.cn.utils;
 //import org.apache.http.util.EntityUtils;
 
 
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;

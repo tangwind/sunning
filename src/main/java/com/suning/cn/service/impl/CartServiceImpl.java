@@ -43,6 +43,7 @@ public class CartServiceImpl implements CartService {
 
     /**
      * 查询购物车的订单
+     *
      * @param userId 用户id
      * @return 商品数量
      */
@@ -66,7 +67,7 @@ public class CartServiceImpl implements CartService {
             cartVo.setGoodsPic(mainList.get(GET_MAIN));
 
             int goodsStock = goodsStockMapper.selectNumByGoodsId(cart.getGoodsId());
-            if (goodsStock > MAX_NUM){
+            if (goodsStock > MAX_NUM) {
                 goodsStock = MAX_NUM;
             }
             cartVo.setGoodsStock(goodsStock);
@@ -86,6 +87,7 @@ public class CartServiceImpl implements CartService {
 
     /**
      * 购物车添加商品
+     *
      * @param cartParam
      * @return
      */
@@ -103,7 +105,7 @@ public class CartServiceImpl implements CartService {
         }
 
         //购买数量不能大于库存
-        if(toCompareStock(cartParam.getGoodsId(), cartParam.getGoodsNum())) {
+        if (toCompareStock(cartParam.getGoodsId(), cartParam.getGoodsNum())) {
             return CART_NUM;
         }
 
@@ -130,6 +132,7 @@ public class CartServiceImpl implements CartService {
 
     /**
      * 修改购物车中的商品数量
+     *
      * @param cartParam
      * @return
      */
@@ -147,7 +150,7 @@ public class CartServiceImpl implements CartService {
         }
 
         //购买数量不能大于库存
-        if(toCompareStock(cartParam.getGoodsId(), cartParam.getGoodsNum())) {
+        if (toCompareStock(cartParam.getGoodsId(), cartParam.getGoodsNum())) {
             return CART_NUM;
         }
         //更新数据
@@ -157,6 +160,7 @@ public class CartServiceImpl implements CartService {
 
     /**
      * 删除购物车
+     *
      * @param cartDelParams
      * @return
      */
@@ -186,6 +190,7 @@ public class CartServiceImpl implements CartService {
 
     /**
      * 判断购物车中是否存在数据
+     *
      * @param goodsId
      * @param userId
      * @return
@@ -199,6 +204,7 @@ public class CartServiceImpl implements CartService {
 
     /**
      * 更新数据
+     *
      * @param goodsId
      * @param userId
      * @param goodsNum
@@ -209,7 +215,7 @@ public class CartServiceImpl implements CartService {
         int num = cartMapper.selectNumByGIdAndUId(goodsId, userId);
         Integer updateNum = num + goodsNum;
         //购买数量不能大于库存
-        if(toCompareStock(goodsId, updateNum)) {
+        if (toCompareStock(goodsId, updateNum)) {
             return CART_NUM;
         }
         //更新数据
@@ -219,6 +225,7 @@ public class CartServiceImpl implements CartService {
 
     /**
      * 购买数与库存的比较
+     *
      * @param goodsId
      * @param num
      * @return
@@ -230,21 +237,23 @@ public class CartServiceImpl implements CartService {
 
     /**
      * 判断传入商品数量是否大于最大购买商品数量
+     *
      * @param num
      * @return
      */
-    public boolean toCompareMax (Integer num) {
+    public boolean toCompareMax(Integer num) {
         return num > MAX_NUM;
     }
 
     /**
      * 跟新购物车中的商品数据
+     *
      * @param goodsId
      * @param userId
      * @param num
      * @return
      */
-    public String updateNum (String goodsId, String userId, Integer num) {
+    public String updateNum(String goodsId, String userId, Integer num) {
         try {
             cartMapper.updateStock(goodsId, userId, num);
             return CART_SUCCESS;
@@ -253,7 +262,6 @@ public class CartServiceImpl implements CartService {
         }
         return CART_FAIL;
     }
-
 
 
 }

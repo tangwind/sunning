@@ -57,7 +57,7 @@ public class UsersServiceImpl implements UsersService {
         users.setModifyTime(new Date());
         int result = usersMapper.updateByPrimaryKeySelective(users);
         if (result <= 0) {
-            return ReturnResultUtils.returnFail(702,"update fail");
+            return ReturnResultUtils.returnFail(702, "update fail");
         }
         return ReturnResultUtils.returnSuccess("update success");
     }
@@ -103,7 +103,7 @@ public class UsersServiceImpl implements UsersService {
     @Override
     public boolean selectUserInfoById(String userId) {
         int count = usersMapper.selectCountById(userId);
-        return count>0;
+        return count > 0;
     }
 
     @Override

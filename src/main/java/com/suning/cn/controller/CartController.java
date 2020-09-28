@@ -36,7 +36,7 @@ public class CartController {
     @LoginRequired
     @ApiOperation(value = "查看购物车中的商品")
     @PostMapping(value = "/lookCart")
-    public ReturnResult selectCartInfo(@RequestBody @ApiParam(value = "用户id", required = true) String userId){
+    public ReturnResult selectCartInfo(@RequestBody @ApiParam(value = "用户id", required = true) String userId) {
         try {
             List<CartVo> cartVos = cartService.selectGoodsInfo(userId);
             if (!ObjectUtils.isEmpty(cartVos)) {
@@ -68,13 +68,13 @@ public class CartController {
         } catch (Exception e) {
             log.error("商品加入购物车异常: " + new Date() + e);
         }
-        return ReturnResultUtils.returnFail(908,"添加发生错误！");
+        return ReturnResultUtils.returnFail(908, "添加发生错误！");
     }
 
     @LoginRequired
     @ApiOperation(value = "更改购物车中的商品数量", notes = "每次更改一个商品")
     @PostMapping(value = "/updateNum")
-    public ReturnResult updateGoodsNum(@RequestBody @ApiParam(value = "购物车参数表", required = true) CartParam cartParam){
+    public ReturnResult updateGoodsNum(@RequestBody @ApiParam(value = "购物车参数表", required = true) CartParam cartParam) {
 
         String result = cartService.updateGoodsNum(cartParam);
 
@@ -93,7 +93,7 @@ public class CartController {
     @LoginRequired
     @ApiOperation(value = "删除购物车中的商品")
     @PostMapping(value = "/delCart")
-    public ReturnResult isDelCart(@RequestBody @ApiParam(value = "购物车删除表", required = true) CartDelParam... cartDelParams){
+    public ReturnResult isDelCart(@RequestBody @ApiParam(value = "购物车删除表", required = true) CartDelParam... cartDelParams) {
         try {
             boolean flag = cartService.isDel(cartDelParams);
             if (flag) {
@@ -102,7 +102,7 @@ public class CartController {
         } catch (Exception e) {
             log.error("删除购物车商品发生异常：" + new Date() + e);
         }
-        return ReturnResultUtils.returnFail(908,"删除购物车中的商品失败！");
+        return ReturnResultUtils.returnFail(908, "删除购物车中的商品失败！");
     }
 
 }

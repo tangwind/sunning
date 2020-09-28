@@ -3,7 +3,6 @@ package com.suning.cn.utils;
 /**
  * 200：success
  * 500: fail
- *
  */
 public class ReturnResultUtils {
 
@@ -23,29 +22,26 @@ public class ReturnResultUtils {
         return returnResult;
     }
 
-    public static ReturnResult returnFail(){
+    public static ReturnResult returnFail() {
         ReturnResult returnResult = new ReturnResult();
         returnResult.setCode(500);
         returnResult.setMsg("FAIL");
         return returnResult;
     }
 
-    public static ReturnResult returnFail(int code){
+    public static ReturnResult returnFail(int code) {
         ReturnResult returnResult = new ReturnResult();
         returnResult.setCode(code);
         returnResult.setMsg("FAIL");
         return returnResult;
     }
 
-    public static ReturnResult returnFail(int code, String msg){
+    public static ReturnResult returnFail(int code, String msg) {
         ReturnResult returnResult = new ReturnResult();
         returnResult.setCode(code);
         returnResult.setMsg(msg);
         return returnResult;
     }
-
-
-
 
 
 }
